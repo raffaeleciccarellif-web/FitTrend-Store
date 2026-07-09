@@ -1,0 +1,475 @@
+/* ============================================================
+   FitTrend Store — main.css
+   Foglio di stile principale.
+   Nessun framework CSS esterno (Bootstrap vietato).
+   ============================================================ */
+
+/* ---------- Reset & Box-Sizing ---------- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ---------- Variabili (Custom Properties) ---------- */
+:root {
+    /* Colori primari */
+    --color-primary:       #1B9AAA;   /* teal / azzurro fitness */
+    --color-primary-dark:  #147A87;
+    --color-primary-light: #5DC0CD;
+
+    /* Colori accento */
+    --color-accent:        #F45B69;   /* corallo energico */
+    --color-accent-dark:   #D1414E;
+
+    /* Neutri */
+    --color-bg:            #F5F7FA;
+    --color-surface:       #FFFFFF;
+    --color-text:          #2D2D2D;
+    --color-text-light:    #6B7280;
+    --color-border:        #E2E6EB;
+
+    /* Stato */
+    --color-success:       #22C55E;
+    --color-error:         #EF4444;
+    --color-warning:       #F59E0B;
+
+    /* Tipografia */
+    --font-family:         'Inter', 'Segoe UI', Arial, sans-serif;
+    --font-size-base:      16px;
+    --font-size-sm:        0.875rem;
+    --font-size-lg:        1.125rem;
+    --font-size-xl:        1.5rem;
+    --font-size-2xl:       2rem;
+
+    /* Spaziatura */
+    --spacing-xs:          0.25rem;
+    --spacing-sm:          0.5rem;
+    --spacing-md:          1rem;
+    --spacing-lg:          1.5rem;
+    --spacing-xl:          2rem;
+    --spacing-2xl:         3rem;
+
+    /* Bordi & ombre */
+    --radius:              8px;
+    --radius-lg:           12px;
+    --shadow-sm:           0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md:           0 4px 12px rgba(0, 0, 0, 0.10);
+    --shadow-lg:           0 8px 24px rgba(0, 0, 0, 0.12);
+
+    /* Transizioni */
+    --transition-fast:     0.15s ease;
+    --transition-base:     0.25s ease;
+
+    /* Layout */
+    --header-height:       64px;
+    --max-width:           1200px;
+}
+
+/* ---------- Google Fonts (Inter) ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ---------- Body ---------- */
+html {
+    font-size: var(--font-size-base);
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-primary-dark);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+/* ---------- Container ---------- */
+.container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin-inline: auto;
+    padding-inline: var(--spacing-lg);
+}
+
+/* ---------- Header ---------- */
+header {
+    background-color: var(--color-surface);
+    height: var(--header-height);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+header .logo {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-primary);
+    letter-spacing: -0.02em;
+}
+
+header .logo span {
+    color: var(--color-accent);
+}
+
+/* ---------- Nav ---------- */
+nav {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+nav a {
+    color: var(--color-text);
+    font-weight: 500;
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius);
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+nav a:hover,
+nav a.active {
+    color: var(--color-primary);
+    background-color: rgba(27, 154, 170, 0.08);
+}
+
+/* ---------- Main ---------- */
+main {
+    flex: 1;
+    padding: var(--spacing-2xl) 0;
+}
+
+/* ---------- Footer ---------- */
+footer {
+    background-color: var(--color-text);
+    color: var(--color-bg);
+    text-align: center;
+    padding: var(--spacing-lg) 0;
+    font-size: var(--font-size-sm);
+    margin-top: auto;
+}
+
+footer a {
+    color: var(--color-primary-light);
+}
+
+footer a:hover {
+    color: var(--color-surface);
+}
+
+/* ============================================================
+   Componenti riutilizzabili
+   ============================================================ */
+
+/* ---------- Bottoni ---------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    padding: 0.625rem 1.25rem;
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background-color var(--transition-fast),
+                box-shadow var(--transition-fast),
+                transform var(--transition-fast);
+    background-color: var(--color-primary);
+    color: var(--color-surface);
+}
+
+.btn:hover {
+    background-color: var(--color-primary-dark);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-primary);
+    color: var(--color-surface);
+}
+
+.btn-danger {
+    background-color: var(--color-error);
+    color: var(--color-surface);
+}
+
+.btn-danger:hover {
+    background-color: #DC2626;
+}
+
+.btn-sm {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+}
+
+/* ---------- Card ---------- */
+.card {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+}
+
+.card-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: var(--spacing-md);
+}
+
+.card-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-text);
+}
+
+.card-price {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.card-text {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-md);
+}
+
+/* ---------- Griglia prodotti ---------- */
+.grid-prodotti {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+/* ---------- Tabelle responsive ---------- */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+}
+
+.table-responsive th,
+.table-responsive td {
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+    font-size: var(--font-size-sm);
+}
+
+.table-responsive th {
+    background-color: var(--color-bg);
+    font-weight: 600;
+    color: var(--color-text);
+    position: sticky;
+    top: 0;
+}
+
+.table-responsive tbody tr {
+    transition: background-color var(--transition-fast);
+}
+
+.table-responsive tbody tr:hover {
+    background-color: rgba(27, 154, 170, 0.04);
+}
+
+/* ---------- Messaggi errore / info ---------- */
+.error-msg {
+    background-color: #FEF2F2;
+    color: var(--color-error);
+    border: 1px solid #FECACA;
+    border-radius: var(--radius);
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    margin-bottom: var(--spacing-md);
+}
+
+.success-msg {
+    background-color: #F0FDF4;
+    color: var(--color-success);
+    border: 1px solid #BBF7D0;
+    border-radius: var(--radius);
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    margin-bottom: var(--spacing-md);
+}
+
+.info-msg {
+    background-color: #EFF6FF;
+    color: var(--color-primary-dark);
+    border: 1px solid #BFDBFE;
+    border-radius: var(--radius);
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    margin-bottom: var(--spacing-md);
+}
+
+/* ---------- Input con errore ---------- */
+.error-input {
+    border-color: var(--color-error) !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+/* ---------- Form base ---------- */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="search"],
+select,
+textarea {
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(27, 154, 170, 0.15);
+}
+
+label {
+    display: block;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-text);
+}
+
+/* ---------- Utility ---------- */
+.text-center {
+    text-align: center;
+}
+
+.mt-md {
+    margin-top: var(--spacing-md);
+}
+
+.mb-md {
+    margin-bottom: var(--spacing-md);
+}
+
+.mb-lg {
+    margin-bottom: var(--spacing-lg);
+}
+
+/* ---------- Titoli di pagina ---------- */
+.page-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 768px) {
+    :root {
+        --font-size-base: 15px;
+        --header-height: 56px;
+    }
+
+    .grid-prodotti {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: var(--spacing-md);
+    }
+
+    nav {
+        gap: var(--spacing-sm);
+    }
+
+    nav a {
+        font-size: 0.8125rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .grid-prodotti {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        padding-inline: var(--spacing-md);
+    }
+}
