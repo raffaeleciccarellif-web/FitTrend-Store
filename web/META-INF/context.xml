@@ -1,29 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-    context.xml — Configurazione JNDI DataSource per FitTrend Store
-    Posizionato in web/META-INF/context.xml → viene letto da Tomcat 10/11
-    al deploy dell'applicazione.
-
-    ISTRUZIONI:
-    1. Sostituire 'root' e '' con le credenziali reali del DB MySQL locale.
-    2. Il nome JNDI 'jdbc/fittrend' deve corrispondere esattamente a quello
-       usato in DbManager.java per il lookup: "java:comp/env/jdbc/fittrend"
-    3. Assicurarsi che il driver MySQL Connector/J sia in $TOMCAT_HOME/lib/
-       oppure in WEB-INF/lib/ del progetto.
--->
 <Context>
-    <Resource
-        name="jdbc/fittrend"
-        auth="Container"
-        type="javax.sql.DataSource"
-        driverClassName="com.mysql.cj.jdbc.Driver"
-        url="jdbc:mysql://localhost:3306/fittrend_store?useSSL=false&amp;serverTimezone=Europe/Rome&amp;characterEncoding=UTF-8"
-        username="root"
-        password="Fittrend2026"
-        maxTotal="20"
-        maxIdle="10"
-        maxWaitMillis="10000"
-        validationQuery="SELECT 1"
-        testOnBorrow="true"
-    />
+    <!-- Configurazione del DataSource JNDI per MySQL -->
+    <Resource name="jdbc/FitTrendDB"
+              auth="Container"
+              type="javax.sql.DataSource"
+              driverClassName="com.mysql.cj.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/fittrend_store?useSSL=false&amp;serverTimezone=UTC"
+              username="root"
+              password="password"
+              maxTotal="20"
+              maxIdle="10" />
 </Context>
