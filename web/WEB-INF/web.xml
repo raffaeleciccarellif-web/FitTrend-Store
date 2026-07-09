@@ -1,153 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
-                             https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
 
     <display-name>FitTrend Store</display-name>
-    <description>E-commerce per articoli di fitness e palestra — Progetto TSW</description>
 
-    <!-- ================================================================
-         WELCOME FILE
-         index.jsp fa redirect immediato alla HomeServlet
-         ================================================================ -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-    <!-- ================================================================
-         RISORSA JNDI — DataSource MySQL
-         Il nome deve corrispondere a quello in web/META-INF/context.xml
-         ================================================================ -->
     <resource-ref>
-        <description>MySQL DataSource per FitTrend Store</description>
-        <res-ref-name>jdbc/fittrend</res-ref-name>
+        <description>DataSource MySQL FitTrend Store</description>
+        <res-ref-name>jdbc/FitTrendDB</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
     </resource-ref>
 
-    <!-- ================================================================
-         MAPPING SERVLET
-         Tutte le Servlet del package control vengono mappate qui.
-         Aggiungere ogni nuova Servlet in questa sezione.
-         In alternativa è possibile usare @WebServlet sulle singole classi.
-         ================================================================ -->
-
-    <!-- Home / Catalogo -->
-    <!--
-    <servlet>
-        <servlet-name>HomeServlet</servlet-name>
-        <servlet-class>control.HomeServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>HomeServlet</servlet-name>
-        <url-pattern>/home</url-pattern>
-    </servlet-mapping>
-    -->
-
-    <!-- Prodotti -->
-    <!--
-    <servlet>
-        <servlet-name>ProductServlet</servlet-name>
-        <servlet-class>control.ProductServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ProductServlet</servlet-name>
-        <url-pattern>/products</url-pattern>
-    </servlet-mapping>
-    -->
-
-    <!-- Autenticazione -->
-    <!--
-    <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>control.LoginServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/login</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>control.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LogoutServlet</servlet-name>
-        <url-pattern>/logout</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>control.RegisterServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>RegisterServlet</servlet-name>
-        <url-pattern>/register</url-pattern>
-    </servlet-mapping>
-    -->
-
-    <!-- Carrello -->
-    <!--
-    <servlet>
-        <servlet-name>CartServlet</servlet-name>
-        <servlet-class>control.CartServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>CartServlet</servlet-name>
-        <url-pattern>/cart</url-pattern>
-    </servlet-mapping>
-    -->
-
-    <!-- Ordini -->
-    <!--
-    <servlet>
-        <servlet-name>OrderServlet</servlet-name>
-        <servlet-class>control.OrderServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>OrderServlet</servlet-name>
-        <url-pattern>/orders</url-pattern>
-    </servlet-mapping>
-    -->
-
-    <!-- Area Admin -->
-    <!--
-    <servlet>
-        <servlet-name>AdminServlet</servlet-name>
-        <servlet-class>control.AdminServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AdminServlet</servlet-name>
-        <url-pattern>/admin</url-pattern>
-    </servlet-mapping>
-    -->
-
-    <!-- ================================================================
-         GESTIONE ERRORI
-         ================================================================ -->
-    <error-page>
-        <error-code>404</error-code>
-        <location>/WEB-INF/view/error404.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>403</error-code>
-        <location>/WEB-INF/view/error403.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>500</error-code>
-        <location>/WEB-INF/view/error500.jsp</location>
-    </error-page>
-
-    <!-- ================================================================
-         SESSIONE
-         ================================================================ -->
     <session-config>
         <session-timeout>30</session-timeout>
         <cookie-config>
             <http-only>true</http-only>
+            <!-- ATTENZIONE: impostare <secure>true</secure> solo in produzione con HTTPS -->
         </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
 </web-app>
