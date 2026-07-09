@@ -103,13 +103,13 @@ FitTrend-Store/
 
 | URL Pattern | Servlet Class | Descrizione |
 |---|---|---|
-| `/home` | `control.HomeServlet` | Home page e catalogo prodotti |
-| `/products` | `control.ProductServlet` | Lista, dettaglio, ricerca prodotti |
+| `/home` | `control.HomeServlet` | Home page |
+| `/catalogo` | `control.CatalogoServlet` | Lista, dettaglio, ricerca prodotti |
 | `/login` | `control.LoginServlet` | Autenticazione utente (GET/POST) |
 | `/logout` | `control.LogoutServlet` | Invalidazione sessione |
-| `/register` | `control.RegisterServlet` | Registrazione nuovo utente |
-| `/cart` | `control.CartServlet` | Gestione carrello (AJAX/JSON) |
-| `/orders` | `control.OrderServlet` | Storico e gestione ordini |
+| `/registrazione` | `control.RegistrazioneServlet` | Registrazione nuovo utente |
+| `/carrello` | `control.CarrelloServlet` | Gestione carrello (AJAX/JSON) |
+| `/ordini` | `control.OrdiniServlet` | Storico e gestione ordini |
 | `/admin` | `control.AdminServlet` | Area amministrazione (protetta) |
 
 > I mapping sono registrati tramite annotazione `@WebServlet` sulla classe oppure in `web/WEB-INF/web.xml`.
@@ -127,12 +127,12 @@ e si limita a fare un forward immediato alla `HomeServlet` (`<jsp:forward page="
 
 ## Configurazione DataSource JNDI
 
-Il DataSource è configurato in `web/META-INF/context.xml` con nome JNDI `jdbc/fittrend`.
+Il DataSource è configurato in `web/META-INF/context.xml` con nome JNDI `jdbc/FitTrendDB`.
 
 Lookup in `DbManager.java`:
 ```java
 Context ctx = new InitialContext();
-DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/fittrend");
+DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/FitTrendDB");
 ```
 
 ---
@@ -152,10 +152,10 @@ DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/fittrend");
 
 | Elemento | Convenzione | Esempio |
 |---|---|---|
-| Servlet | `NomeAzioneServlet` | `LoginServlet`, `CartServlet` |
+| Servlet | `NomeAzioneServlet` | `LoginServlet`, `CarrelloServlet` |
 | DAO | `NomeEntitàDAO` | `ProductDAO`, `UserDAO` |
 | Model/Bean | PascalCase | `Product`, `User`, `Order` |
 | JSP | kebab-case | `product-list.jsp`, `cart.jsp` |
 | CSS | kebab-case | `main.css`, `product-card.css` |
 | JS | camelCase | `cart.js`, `validation.js` |
-| URL Servlet | `/nomeRisorsa` | `/login`, `/products`, `/cart` |
+| URL Servlet | `/nomeRisorsa` | `/login`, `/catalogo`, `/carrello` |
