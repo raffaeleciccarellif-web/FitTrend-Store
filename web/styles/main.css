@@ -380,6 +380,31 @@ footer a:hover {
     box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
 }
 
+/* Span errore inline nei form: nasconde il box quando è vuoto */
+span.error-msg {
+    display: block;
+    margin-top: 2px;
+    margin-bottom: 0;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--color-error);
+}
+
+span.error-msg:empty {
+    display: none;
+}
+
+/* Messaggio errore generale del form (es. email già esistente) */
+.form-error-general {
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--color-error);
+    margin-bottom: var(--spacing-sm);
+}
+
 /* ---------- Form base ---------- */
 input[type="text"],
 input[type="email"],
