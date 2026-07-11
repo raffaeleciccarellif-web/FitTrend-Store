@@ -1,0 +1,133 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Esplora il catalogo di FitTrend Store: accessori, abbigliamento e attrezzi per palestra e fitness.">
+    <title>Catalogo — FitTrend Store</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/catalogo.css">
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <a href="${pageContext.request.contextPath}/home" class="logo">Fit<span>Trend</span></a>
+        <nav>
+            <a href="${pageContext.request.contextPath}/catalogo" class="active">Catalogo</a>
+            <a href="${pageContext.request.contextPath}/login">Accedi</a>
+            <a href="${pageContext.request.contextPath}/registrazione">Registrati</a>
+            <a href="${pageContext.request.contextPath}/carrello?action=visualizza">Carrello</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <h1 class="page-title">Catalogo Prodotti</h1>
+
+        <%-- ── Barra filtri ───────────────────────────────────────────────────── --%>
+        <section class="filtri-bar" aria-label="Filtri di ricerca">
+            <form id="filtriForm" method="get" action="${pageContext.request.contextPath}/catalogo">
+
+                <%-- Nome --%>
+                <div class="filtro-group">
+                    <label for="nome">Cerca</label>
+                    <input type="search" id="nome" name="nome"
+                           placeholder="Nome prodotto…"
+                           value="<c:out value='${filtroNome}'/>">
+                </div>
+
+                <%-- Categoria --%>
+                <div class="filtro-group">
+                    <label for="categoriaId">Categoria</label>
+                    <select id="categoriaId" name="categoriaId">
+                        <option value="">Tutte le categorie</option>
+                        <c:forEach var="categoria" items="${categorie}">
+                            <option value="${categoria.id}"
+                                <c:if test="${categoria.id == filtroCategoriaId}">selected</c:if>>
+                                <c:out value="${categoria.nome}"/>
+                            </option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <%-- Prezzo min --%>
+                <div class="filtro-group">
+                    <label for="prezzoMin">Prezzo min (€)</label>
+                    <input type="number" id="prezzoMin" name="prezzoMin"
+                           min="1" max="10000" step="0.01" placeholder="1,00"
+                           value="<c:out value='${filtroPrezzoMin}'/>">
+                </div>
+
+                <%-- Prezzo max --%>
+                <div class="filtro-group">
+                    <label for="prezzoMax">Prezzo max (€)</label>
+                    <input type="number" id="prezzoMax" name="prezzoMax"
+                           min="1" max="10000" step="0.01" placeholder="10000,00"
+                           value="<c:out value='${filtroPrezzoMax}'/>">
+                </div>
+
+                <%-- Ordina per --%>
+                <div class="filtro-group">
+                    <label for="order">Ordina per</label>
+                    <select id="order" name="order">
+                        <option value="nome"      <c:if test="${filtroOrder == 'nome'}">selected</c:if>>Nome</option>
+                        <option value="prezzo"    <c:if test="${filtroOrder == 'prezzo'}">selected</c:if>>Prezzo</option>
+                        <option value="categoria" <c:if test="${filtroOrder == 'categoria'}">selected</c:if>>Categoria</option>
+                    </select>
+                </div>
+
+                <div class="filtro-group filtro-btn">
+                    <button type="submit" class="btn" id="btnFiltra">Filtra</button>
+                    <a href="${pageContext.request.contextPath}/catalogo" class="btn btn-secondary">Reset</a>
+                </div>
+
+            </form>
+        </section>
+
+        <%-- ── Griglia prodotti ───────────────────────────────────────────────── --%>
+        <c:choose>
+            <c:when test="${empty prodotti}">
+                <p class="info-msg">Nessun prodotto trovato con i filtri selezionati.</p>
+            </c:when>
+            <c:otherwise>
+                <div class="grid-prodotti" id="gridProdotti">
+                    <c:forEach var="prodotto" items="${prodotti}">
+                        <article class="card">
+                            <a href="${pageContext.request.contextPath}/prodotto?id=${prodotto.id}" aria-label="Vedi dettaglio ${prodotto.nome}">
+                                <img class="card-img"
+                                     src="${pageContext.request.contextPath}/<c:out value='${prodotto.immagine}'/>"
+                                     alt="<c:out value='${prodotto.nome}'/>">
+                            </a>
+                            <div class="card-body">
+                                <p class="card-categoria"><c:out value="${prodotto.categoriaNome}"/></p>
+                                <h2 class="card-title card-title-clamp" title="${prodotto.nome}"><c:out value="${prodotto.nome}"/></h2>
+                                <p class="card-text card-text-clamp"><c:out value="${prodotto.descrizione}"/></p>
+                                <div class="card-footer">
+                                    <a href="${pageContext.request.contextPath}/prodotto?id=${prodotto.id}"
+                                       class="btn" id="btnDettaglio-${prodotto.id}">
+                                        Vedi dettaglio
+                                    </a>
+                                    <p class="card-price">€ <c:out value="${prodotto.prezzo}"/></p>
+                                </div>
+                            </div>
+                        </article>
+                    </c:forEach>
+                </div>
+            </c:otherwise>
+        </c:choose>
+
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2026 FitTrend Store &mdash; Progetto TSW</p>
+    </div>
+</footer>
+
+</body>
+</html>
