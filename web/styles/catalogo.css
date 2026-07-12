@@ -1,0 +1,183 @@
+/* ============================================================
+   FitTrend Store — catalogo.css
+   Stili specifici per la pagina catalogo prodotti.
+   ============================================================ */
+
+/* ── Fix critico: testo bianco nel pulsante anche in hover ───────────────────
+   main.css ha "a:hover { color: var(--color-primary-dark) }" che sovrascrive
+   il colore del .btn quando il bottone è un tag <a>. Questo lo corregge.    */
+a.btn,
+a.btn:hover,
+a.btn:visited {
+    color: var(--color-surface) !important;
+}
+
+/* ── Select: freccia più distante dal bordo ───────────────────────────────── */
+.filtri-bar select {
+    padding-right: 3rem;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1.25rem center;
+}
+
+/* ── Barra filtri ─────────────────────────────────────────────────────────── */
+.filtri-bar {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+    box-shadow: var(--shadow-sm);
+}
+
+.filtri-bar form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    align-items: flex-end;
+}
+
+.filtro-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 160px;
+}
+
+.filtro-group label {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-text);
+}
+
+/* ── Pulsanti Filtra e Reset: stessa altezza e stessa larghezza ──────────── */
+.filtro-btn {
+    flex: 0 0 auto;
+    flex-direction: row;
+    gap: var(--spacing-sm);
+    align-items: flex-end;
+}
+
+.filtro-btn .btn,
+.filtro-btn a.btn,
+.filtro-btn .btn-secondary,
+.filtro-btn a.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    height: 2.5rem;          /* altezza fissa uguale per entrambi */
+    padding: 0 1.25rem;      /* padding orizzontale, niente verticale (gestito da height) */
+    min-width: 90px;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    line-height: 1;
+}
+
+/* ── Immagine card: altezza ridotta per dare più spazio al testo ─────────── */
+.grid-prodotti .card-img {
+    height: 170px;
+}
+
+
+.grid-prodotti .card {
+    display: flex;
+    flex-direction: column;
+}
+
+.grid-prodotti .card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: var(--spacing-md);
+}
+
+/* ── Descrizione: max 3 righe con "..." ──────────────────────────────────── */
+.card-text-clamp {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    flex-grow: 0;     /* NON deve crescere: altrimenti espande oltre 3 righe */
+    flex-shrink: 0;
+    margin-bottom: var(--spacing-md);
+}
+
+/* ── Card footer: pulsante sx — prezzo dx, sulla stessa riga ─────────────── */
+.grid-prodotti .card-footer {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: var(--spacing-sm);
+    margin-top: auto;   /* spinge il footer in fondo senza toccare la descrizione */
+    padding-top: var(--spacing-md);
+    background: transparent;
+    border: none;
+}
+
+.grid-prodotti .card-footer .btn {
+    flex-shrink: 0;
+    padding: 0.625rem 1.25rem;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.grid-prodotti .card-footer .card-price {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: 0;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+/* ── Titolo prodotto: max 2 righe, poi "…" — tooltip via HTML title attr ─── */
+.card-title-clamp {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    flex-grow: 0;
+    flex-shrink: 0;
+    /* min-height garantisce spazio per 2 righe complete anche se il testo è corto */
+    min-height: calc(1.125rem * 1.5 * 2);
+    margin-bottom: var(--spacing-xs);
+    cursor: default;
+}
+
+/* ── Card categoria badge ─────────────────────────────────────────────────── */
+.card-categoria {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+/* ── Responsive filtri ────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .filtri-bar form {
+        flex-direction: column;
+    }
+
+    .filtro-group {
+        flex: 1 1 100%;
+    }
+
+    .filtro-btn {
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .filtro-btn .btn,
+    .filtro-btn .btn-secondary {
+        flex: 1;
+    }
+}

@@ -380,6 +380,31 @@ footer a:hover {
     box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
 }
 
+/* Span errore inline nei form: nasconde il box quando è vuoto */
+span.error-msg {
+    display: block;
+    margin-top: 2px;
+    margin-bottom: 0;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--color-error);
+}
+
+span.error-msg:empty {
+    display: none;
+}
+
+/* Messaggio errore generale del form (es. email già esistente) */
+.form-error-general {
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--color-error);
+    margin-bottom: var(--spacing-sm);
+}
+
 /* ---------- Form base ---------- */
 input[type="text"],
 input[type="email"],
@@ -439,6 +464,44 @@ label {
     font-weight: 700;
     color: var(--color-text);
     margin-bottom: var(--spacing-xl);
+}
+
+/* ---------- Status Badges ---------- */
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background-color: var(--color-border);
+    color: var(--color-text);
+}
+
+/* Varianti stato Ordine e Rimborso */
+.status-badge.in_elaborazione,
+.status-badge.richiesto {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+.status-badge.in_consegna,
+.status-badge.approvato {
+    background-color: #DBEAFE;
+    color: #1E40AF;
+}
+
+.status-badge.consegnato,
+.status-badge.completato {
+    background-color: #D1FAE5;
+    color: #065F46;
+}
+
+.status-badge.annullato,
+.status-badge.rifiutato {
+    background-color: #FEE2E2;
+    color: #991B1B;
 }
 
 /* ============================================================
