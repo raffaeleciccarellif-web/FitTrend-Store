@@ -2,34 +2,34 @@ package model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-/**
- * Rappresenta un ordine effettuato da un utente.
- * Il campo 'stato' è gestito tramite le costanti statiche di questa classe
- * e corrisponde ai valori stringa minuscoli del database.
- */
+// Bean Ordine: rappresenta un ordine effettuato da un utente
 public class Ordine {
 
-    // ── Costanti di stato (valori DB minuscoli) ─────────────────────────────
+    // Costanti di stato: corrispondono ai valori stringa del DB (minuscoli)
     public static final String STATO_IN_ELABORAZIONE = "in_elaborazione";
     public static final String STATO_IN_CONSEGNA     = "in_consegna";
     public static final String STATO_CONSEGNATO      = "consegnato";
     public static final String STATO_ANNULLATO       = "annullato";
 
-    // ── Transizioni ammesse: chiave=stato corrente, valore=stati successivi leciti ──
-    // Usate in OrdineDAO.doUpdateStato() per la whitelist delle transizioni
-    public static java.util.Map<String, java.util.Set<String>> TRANSIZIONI_AMMESSE;
+    // Mappa delle transizioni ammesse: usata in OrdineDAO.doUpdateStato() per whitelist
+    public static final Map<String, Set<String>> TRANSIZIONI_AMMESSE;
     static {
-        java.util.Map<String, java.util.Set<String>> map = new java.util.HashMap<>();
-        map.put(STATO_IN_ELABORAZIONE, new java.util.HashSet<>(java.util.Arrays.asList(STATO_IN_CONSEGNA, STATO_ANNULLATO)));
-        map.put(STATO_IN_CONSEGNA,     new java.util.HashSet<>(java.util.Arrays.asList(STATO_CONSEGNATO, STATO_ANNULLATO)));
-        map.put(STATO_CONSEGNATO,      java.util.Collections.emptySet());
-        map.put(STATO_ANNULLATO,       java.util.Collections.emptySet());
-        TRANSIZIONI_AMMESSE = java.util.Collections.unmodifiableMap(map);
+        Map<String, Set<String>> map = new HashMap<>();
+        map.put(STATO_IN_ELABORAZIONE, new HashSet<>(Arrays.asList(STATO_IN_CONSEGNA, STATO_ANNULLATO)));
+        map.put(STATO_IN_CONSEGNA,     new HashSet<>(Arrays.asList(STATO_CONSEGNATO, STATO_ANNULLATO)));
+        map.put(STATO_CONSEGNATO,      Collections.emptySet());
+        map.put(STATO_ANNULLATO,       Collections.emptySet());
+        TRANSIZIONI_AMMESSE = Collections.unmodifiableMap(map);
     }
 
-    // ── Campi ────────────────────────────────────────────────────────────────
     private int id;
     private int utenteId;
     private Timestamp dataOrdine;
@@ -38,14 +38,12 @@ public class Ordine {
     private String cittaSpedizione;
     private String capSpedizione;
     private String metodoPagamento;
-    private String ultimeCifreCarta;   // nullable
+    private String ultimeCifreCarta; // null se metodo != carta
     private String stato;
     private List<DettaglioOrdine> dettagli; // caricato on-demand dal DAO
 
-    // ── Costruttori ──────────────────────────────────────────────────────────
     public Ordine() {}
 
-    // ── Getter / Setter ──────────────────────────────────────────────────────
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -79,10 +77,7 @@ public class Ordine {
     public List<DettaglioOrdine> getDettagli() { return dettagli; }
     public void setDettagli(List<DettaglioOrdine> dettagli) { this.dettagli = dettagli; }
 
-    /**
-     * Restituisce l'etichetta leggibile dello stato per la vista.
-     * Usata nella JSP con ${ordine.statoLabel}.
-     */
+    // Restituisce l'etichetta leggibile dello stato per la JSP (${ordine.statoLabel})
     public String getStatoLabel() {
         if (stato == null) return "";
         return switch (stato) {

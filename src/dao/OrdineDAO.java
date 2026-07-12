@@ -9,40 +9,29 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
-/**
- * DAO per la gestione degli ordini.
- * Tutte le operazioni sensibili (salva, annulla) sono protette da transazione esplicita.
- */
+// DAO per la gestione degli ordini con transazioni esplicite
 public class OrdineDAO {
 
-    // ── Whitelist stati ammessi ───────────────────────────────────────────────
-    private static final java.util.Set<String> STATI_VALIDI = java.util.Set.of(
+    // Whitelist degli stati ammessi dal DB
+    private static final Set<String> STATI_VALIDI = Set.of(
             Ordine.STATO_IN_ELABORAZIONE,
             Ordine.STATO_IN_CONSEGNA,
             Ordine.STATO_CONSEGNATO,
             Ordine.STATO_ANNULLATO
     );
 
-    // ────────────────────────────────────────────────────────────────────────
-    // salvaOrdine
-    // ────────────────────────────────────────────────────────────────────────
-
-    /**
-     * Salva un nuovo ordine in modo transazionale:
-     * 1. SELECT … FOR UPDATE su ogni prodotto → lock riga
-     * 2. Ricalcolo del totale reale (non ci si fida del prezzo in sessione)
-     * 3. INSERT in Ordine con stato = in_elaborazione
-     * 4. INSERT righe Dettaglio_Ordine con prezzi storici
-     * 5. Decremento stock per ogni prodotto
-     * 6. Commit; in caso di errore → Rollback
-     *
-     * @param ordine  Bean pre-popolato con indirizzo, pagamento, utente (NO id, NO totale, NO stato)
-     * @param carrello Carrello in sessione con gli articoli
-     * @return id dell'ordine appena creato, -1 in caso di errore
-     * @throws SQLException se si verifica un errore DB non recuperabile
-     */
+    // Salva un nuovo ordine in modo transazionale.
+    // 1. SELECT prodotto FOR UPDATE -> lock riga e verifica stock
+    // 2. Ricalcolo totale reale da DB (ignora prezzi dal client)
+    // 3. INSERT Ordine con stato in_elaborazione
+    // 4. INSERT righe Dettaglio_Ordine con prezzi storici
+    // 5. Decremento stock per ogni prodotto
+    // 6. Commit; rollback automatico su qualsiasi eccezione
+    // Ritorna l'id del nuovo ordine oppure lancia SQLException in caso di errore
     public int salvaOrdine(Ordine ordine, Carrello carrello) throws SQLException {
         if (carrello == null || carrello.isEmpty()) {
             throw new IllegalArgumentException("Impossibile creare un ordine con il carrello vuoto.");
@@ -56,7 +45,7 @@ public class OrdineDAO {
             BigDecimal totaleRicalcolato = BigDecimal.ZERO;
             Collection<ItemCarrello> items = carrello.getItems();
 
-            // ── STEP 1 & 2: lock righe prodotto e ricalcolo totale ──────────
+            // Lock righe prodotto e ricalcolo totale: ignora il prezzo in sessione
             for (ItemCarrello item : items) {
                 String sqlLock = "SELECT prezzo, quantita_disponibile FROM Prodotto WHERE id = ? AND is_deleted = 0 FOR UPDATE";
                 try (PreparedStatement ps = con.prepareStatement(sqlLock)) {
@@ -64,21 +53,21 @@ public class OrdineDAO {
                     try (ResultSet rs = ps.executeQuery()) {
                         if (!rs.next()) {
                             con.rollback();
-                            throw new SQLException("Prodotto id=" + item.getIdProdotto() + " non trovato o eliminato. Ordine annullato.");
+                            throw new SQLException("Prodotto id=" + item.getIdProdotto() + " non trovato o eliminato.");
                         }
                         BigDecimal prezzoDb = rs.getBigDecimal("prezzo");
                         int stockDb = rs.getInt("quantita_disponibile");
                         if (stockDb < item.getQuantita()) {
                             con.rollback();
-                            throw new SQLException("Stock insufficiente per '" + item.getNomeProdotto() + "'. Disponibili: " + stockDb + ", richiesti: " + item.getQuantita());
+                            throw new SQLException("Stock insufficiente per '" + item.getNomeProdotto()
+                                    + "'. Disponibili: " + stockDb + ", richiesti: " + item.getQuantita());
                         }
-                        // Ricalcolo con prezzo reale da DB
                         totaleRicalcolato = totaleRicalcolato.add(prezzoDb.multiply(new BigDecimal(item.getQuantita())));
                     }
                 }
             }
 
-            // ── STEP 3: INSERT Ordine ────────────────────────────────────────
+            // INSERT Ordine
             String sqlOrdine = "INSERT INTO `Ordine` (utente_id, totale, indirizzo_spedizione, " +
                                "citta_spedizione, cap_spedizione, metodo_pagamento, ultime_cifre_carta, stato) " +
                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -90,7 +79,7 @@ public class OrdineDAO {
                 ps.setString(4, ordine.getCittaSpedizione());
                 ps.setString(5, ordine.getCapSpedizione());
                 ps.setString(6, ordine.getMetodoPagamento());
-                ps.setString(7, ordine.getUltimeCifreCarta()); // può essere null
+                ps.setString(7, ordine.getUltimeCifreCarta()); // null se non carta
                 ps.setString(8, Ordine.STATO_IN_ELABORAZIONE);
                 ps.executeUpdate();
                 try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -102,16 +91,14 @@ public class OrdineDAO {
                 }
             }
 
-            // ── STEP 4 & 5: INSERT dettagli + decremento stock ───────────────
+            // INSERT dettagli storici + decremento stock per ogni articolo
             String sqlDettaglio = "INSERT INTO Dettaglio_Ordine " +
                                   "(ordine_id, prodotto_id, nome_prodotto_acquisto, quantita, prezzo_acquisto) " +
                                   "VALUES (?, ?, ?, ?, ?)";
             String sqlStock = "UPDATE Prodotto SET quantita_disponibile = quantita_disponibile - ? WHERE id = ?";
 
             for (ItemCarrello item : items) {
-                // Prezzo storico: rileggere da DB con prepared statement separato
                 BigDecimal prezzoStorico = getPrezzoAttualeDB(con, item.getIdProdotto());
-
                 try (PreparedStatement ps = con.prepareStatement(sqlDettaglio)) {
                     ps.setInt(1, idOrdine);
                     ps.setInt(2, item.getIdProdotto());
@@ -134,37 +121,25 @@ public class OrdineDAO {
             return idOrdine;
 
         } catch (SQLException e) {
-            if (con != null) {
-                try { con.rollback(); } catch (SQLException ignored) {}
-            }
+            if (con != null) { try { con.rollback(); } catch (SQLException ignored) {} }
             throw e;
         } finally {
-            if (con != null) {
-                try { con.setAutoCommit(true); con.close(); } catch (SQLException ignored) {}
-            }
+            if (con != null) { try { con.setAutoCommit(true); con.close(); } catch (SQLException ignored) {} }
         }
     }
 
-    // ── Helper privato: legge il prezzo corrente di un prodotto nella transazione aperta ──
+    // Legge il prezzo corrente di un prodotto usando la connessione della transazione aperta
     private BigDecimal getPrezzoAttualeDB(Connection con, int prodottoId) throws SQLException {
-        String sql = "SELECT prezzo FROM Prodotto WHERE id = ?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = con.prepareStatement("SELECT prezzo FROM Prodotto WHERE id = ?")) {
             ps.setInt(1, prodottoId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return rs.getBigDecimal("prezzo");
-                throw new SQLException("Prodotto id=" + prodottoId + " non trovato durante il salvataggio del dettaglio.");
+                throw new SQLException("Prodotto id=" + prodottoId + " non trovato durante il salvataggio.");
             }
         }
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // doRetrieveByUtente
-    // ────────────────────────────────────────────────────────────────────────
-
-    /**
-     * Recupera tutti gli ordini di un utente, ordinati per data decrescente.
-     * I dettagli NON sono caricati (lista lazy).
-     */
+    // Recupera tutti gli ordini di un utente, ordinati per data decrescente (senza dettagli)
     public Collection<Ordine> doRetrieveByUtente(int utenteId) throws SQLException {
         String sql = "SELECT * FROM `Ordine` WHERE utente_id = ? ORDER BY data_ordine DESC";
         List<Ordine> ordini = new ArrayList<>();
@@ -172,27 +147,13 @@ public class OrdineDAO {
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, utenteId);
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    ordini.add(mapRow(rs));
-                }
+                while (rs.next()) ordini.add(mapRow(rs));
             }
         }
         return ordini;
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // doRetrieveByFilters  (admin panel)
-    // ────────────────────────────────────────────────────────────────────────
-
-    /**
-     * Recupera ordini con filtri opzionali (per admin).
-     * I parametri null vengono ignorati (non aggiungono la clausola WHERE corrispondente).
-     *
-     * @param dataInizio  stringa "YYYY-MM-DD" o null
-     * @param dataFine    stringa "YYYY-MM-DD" o null
-     * @param utenteId    id utente o null
-     * @param stato       uno dei valori costante Ordine.STATO_* o null
-     */
+    // Recupera ordini con filtri opzionali (admin). I parametri null vengono ignorati.
     public Collection<Ordine> doRetrieveByFilters(String dataInizio, String dataFine,
                                                    Integer utenteId, String stato) throws SQLException {
         List<Ordine> ordini = new ArrayList<>();
@@ -211,6 +172,7 @@ public class OrdineDAO {
             sql.append(" AND utente_id = ?");
             params.add(utenteId);
         }
+        // Filtro stato solo se il valore è nella whitelist
         if (stato != null && !stato.isBlank() && STATI_VALIDI.contains(stato)) {
             sql.append(" AND stato = ?");
             params.add(stato);
@@ -219,37 +181,23 @@ public class OrdineDAO {
 
         try (Connection con = DbManager.getConnection();
              PreparedStatement ps = con.prepareStatement(sql.toString())) {
-            for (int i = 0; i < params.size(); i++) {
-                ps.setObject(i + 1, params.get(i));
-            }
+            for (int i = 0; i < params.size(); i++) ps.setObject(i + 1, params.get(i));
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    ordini.add(mapRow(rs));
-                }
+                while (rs.next()) ordini.add(mapRow(rs));
             }
         }
         return ordini;
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // doRetrieveByKey
-    // ────────────────────────────────────────────────────────────────────────
-
-    /**
-     * Recupera un singolo ordine per id, comprensivo dei dettagli.
-     *
-     * @return Ordine con lista dettagli popolata, o null se non trovato
-     */
+    // Recupera un singolo ordine per id con i dettagli popolati; null se non trovato
     public Ordine doRetrieveByKey(int ordineId) throws SQLException {
-        String sql = "SELECT * FROM `Ordine` WHERE id = ?";
         try (Connection con = DbManager.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+             PreparedStatement ps = con.prepareStatement("SELECT * FROM `Ordine` WHERE id = ?")) {
             ps.setInt(1, ordineId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     Ordine ordine = mapRow(rs);
-                    DettaglioOrdineDAO dettaglioDAO = new DettaglioOrdineDAO();
-                    ordine.setDettagli(new ArrayList<>(dettaglioDAO.doRetrieveByOrdine(ordineId)));
+                    ordine.setDettagli(new ArrayList<>(new DettaglioOrdineDAO().doRetrieveByOrdine(ordineId)));
                     return ordine;
                 }
             }
@@ -257,22 +205,9 @@ public class OrdineDAO {
         return null;
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // doUpdateStato
-    // ────────────────────────────────────────────────────────────────────────
-
-    /**
-     * Aggiorna lo stato di un ordine.
-     * Applica:
-     * - Whitelist degli stati validi
-     * - Verifica che la transizione sia ammessa (da Ordine.TRANSIZIONI_AMMESSE)
-     * - Se il nuovo stato è ANNULLATO → ripristino stock nella stessa transazione
-     *
-     * @throws IllegalStateException se la transizione non è ammessa
-     * @throws IllegalArgumentException se lo stato non è valido
-     */
+    // Aggiorna lo stato di un ordine con whitelist e verifica delle transizioni ammesse.
+    // Se il nuovo stato è ANNULLATO, ripristina lo stock nella stessa transazione.
     public void doUpdateStato(int ordineId, String nuovoStato) throws SQLException {
-        // Whitelist
         if (!STATI_VALIDI.contains(nuovoStato)) {
             throw new IllegalArgumentException("Stato non valido: " + nuovoStato);
         }
@@ -282,10 +217,9 @@ public class OrdineDAO {
             con = DbManager.getConnection();
             con.setAutoCommit(false);
 
-            // Legge stato corrente con lock
-            String sqlCurrent = "SELECT stato FROM `Ordine` WHERE id = ? FOR UPDATE";
+            // Legge e blocca lo stato corrente
             String statoAttuale;
-            try (PreparedStatement ps = con.prepareStatement(sqlCurrent)) {
+            try (PreparedStatement ps = con.prepareStatement("SELECT stato FROM `Ordine` WHERE id = ? FOR UPDATE")) {
                 ps.setInt(1, ordineId);
                 try (ResultSet rs = ps.executeQuery()) {
                     if (!rs.next()) {
@@ -296,21 +230,19 @@ public class OrdineDAO {
                 }
             }
 
-            // Verifica transizione
-            java.util.Set<String> transazioniAmmesse = Ordine.TRANSIZIONI_AMMESSE.getOrDefault(statoAttuale, java.util.Collections.emptySet());
-            if (!transazioniAmmesse.contains(nuovoStato)) {
+            // Verifica la transizione nella mappa ammessa
+            Set<String> ammesse = Ordine.TRANSIZIONI_AMMESSE.getOrDefault(statoAttuale, Collections.emptySet());
+            if (!ammesse.contains(nuovoStato)) {
                 con.rollback();
-                throw new IllegalStateException("Transizione non ammessa: " + statoAttuale + " → " + nuovoStato);
+                throw new IllegalStateException("Transizione non ammessa: " + statoAttuale + " -> " + nuovoStato);
             }
 
-            // Se annullato → ripristino stock (una sola volta)
+            // Se annullato, ripristina stock nella stessa transazione (una sola volta)
             if (Ordine.STATO_ANNULLATO.equals(nuovoStato)) {
                 ripristinaStock(con, ordineId);
             }
 
-            // UPDATE stato
-            String sqlUpdate = "UPDATE `Ordine` SET stato = ? WHERE id = ?";
-            try (PreparedStatement ps = con.prepareStatement(sqlUpdate)) {
+            try (PreparedStatement ps = con.prepareStatement("UPDATE `Ordine` SET stato = ? WHERE id = ?")) {
                 ps.setString(1, nuovoStato);
                 ps.setInt(2, ordineId);
                 ps.executeUpdate();
@@ -326,32 +258,25 @@ public class OrdineDAO {
         }
     }
 
-    /**
-     * Ripristina lo stock per tutti i prodotti dell'ordine.
-     * Chiamato nella stessa transazione di doUpdateStato quando il nuovo stato è ANNULLATO.
-     */
+    // Ripristina lo stock di tutti i prodotti dell'ordine nella transazione aperta
     private void ripristinaStock(Connection con, int ordineId) throws SQLException {
-        String sqlDettagli = "SELECT prodotto_id, quantita FROM Dettaglio_Ordine WHERE ordine_id = ?";
-        String sqlUpdate   = "UPDATE Prodotto SET quantita_disponibile = quantita_disponibile + ? WHERE id = ?";
-        try (PreparedStatement psDettagli = con.prepareStatement(sqlDettagli)) {
-            psDettagli.setInt(1, ordineId);
-            try (ResultSet rs = psDettagli.executeQuery()) {
+        try (PreparedStatement ps = con.prepareStatement(
+                "SELECT prodotto_id, quantita FROM Dettaglio_Ordine WHERE ordine_id = ?")) {
+            ps.setInt(1, ordineId);
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    int prodId = rs.getInt("prodotto_id");
-                    int qta    = rs.getInt("quantita");
-                    try (PreparedStatement psStock = con.prepareStatement(sqlUpdate)) {
-                        psStock.setInt(1, qta);
-                        psStock.setInt(2, prodId);
-                        psStock.executeUpdate();
+                    try (PreparedStatement upd = con.prepareStatement(
+                            "UPDATE Prodotto SET quantita_disponibile = quantita_disponibile + ? WHERE id = ?")) {
+                        upd.setInt(1, rs.getInt("quantita"));
+                        upd.setInt(2, rs.getInt("prodotto_id"));
+                        upd.executeUpdate();
                     }
                 }
             }
         }
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // Helper di mappatura ResultSet → Ordine
-    // ────────────────────────────────────────────────────────────────────────
+    // Mappa una riga del ResultSet su un oggetto Ordine
     private Ordine mapRow(ResultSet rs) throws SQLException {
         Ordine o = new Ordine();
         o.setId(rs.getInt("id"));
