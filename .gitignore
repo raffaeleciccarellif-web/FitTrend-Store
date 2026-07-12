@@ -15,3 +15,4 @@ Thumbs.db
 
 # === Progetto: file locali ===
 PROJECT_RULES.md
+web/META-INF/context.xml
