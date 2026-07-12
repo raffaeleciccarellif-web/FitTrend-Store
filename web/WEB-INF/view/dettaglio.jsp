@@ -56,7 +56,7 @@
                     <div class="mt-md">
                         <c:choose>
                             <c:when test="${prodotto.quantitaDisponibile > 0}">
-                                <form action="${pageContext.request.contextPath}/carrello" method="POST" id="addToCartForm">
+                                <form action="${pageContext.request.contextPath}/carrello" method="POST" id="addToCartForm" class="add-to-cart-form">
                                     <input type="hidden" name="action" value="aggiungi">
                                     <input type="hidden" name="idProdotto" value="${prodotto.id}">
                                     
