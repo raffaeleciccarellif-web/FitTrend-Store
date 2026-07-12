@@ -3,14 +3,7 @@
    Stili specifici per la pagina catalogo prodotti.
    ============================================================ */
 
-/* ── Fix critico: testo bianco nel pulsante anche in hover ───────────────────
-   main.css ha "a:hover { color: var(--color-primary-dark) }" che sovrascrive
-   il colore del .btn quando il bottone è un tag <a>. Questo lo corregge.    */
-a.btn,
-a.btn:hover,
-a.btn:visited {
-    color: var(--color-surface) !important;
-}
+/* Fix già gestito in main.css (.btn:hover ha color esplicito) */
 
 /* ── Select: freccia più distante dal bordo ───────────────────────────────── */
 .filtri-bar select {
@@ -30,6 +23,9 @@ a.btn:visited {
     padding: var(--spacing-lg);
     margin-bottom: var(--spacing-xl);
     box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: calc(var(--header-height) + var(--spacing-sm));
+    z-index: 50;
 }
 
 .filtri-bar form {
