@@ -8,19 +8,25 @@ public class ItemCarrello {
     private BigDecimal prezzoCorrente;
     private String immagine;
     private int quantita;
+    private int quantitaDisponibile;
 
     public ItemCarrello() {
     }
 
-    public ItemCarrello(int idProdotto, String nomeProdotto, BigDecimal prezzoCorrente, String immagine, int quantita) {
+    public ItemCarrello(int idProdotto, String nomeProdotto, BigDecimal prezzoCorrente, String immagine, int quantita, int quantitaDisponibile) {
         this.idProdotto = idProdotto;
         this.nomeProdotto = nomeProdotto;
         this.prezzoCorrente = prezzoCorrente;
         this.immagine = immagine;
         this.quantita = quantita;
+        this.quantitaDisponibile = quantitaDisponibile;
     }
 
     public int getIdProdotto() {
+        return idProdotto;
+    }
+
+    public int getId() {
         return idProdotto;
     }
 
@@ -32,11 +38,19 @@ public class ItemCarrello {
         return nomeProdotto;
     }
 
+    public String getNome() {
+        return nomeProdotto;
+    }
+
     public void setNomeProdotto(String nomeProdotto) {
         this.nomeProdotto = nomeProdotto;
     }
 
     public BigDecimal getPrezzoCorrente() {
+        return prezzoCorrente;
+    }
+
+    public BigDecimal getPrezzo() {
         return prezzoCorrente;
     }
 
@@ -58,6 +72,14 @@ public class ItemCarrello {
 
     public void setQuantita(int quantita) {
         this.quantita = quantita;
+    }
+
+    public int getQuantitaDisponibile() {
+        return quantitaDisponibile;
+    }
+
+    public void setQuantitaDisponibile(int quantitaDisponibile) {
+        this.quantitaDisponibile = quantitaDisponibile;
     }
 
     public BigDecimal getSubtotale() {

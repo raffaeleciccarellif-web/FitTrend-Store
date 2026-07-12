@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrello - FitTrend Store</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/carrello.css">
     <script src="${pageContext.request.contextPath}/scripts/cart.js" defer></script>
 </head>
 <body>
@@ -53,16 +54,14 @@
 
             <c:choose>
                 <c:when test="${empty carrello or empty carrello.items}">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <p>Il tuo carrello è vuoto.</p>
-                            <a href="${pageContext.request.contextPath}/catalogo" class="btn mt-md">Vai al Catalogo</a>
-                        </div>
+                    <div class="cart-vuoto">
+                        <p>Il tuo carrello è vuoto.</p>
+                        <a href="${pageContext.request.contextPath}/catalogo" class="btn">Vai al Catalogo</a>
                     </div>
                 </c:when>
                 <c:otherwise>
                     <div class="table-responsive">
-                        <table>
+                        <table class="cart-table">
                             <thead>
                                 <tr>
                                     <th>Immagine</th>
@@ -77,26 +76,28 @@
                                 <c:forEach var="item" items="${carrello.items}">
                                     <tr>
                                         <td>
-                                            <img src="${pageContext.request.contextPath}/${item.immagine}" alt="<c:out value="${item.nome}" />" class="card-img" />
+                                            <img src="${pageContext.request.contextPath}/${item.immagine}" alt="<c:out value="${item.nome}" />" class="cart-img" />
                                         </td>
                                         <td>
-                                            <strong><c:out value="${item.nome}" /></strong>
+                                            <span class="cart-product-name"><c:out value="${item.nome}" /></span>
                                         </td>
-                                        <td>€ <c:out value="${item.prezzo}" /></td>
+                                        <td class="cart-price">€ <c:out value="${item.prezzo}" /></td>
                                         <td>
-                                            <form action="${pageContext.request.contextPath}/carrello" method="POST">
+                                            <form action="${pageContext.request.contextPath}/carrello" method="POST" class="form-quantita">
                                                 <input type="hidden" name="action" value="modifica">
                                                 <input type="hidden" name="idProdotto" value="${item.id}">
-                                                <input type="number" name="quantita" value="${item.quantita}" min="1">
-                                                <button type="submit" class="btn btn-sm mt-md">Aggiorna</button>
+                                                <input type="number" name="quantita" value="${item.quantita}"
+                                                       min="1" max="${item.quantitaDisponibile}"
+                                                       required>
+                                                <button type="submit" class="btn btn-aggiorna btn-sm">Aggiorna</button>
                                             </form>
                                         </td>
-                                        <td><strong>€ <c:out value="${item.subtotale}" /></strong></td>
-                                        <td>
+                                        <td class="cart-subtotale">€ <c:out value="${item.subtotale}" /></td>
+                                        <td class="cart-actions">
                                             <form action="${pageContext.request.contextPath}/carrello" method="POST">
                                                 <input type="hidden" name="action" value="rimuovi">
                                                 <input type="hidden" name="idProdotto" value="${item.id}">
-                                                <button type="submit" class="btn btn-sm btn-danger mt-md">Rimuovi</button>
+                                                <button type="submit" class="btn btn-danger btn-sm">Rimuovi</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -105,15 +106,14 @@
                         </table>
                     </div>
 
-                    <div class="card mt-md">
-                        <div class="card-body text-center">
-                            <h3 class="mb-md">Totale Carrello: € <c:out value="${carrello.totale}" /></h3>
-                            
+                    <div class="cart-totale-box">
+                        <span class="cart-totale-importo">Totale Carrello: € <c:out value="${carrello.totale}" /></span>
+                        <div class="cart-totale-azioni">
                             <form action="${pageContext.request.contextPath}/carrello" method="POST">
                                 <input type="hidden" name="action" value="svuota">
                                 <button type="submit" class="btn btn-secondary">Svuota Carrello</button>
-                                <a href="${pageContext.request.contextPath}/checkout" class="btn">Procedi al Checkout</a>
                             </form>
+                            <a href="${pageContext.request.contextPath}/checkout" class="btn">Procedi al Checkout</a>
                         </div>
                     </div>
                 </c:otherwise>

@@ -58,6 +58,10 @@ public class Carrello {
         return totale;
     }
 
+    public BigDecimal getTotale() {
+        return getTotaleProvvisorio();
+    }
+
     public boolean isEmpty() {
         return items.isEmpty();
     }

@@ -48,7 +48,10 @@ public class CarrelloServlet extends HttpServlet {
         try {
             switch (action) {
                 case "aggiungi":
-                    int idAgg = Integer.parseInt(request.getParameter("id"));
+                    String idStrAgg = request.getParameter("idProdotto");
+                    if (idStrAgg == null) idStrAgg = request.getParameter("id");
+                    int idAgg = Integer.parseInt(idStrAgg);
+
                     int qtaAgg = 1;
                     if (request.getParameter("quantita") != null) {
                         qtaAgg = Integer.parseInt(request.getParameter("quantita"));
@@ -80,14 +83,16 @@ public class CarrelloServlet extends HttpServlet {
                         message = "Stock insufficiente. Disponibili: " + pAgg.getQuantitaDisponibile() + ", nel carrello: " + qtaPresente;
                     } else {
                         // Mai fidarsi del prezzo/immagine del client, prendiamo tutto dal DB
-                        ItemCarrello nuovoItem = new ItemCarrello(pAgg.getId(), pAgg.getNome(), pAgg.getPrezzo(), pAgg.getImmagine(), qtaAgg);
+                        ItemCarrello nuovoItem = new ItemCarrello(pAgg.getId(), pAgg.getNome(), pAgg.getPrezzo(), pAgg.getImmagine(), qtaAgg, pAgg.getQuantitaDisponibile());
                         carrello.add(nuovoItem);
                         message = "Prodotto aggiunto al carrello.";
                     }
                     break;
 
                 case "modifica":
-                    int idMod = Integer.parseInt(request.getParameter("id"));
+                    String idStrMod = request.getParameter("idProdotto");
+                    if (idStrMod == null) idStrMod = request.getParameter("id");
+                    int idMod = Integer.parseInt(idStrMod);
                     int qtaMod = Integer.parseInt(request.getParameter("quantita"));
 
                     if (qtaMod <= 0) {
@@ -110,7 +115,9 @@ public class CarrelloServlet extends HttpServlet {
                     break;
 
                 case "rimuovi":
-                    int idRim = Integer.parseInt(request.getParameter("id"));
+                    String idStrRim = request.getParameter("idProdotto");
+                    if (idStrRim == null) idStrRim = request.getParameter("id");
+                    int idRim = Integer.parseInt(idStrRim);
                     carrello.remove(idRim);
                     message = "Prodotto rimosso dal carrello.";
                     break;
@@ -121,12 +128,24 @@ public class CarrelloServlet extends HttpServlet {
                     break;
 
                 case "visualizza":
+                    // Flash attributes per errore e messaggio
+                    String sessionErr = (String) request.getSession().getAttribute("errore");
+                    if (sessionErr != null) {
+                        request.setAttribute("errore", sessionErr);
+                        request.getSession().removeAttribute("errore");
+                    }
+                    String sessionMsg = (String) request.getSession().getAttribute("messaggio");
+                    if (sessionMsg != null) {
+                        request.setAttribute("messaggio", sessionMsg);
+                        request.getSession().removeAttribute("messaggio");
+                    }
+                    
                     request.getRequestDispatcher("/WEB-INF/view/carrello.jsp").forward(request, response);
                     return; // Terminare l'esecuzione per evitare redirect successivi
             }
         } catch (NumberFormatException e) {
             success = false;
-            message = "Formato dati non valido.";
+            message = "Inserisci un numero valido maggiore o uguale a 1 per la quantità.";
         } catch (Exception e) {
             success = false;
             message = "Errore interno del server.";
@@ -151,7 +170,9 @@ public class CarrelloServlet extends HttpServlet {
         } else {
             // Risposta per chiamate standard (non-AJAX)
             if (!success && !message.isEmpty()) {
-                request.getSession().setAttribute("erroreCarrello", message);
+                request.getSession().setAttribute("errore", message);
+            } else if (success && !message.isEmpty()) {
+                request.getSession().setAttribute("messaggio", message);
             }
             response.sendRedirect(request.getContextPath() + "/carrello?action=visualizza");
         }
