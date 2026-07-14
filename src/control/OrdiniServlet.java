@@ -29,6 +29,18 @@ public class OrdiniServlet extends HttpServlet {
 
         Utente utente = (Utente) request.getSession().getAttribute("utenteLoggato");
         
+        // Gestione messaggi flash dalla sessione
+        String msg = (String) request.getSession().getAttribute("messaggio");
+        if (msg != null) {
+            request.setAttribute("messaggio", msg);
+            request.getSession().removeAttribute("messaggio");
+        }
+        String err = (String) request.getSession().getAttribute("errore");
+        if (err != null) {
+            request.setAttribute("errore", err);
+            request.getSession().removeAttribute("errore");
+        }
+        
         try {
             OrdineDAO ordineDAO = new OrdineDAO();
             DettaglioOrdineDAO dettaglioDAO = new DettaglioOrdineDAO();
