@@ -10,40 +10,56 @@
     <script src="${pageContext.request.contextPath}/scripts/login-validation.js" defer></script>
 </head>
 <body>
-    <div class="login-container">
+
+<header>
+    <div class="container">
+        <a href="${pageContext.request.contextPath}/home" class="logo">Fit<span>Trend</span></a>
+    </div>
+</header>
+
+<main class="container">
+    <div class="card" style="max-width: 400px; margin: 40px auto; padding: 20px;">
         <h2>Accedi a FitTrend Store</h2>
         
         <c:if test="${not empty errore}">
-            <div class="server-error" style="color: red; margin-bottom: 15px;">
+            <p class="form-error-general" style="color: red; margin-bottom: 15px;">
                 <c:out value="${errore}" />
-            </div>
+            </p>
         </c:if>
 
         <c:if test="${not empty messaggio}">
-            <div class="server-message" style="color: green; margin-bottom: 15px;">
+            <p class="server-message" style="color: green; margin-bottom: 15px;">
                 <c:out value="${messaggio}" />
-            </div>
+            </p>
         </c:if>
         
         <form id="loginForm" action="${pageContext.request.contextPath}/login" method="POST" novalidate>
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom: 15px;">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-                <span class="error-msg" id="email-error"></span>
+                <input type="email" id="email" name="email" style="width: 100%;" required value="<c:out value='${param.email}' />">
+                <span class="error-msg" id="email-error" style="color: red; font-size: 0.9em;"></span>
             </div>
             
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom: 15px;">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-                <span class="error-msg" id="password-error"></span>
+                <input type="password" id="password" name="password" style="width: 100%;" required>
+                <span class="error-msg" id="password-error" style="color: red; font-size: 0.9em;"></span>
             </div>
             
-            <button type="submit" class="btn-primary">Accedi</button>
+            <button type="submit" class="btn" style="width: 100%; margin-top: 15px;">Accedi</button>
         </form>
         
-        <div class="form-footer" style="margin-top: 20px;">
-            <p>Non hai un account? <a href="${pageContext.request.contextPath}/registrazione">Registrati qui</a>.</p>
-        </div>
+        <p style="margin-top: 20px; text-align: center;">
+            Non hai un account? <a href="${pageContext.request.contextPath}/registrazione">Registrati qui</a>.
+        </p>
     </div>
+</main>
+
+<footer>
+    <div class="container text-center">
+        <p>&copy; 2026 FitTrend Store &mdash; Progetto TSW</p>
+    </div>
+</footer>
+
 </body>
 </html>
