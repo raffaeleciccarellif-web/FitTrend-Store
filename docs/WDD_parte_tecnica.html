@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>FitTrend Store - WDD Parte Tecnica</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">FitTrend Store - WDD Parte Tecnica</h1>
+</header>
+<h1 id="fittrend-store-website-design-document-parte-tecnica">FitTrend
+Store — Website Design Document (Parte Tecnica)</h1>
+<hr />
+<h2 id="architettura-mvc-model-2">1. Architettura: MVC Model 2</h2>
+<p>L’applicazione adotta il pattern <strong>MVC Model 2</strong>
+(front-controller basato su Servlet), in cui ogni richiesta HTTP è
+gestita esclusivamente da una Servlet che funge da Controller, senza che
+il client possa mai accedere direttamente alle pagine JSP.</p>
+<h3 id="flusso-di-una-richiesta-tipica">Flusso di una richiesta
+tipica</h3>
+<pre><code>Browser ──► Servlet (Controller)
+               │
+               ├── legge parametri, valida input
+               ├── invoca DAO (Model) per accesso dati
+               ├── imposta attributi su request/session
+               │
+               └──► forward a JSP (View)  oppure  redirect a un&#39;altra Servlet</code></pre>
+<h3 id="organizzazione-dei-package-java">Organizzazione dei package
+Java</h3>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 39%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Package</th>
+<th>Responsabilità</th>
+<th>Esempi di classi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>control</code></td>
+<td>Servlet: ricezione richieste, validazione, orchestrazione</td>
+<td><code>CarrelloServlet</code>, <code>CheckoutServlet</code>,
+<code>AdminProdottiServlet</code></td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>JavaBean del dominio applicativo (POJO)</td>
+<td><code>Prodotto</code>, <code>Ordine</code>,
+<code>DettaglioOrdine</code>, <code>Carrello</code>,
+<code>Rimborso</code></td>
+</tr>
+<tr>
+<td><code>dao</code></td>
+<td>Accesso ai dati tramite JDBC e DataSource JNDI</td>
+<td><code>ProdottoDAO</code>, <code>OrdineDAO</code>,
+<code>RimborsoDAO</code>, <code>DbManager</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="organizzazione-delle-risorse-web">Organizzazione delle risorse
+web</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr>
+<th>Percorso</th>
+<th>Contenuto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>web/WEB-INF/view/</code></td>
+<td>JSP (accessibili solo via forward da Servlet)</td>
+</tr>
+<tr>
+<td><code>web/styles/</code></td>
+<td>Fogli di stile CSS esterni</td>
+</tr>
+<tr>
+<td><code>web/scripts/</code></td>
+<td>File JavaScript esterni</td>
+</tr>
+<tr>
+<td><code>web/images/products/</code></td>
+<td>Immagini statiche dei prodotti</td>
+</tr>
+</tbody>
+</table>
+<p>Le JSP non contengono scriptlet (<code>&lt;% %&gt;</code>): tutti i
+dati dinamici sono resi tramite <strong>Expression Language
+(EL)</strong> e <strong>JSTL</strong> (<code>jakarta.tags.core</code>).
+CSS e JavaScript non sono mai inline.</p>
+<hr />
+<h2 id="diagramma-entità-relazione-er">2. Diagramma Entità-Relazione
+(ER)</h2>
+<pre class="mermaid"><code>erDiagram
+    Utente {
+        INT id PK
+        VARCHAR nome
+        VARCHAR cognome
+        VARCHAR email UK
+        VARCHAR password_hash
+        TINYINT is_admin
+    }
+
+    Categoria {
+        INT id PK
+        VARCHAR nome UK
+        VARCHAR descrizione
+    }
+
+    Prodotto {
+        INT id PK
+        VARCHAR nome
+        TEXT descrizione
+        NUMERIC prezzo
+        INT categoria_id FK
+        VARCHAR immagine
+        INT quantita_disponibile
+        TINYINT is_deleted
+    }
+
+    Ordine {
+        INT id PK
+        INT utente_id FK
+        TIMESTAMP data_ordine
+        NUMERIC totale
+        TEXT indirizzo_spedizione
+        VARCHAR citta_spedizione
+        VARCHAR cap_spedizione
+        VARCHAR metodo_pagamento
+        VARCHAR ultime_cifre_carta
+        VARCHAR stato
+    }
+
+    Dettaglio_Ordine {
+        INT id PK
+        INT ordine_id FK
+        INT prodotto_id FK
+        VARCHAR nome_prodotto_acquisto
+        INT quantita
+        NUMERIC prezzo_acquisto
+    }
+
+    Rimborso {
+        INT id PK
+        INT ordine_id FK_UK
+        TIMESTAMP data_richiesta
+        TIMESTAMP data_elaborazione
+        NUMERIC importo
+        TEXT motivo
+        VARCHAR stato
+    }
+
+    Utente ||--o{ Ordine : &quot;1 — N&quot;
+    Categoria ||--o{ Prodotto : &quot;1 — N&quot;
+    Ordine ||--o{ Dettaglio_Ordine : &quot;1 — N&quot;
+    Prodotto ||--o{ Dettaglio_Ordine : &quot;1 — N&quot;
+    Ordine ||--o| Rimborso : &quot;1 — 0..1&quot;</code></pre>
+<h3 id="cardinalità-delle-relazioni">Cardinalità delle relazioni</h3>
+<table>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 11%" />
+<col style="width: 57%" />
+</colgroup>
+<thead>
+<tr>
+<th>Relazione</th>
+<th>Cardinalità</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Utente → Ordine</td>
+<td>1 — N</td>
+<td>Un utente può effettuare molti ordini</td>
+</tr>
+<tr>
+<td>Categoria → Prodotto</td>
+<td>1 — N</td>
+<td>Ogni prodotto appartiene a una sola categoria</td>
+</tr>
+<tr>
+<td>Ordine → Dettaglio_Ordine</td>
+<td>1 — N</td>
+<td>Ogni ordine contiene almeno una riga di dettaglio</td>
+</tr>
+<tr>
+<td>Prodotto → Dettaglio_Ordine</td>
+<td>1 — N</td>
+<td>Uno stesso prodotto può comparire in più ordini</td>
+</tr>
+<tr>
+<td>Ordine → Rimborso</td>
+<td>1 — 0..1</td>
+<td>Ogni ordine può avere al massimo un rimborso (UNIQUE su
+ordine_id)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="soft-delete-dei-prodotti-e-dati-storici-nel-dettaglio">3.
+Soft-delete dei prodotti e dati storici nel dettaglio</h2>
+<h3 id="soft-delete">Soft-delete</h3>
+<p>I prodotti non vengono mai eliminati fisicamente dal database.
+L’eliminazione è <strong>logica</strong>: il campo
+<code>is_deleted</code> viene impostato a <code>1</code>. Questo
+preserva l’integrità referenziale con gli ordini già effettuati.</p>
+<ul>
+<li>Le query rivolte al <strong>cliente</strong> filtrano sempre per
+<code>WHERE is_deleted = 0</code>.</li>
+<li>Le query rivolte all’<strong>amministratore</strong>
+(<code>doRetrieveAllForAdmin</code>) non applicano questo filtro,
+mostrando tutti i prodotti con un badge di stato (“Attivo” /
+“Eliminato”).</li>
+</ul>
+<h3 id="dati-storici-de-normalizzati">Dati storici de-normalizzati</h3>
+<p>La tabella <code>Dettaglio_Ordine</code> contiene due campi
+de-normalizzati intenzionalmente:</p>
+<ul>
+<li><strong><code>nome_prodotto_acquisto</code></strong>: fotografa il
+nome del prodotto al momento dell’acquisto.</li>
+<li><strong><code>prezzo_acquisto</code></strong>: fotografa il prezzo
+unitario al momento dell’acquisto.</li>
+</ul>
+<p>Questo garantisce la <strong>correttezza storica</strong>: se il nome
+o il prezzo di un prodotto vengono modificati in futuro, gli ordini
+passati continuano a mostrare i valori originali. La FK verso
+<code>Prodotto</code> è mantenuta per consentire la navigazione al
+prodotto corrente (es. “acquista di nuovo”).</p>
+<hr />
+<h2 id="ciclo-di-stato-dellordine">4. Ciclo di stato dell’ordine</h2>
+<p>Lo stato dell’ordine modella il suo ciclo di vita tramite una
+macchina a stati finiti:</p>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; in_elaborazione : Checkout confermato
+    in_elaborazione --&gt; in_consegna : Admin avanza
+    in_elaborazione --&gt; annullato : Admin annulla
+    in_consegna --&gt; consegnato : Admin conferma consegna
+    in_consegna --&gt; annullato : Admin annulla
+    consegnato --&gt; [*]
+    annullato --&gt; [*]</code></pre>
+<table>
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 38%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr>
+<th>Stato</th>
+<th>Transizioni ammesse</th>
+<th>Effetti collaterali</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>in_elaborazione</code></td>
+<td>→ <code>in_consegna</code>, → <code>annullato</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>in_consegna</code></td>
+<td>→ <code>consegnato</code>, → <code>annullato</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>consegnato</code></td>
+<td>(stato terminale)</td>
+<td>Abilita richiesta rimborso</td>
+</tr>
+<tr>
+<td><code>annullato</code></td>
+<td>(stato terminale)</td>
+<td><strong>Ripristino stock</strong> in transazione</td>
+</tr>
+</tbody>
+</table>
+<p>I valori di stato sono definiti come costanti nella classe
+<code>Ordine</code> (es.
+<code>Ordine.STATO_IN_ELABORAZIONE = "in_elaborazione"</code>) e mappati
+ai valori stringa minuscoli del vincolo <code>CHECK</code> nel database.
+Le transizioni ammesse sono codificate in una mappa immutabile
+<code>Ordine.TRANSIZIONI_AMMESSE</code>, consultata dal DAO prima di
+ogni aggiornamento.</p>
+<hr />
+<h2 id="ciclo-di-stato-del-rimborso">5. Ciclo di stato del rimborso</h2>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; richiesto : Cliente richiede rimborso
+    richiesto --&gt; approvato : Admin approva
+    richiesto --&gt; rifiutato : Admin rifiuta
+    approvato --&gt; completato : Admin completa
+    rifiutato --&gt; [*]
+    completato --&gt; [*]</code></pre>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 32%" />
+<col style="width: 52%" />
+</colgroup>
+<thead>
+<tr>
+<th>Stato</th>
+<th>Transizioni ammesse</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>richiesto</code></td>
+<td>→ <code>approvato</code>, → <code>rifiutato</code></td>
+<td><code>data_elaborazione</code> è NULL</td>
+</tr>
+<tr>
+<td><code>approvato</code></td>
+<td>→ <code>completato</code></td>
+<td><code>data_elaborazione</code> impostata a <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>rifiutato</code></td>
+<td>(stato terminale)</td>
+<td><code>data_elaborazione</code> impostata a <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>completato</code></td>
+<td>(stato terminale)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3
+id="precondizioni-per-la-richiesta-di-rimborso-validate-dal-backend">Precondizioni
+per la richiesta di rimborso (validate dal backend)</h3>
+<ol type="1">
+<li>L’ordine deve essere in stato <code>consegnato</code> o
+<code>annullato</code>.</li>
+<li>L’ordine deve appartenere all’utente che effettua la richiesta.</li>
+<li>Non deve già esistere un rimborso per lo stesso ordine (vincolo
+UNIQUE su <code>ordine_id</code>).</li>
+<li>L’importo del rimborso è preso dal campo <code>totale</code>
+dell’ordine nel DB, mai da un valore inviato dal client.</li>
+</ol>
+<hr />
+<h2 id="datasource-jndi-e-transazioni-jdbc">6. DataSource JNDI e
+transazioni JDBC</h2>
+<h3 id="configurazione-del-datasource">Configurazione del
+DataSource</h3>
+<p>Le connessioni al database MySQL sono gestite tramite un <strong>pool
+di connessioni JNDI</strong>, configurato nel file
+<code>META-INF/context.xml</code> di Tomcat con il nome logico
+<code>jdbc/FitTrendDB</code>. La classe <code>DbManager</code>
+centralizza il lookup:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Context</span> envCtx <span class="op">=</span> <span class="op">(</span><span class="bu">Context</span><span class="op">)</span> <span class="kw">new</span> <span class="bu">InitialContext</span><span class="op">().</span><span class="fu">lookup</span><span class="op">(</span><span class="st">&quot;java:comp/env&quot;</span><span class="op">);</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">DataSource</span> ds <span class="op">=</span> <span class="op">(</span><span class="bu">DataSource</span><span class="op">)</span> envCtx<span class="op">.</span><span class="fu">lookup</span><span class="op">(</span><span class="st">&quot;jdbc/FitTrendDB&quot;</span><span class="op">);</span></span></code></pre></div>
+<p>Nessun DAO o Servlet crea connessioni direttamente: tutte passano per
+<code>DbManager.getConnection()</code>.</p>
+<h3 id="gestione-delle-transazioni">Gestione delle transazioni</h3>
+<p>Le operazioni che coinvolgono più statement SQL correlati
+(salvataggio ordine, annullamento con ripristino stock, richiesta
+rimborso, aggiornamento stato) utilizzano <strong>transazioni JDBC
+esplicite</strong>:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Connection</span> con <span class="op">=</span> DbManager<span class="op">.</span><span class="fu">getConnection</span><span class="op">();</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>con<span class="op">.</span><span class="fu">setAutoCommit</span><span class="op">(</span><span class="kw">false</span><span class="op">);</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ... operazioni multiple ...</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    con<span class="op">.</span><span class="fu">commit</span><span class="op">();</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="bu">SQLException</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    con<span class="op">.</span><span class="fu">rollback</span><span class="op">();</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">throw</span> e<span class="op">;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">finally</span> <span class="op">{</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    con<span class="op">.</span><span class="fu">setAutoCommit</span><span class="op">(</span><span class="kw">true</span><span class="op">);</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    con<span class="op">.</span><span class="fu">close</span><span class="op">();</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Tutte le connessioni, i <code>PreparedStatement</code> e i
+<code>ResultSet</code> sono chiusi tramite
+<strong>try-with-resources</strong>, prevenendo resource leak.</p>
+<hr />
+<h2 id="lock-stock-rollback-e-ripristino-su-annullamento">7. Lock stock,
+rollback e ripristino su annullamento</h2>
+<h3 id="lock-pessimistico-durante-il-checkout">Lock pessimistico durante
+il checkout</h3>
+<p>Il metodo <code>OrdineDAO.salvaOrdine()</code> esegue in un’unica
+transazione:</p>
+<ol type="1">
+<li><strong><code>SELECT ... FOR UPDATE</code></strong> su ogni prodotto
+nel carrello → acquisisce un lock esclusivo a livello di riga, impedendo
+modifiche concorrenti allo stock.</li>
+<li><strong>Verifica stock</strong>: se
+<code>quantita_disponibile &lt; quantita_richiesta</code>, esegue
+rollback e lancia eccezione con messaggio leggibile.</li>
+<li><strong>Ricalcolo totale</strong>: il prezzo viene riletto dal DB,
+ignorando qualsiasi valore proveniente dalla sessione del client.</li>
+<li><strong>INSERT</strong> dell’ordine con stato
+<code>in_elaborazione</code>.</li>
+<li><strong>INSERT</strong> delle righe di dettaglio con prezzi
+storici.</li>
+<li><strong>Decremento stock</strong> per ogni prodotto.</li>
+<li><strong>Commit</strong> atomico — tutte le operazioni riescono o
+nessuna viene applicata.</li>
+</ol>
+<p>Il carrello in sessione viene svuotato <strong>solo dopo</strong> il
+commit confermato.</p>
+<h3 id="ripristino-stock-su-annullamento">Ripristino stock su
+annullamento</h3>
+<p>Quando un ordine passa allo stato <code>annullato</code>, il metodo
+<code>OrdineDAO.doUpdateStato()</code>:</p>
+<ol type="1">
+<li>Acquisisce un lock sulla riga dell’ordine
+(<code>SELECT stato ... FOR UPDATE</code>).</li>
+<li>Verifica che la transizione sia ammessa consultando
+<code>Ordine.TRANSIZIONI_AMMESSE</code>.</li>
+<li>Legge tutte le righe di <code>Dettaglio_Ordine</code> per
+quell’ordine.</li>
+<li>Incrementa <code>quantita_disponibile</code> per ogni prodotto
+coinvolto.</li>
+<li>Aggiorna lo stato dell’ordine.</li>
+<li>Committa l’intera operazione in modo atomico.</li>
+</ol>
+<p>Il ripristino avviene <strong>nella stessa transazione</strong>
+dell’aggiornamento di stato, garantendo che non ci sia un momento in cui
+lo stato è <code>annullato</code> ma lo stock non è ancora stato
+ripristinato.</p>
+<hr />
+<h2 id="regole-applicative-non-esprimibili-nel-database">8. Regole
+applicative non esprimibili nel database</h2>
+<p>Alcune regole di business non possono essere implementate tramite
+vincoli SQL (<code>CHECK</code>, <code>FK</code>, <code>UNIQUE</code>) e
+sono quindi validate esclusivamente nel layer Java (Servlet e DAO):</p>
+<table>
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 68%" />
+</colgroup>
+<thead>
+<tr>
+<th>Regola</th>
+<th>Dove è validata</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Un rimborso può essere richiesto solo per ordini in stato
+<code>consegnato</code> o <code>annullato</code></td>
+<td><code>RimborsoDAO.richiediRimborso()</code></td>
+</tr>
+<tr>
+<td>L’utente che richiede il rimborso deve essere il proprietario
+dell’ordine</td>
+<td><code>RimborsoDAO.richiediRimborso()</code></td>
+</tr>
+<tr>
+<td>Le transizioni di stato dell’ordine seguono un grafo
+predefinito</td>
+<td><code>OrdineDAO.doUpdateStato()</code> via
+<code>Ordine.TRANSIZIONI_AMMESSE</code></td>
+</tr>
+<tr>
+<td>Le transizioni di stato del rimborso seguono un grafo
+predefinito</td>
+<td><code>RimborsoDAO.aggiornaStato()</code> con switch esplicito</td>
+</tr>
+<tr>
+<td>La quantità nel carrello non può superare
+<code>quantita_disponibile</code></td>
+<td><code>CarrelloServlet</code> (azione <code>aggiungi</code> e
+<code>modifica</code>)</td>
+</tr>
+<tr>
+<td>Lo stock deve essere sufficiente al momento del checkout</td>
+<td><code>OrdineDAO.salvaOrdine()</code> con
+<code>SELECT ... FOR UPDATE</code></td>
+</tr>
+<tr>
+<td>Il prezzo dell’ordine è ricalcolato dal DB, non dal client</td>
+<td><code>OrdineDAO.salvaOrdine()</code></td>
+</tr>
+<tr>
+<td>L’importo del rimborso è preso dal totale dell’ordine nel DB</td>
+<td><code>RimborsoDAO.richiediRimborso()</code></td>
+</tr>
+<tr>
+<td>Il numero completo della carta non viene mai persistito</td>
+<td><code>CheckoutServlet</code> (salva solo ultime 4 cifre)</td>
+</tr>
+<tr>
+<td>Solo gli admin possono accedere alle funzioni di gestione</td>
+<td><code>AuthHelper.isAdmin()</code> in ogni Servlet admin</td>
+</tr>
+<tr>
+<td>Il parametro <code>ORDER BY</code> è protetto da whitelist</td>
+<td><code>ProdottoDAO.safeOrder()</code></td>
+</tr>
+<tr>
+<td>I metodi di pagamento accettati sono limitati a una whitelist</td>
+<td><code>CheckoutServlet.valida()</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="gestione-delle-immagini">9. Gestione delle immagini</h2>
+<p>Le immagini dei prodotti sono memorizzate nel database come
+<strong>path relativo completo</strong> rispetto alla root
+dell’applicazione web, ad esempio:</p>
+<pre><code>images/products/tappetino-yoga.jpg</code></pre>
+<p>Nelle JSP, il percorso viene composto concatenando il context path
+dell’applicazione:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode jsp"><code class="sourceCode jsp"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>&lt;img<span class="ot"> src</span>=<span class="dt">&quot;</span><span class="pp">${</span>pageContext<span class="op">.</span><span class="fu">request</span><span class="op">.</span><span class="fu">contextPath</span><span class="pp">}</span><span class="dt">/</span><span class="pp">${</span>prodotto<span class="op">.</span><span class="fu">immagine</span><span class="pp">}</span><span class="dt">&quot;</span><span class="ot"> </span>/&gt;</span></code></pre></div>
+<p>Questo produce un URL assoluto corretto (es.
+<code>/FitTrend-Store/images/products/tappetino-yoga.jpg</code>) senza
+duplicare il prefisso <code>images/</code>. L’amministratore inserisce
+il path completo nel form di gestione prodotti; la
+<code>CarrelloServlet</code> copia il valore di
+<code>Prodotto.getImmagine()</code> nell’<code>ItemCarrello</code> senza
+alcuna trasformazione.</p>
+<hr />
+<h2 id="sicurezza-e-validazione">10. Sicurezza e validazione</h2>
+<h3 id="prevenzione-sql-injection">Prevenzione SQL Injection</h3>
+<p>Tutte le query utilizzano <strong>PreparedStatement</strong> con
+parametri posizionali (<code>?</code>). L’unico punto di concatenazione
+SQL è l’<code>ORDER BY</code>, protetto dalla whitelist
+<code>safeOrder()</code> che mappa l’input utente su colonne fisse
+predefinite.</p>
+<h3 id="prevenzione-xss">Prevenzione XSS</h3>
+<p>I dati dinamici nelle JSP sono stampati tramite
+<code>&lt;c:out value="..." /&gt;</code>, che esegue l’escape automatico
+dei caratteri HTML.</p>
+<h3 id="validazione-doppia">Validazione doppia</h3>
+<p>Ogni input è validato sia lato client (JavaScript) sia lato server
+(Servlet). La validazione JavaScript è una comodità per l’utente; la
+validazione server-side è quella che fa fede e non può essere
+aggirata.</p>
+<h3 id="protezione-delle-risorse">Protezione delle risorse</h3>
+<p>Le JSP risiedono in <code>WEB-INF/view/</code> e non sono accessibili
+direttamente via URL. Le Servlet admin verificano il ruolo dell’utente
+tramite <code>AuthHelper.isAdmin()</code> prima di qualsiasi
+operazione.</p>
+</body>
+</html>
