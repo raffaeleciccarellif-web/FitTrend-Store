@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
             let valid = true;
 
             // Clear all previous errors
-            document.querySelectorAll(".error-text").forEach(el => el.textContent = "");
+            document.querySelectorAll(".error-msg").forEach(el => el.textContent = "");
 
             const indirizzoSpedizione = document.getElementById("indirizzoSpedizione").value.trim();
             if (indirizzoSpedizione === "") {

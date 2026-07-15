@@ -17,7 +17,7 @@
 </header>
 
 <main class="container">
-    <div class="card" style="max-width: 400px; margin: 40px auto; padding: 20px;">
+    <div class="card auth-card">
         <h2>Registrazione</h2>
         
         <c:if test="${not empty errore}">
@@ -27,34 +27,34 @@
         </c:if>
 
         <form action="${pageContext.request.contextPath}/registrazione" method="post" id="registerForm">
-            <div class="form-group" style="margin-bottom: 15px;">
+            <div class="form-group">
                 <label for="nome">Nome</label>
-                <input type="text" id="nome" name="nome" style="width: 100%;" value="<c:out value='${param.nome}' />">
+                <input type="text" id="nome" name="nome" value="<c:out value='${param.nome}' />">
                 <span class="error-msg" id="nome-error"></span>
             </div>
 
-            <div class="form-group" style="margin-bottom: 15px;">
+            <div class="form-group">
                 <label for="cognome">Cognome</label>
-                <input type="text" id="cognome" name="cognome" style="width: 100%;" value="<c:out value='${param.cognome}' />">
+                <input type="text" id="cognome" name="cognome" value="<c:out value='${param.cognome}' />">
                 <span class="error-msg" id="cognome-error"></span>
             </div>
 
-            <div class="form-group" style="margin-bottom: 15px;">
+            <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" style="width: 100%;" value="<c:out value='${param.email}' />">
+                <input type="email" id="email" name="email" value="<c:out value='${param.email}' />">
                 <span class="error-msg" id="email-error"></span>
             </div>
 
-            <div class="form-group" style="margin-bottom: 15px;">
+            <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" style="width: 100%;">
+                <input type="password" id="password" name="password">
                 <span class="error-msg" id="password-error"></span>
             </div>
 
-            <button type="submit" class="btn" style="width: 100%; margin-top: 15px;">Registrati</button>
+            <button type="submit" class="btn w-100 mt-md">Registrati</button>
         </form>
         
-        <p style="margin-top: 15px; text-align: center;">
+        <p class="mt-md text-center">
             Hai già un account? <a href="${pageContext.request.contextPath}/login">Accedi qui</a>.
         </p>
     </div>

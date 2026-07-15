@@ -6,26 +6,7 @@
     <meta charset="UTF-8">
     <title>Gestione Prodotti - FitTrend Admin</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
-    <style>
-        .admin-layout {
-            display: grid;
-            grid-template-columns: 1fr 3fr;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        @media (max-width: 768px) {
-            .admin-layout { grid-template-columns: 1fr; }
-        }
-        .form-section { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .table-section { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow-x: auto; }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; }
-        .status-badge { padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; }
-        .status-active { background: #c6f6d5; color: #22543d; }
-        .status-deleted { background: #fed7d7; color: #822727; }
-        .img-preview { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
-    </style>
+
 </head>
 <body>
 
@@ -38,7 +19,7 @@
             <div class="error-msg">Errore durante l'operazione: <c:out value="${param.error}" /></div>
         </c:if>
         <c:if test="${not empty param.msg}">
-            <div style="background: #c6f6d5; color: #22543d; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+            <div class="success-msg">
                 <c:out value="${param.msg}" />
             </div>
         </c:if>
@@ -90,7 +71,7 @@
 
                     <button type="submit" class="btn">${not empty prodottoInModifica ? 'Salva Modifiche' : 'Aggiungi Prodotto'}</button>
                     <c:if test="${not empty prodottoInModifica}">
-                        <a href="${pageContext.request.contextPath}/admin/prodotti" class="btn" style="background:#718096; margin-top:0.5rem; display:block; text-align:center;">Annulla</a>
+                        <a href="${pageContext.request.contextPath}/admin/prodotti" class="btn btn-secondary mt-md text-center d-block">Annulla</a>
                     </c:if>
                 </form>
             </section>
@@ -117,11 +98,11 @@
                                 <td>
                                     <img src="${pageContext.request.contextPath}/${p.immagine}" alt="<c:out value="${p.nome}"/>" class="img-preview">
                                 </td>
-                                <td>${p.id}</td>
+                                <td><c:out value="${p.id}"/></td>
                                 <td><strong><c:out value="${p.nome}"/></strong></td>
                                 <td><c:out value="${p.categoriaNome}"/></td>
-                                <td>€${p.prezzo}</td>
-                                <td>${p.quantitaDisponibile}</td>
+                                <td>€<c:out value="${p.prezzo}"/></td>
+                                <td><c:out value="${p.quantitaDisponibile}"/></td>
                                 <td>
                                     <c:choose>
                                         <c:when test="${p.deleted}">
@@ -133,17 +114,17 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <form action="${pageContext.request.contextPath}/admin/prodotti" method="GET" style="display:inline;">
+                                    <form action="${pageContext.request.contextPath}/admin/prodotti" method="GET" class="inline-form">
                                         <input type="hidden" name="action" value="modifica">
                                         <input type="hidden" name="id" value="${p.id}">
-                                        <button type="submit" class="btn" style="padding:0.25rem 0.5rem; font-size:0.8rem;">Modifica</button>
+                                        <button type="submit" class="btn btn-sm">Modifica</button>
                                     </form>
                                     
                                     <c:if test="${not p.deleted}">
-                                        <form action="${pageContext.request.contextPath}/admin/prodotti" method="POST" style="display:inline;" onsubmit="return confirm('Vuoi davvero eliminare questo prodotto?');">
+                                        <form action="${pageContext.request.contextPath}/admin/prodotti" method="POST" class="inline-form" onsubmit="return confirm('Vuoi davvero eliminare questo prodotto?');">
                                             <input type="hidden" name="action" value="elimina">
                                             <input type="hidden" name="id" value="${p.id}">
-                                            <button type="submit" class="btn" style="background:#e53e3e; padding:0.25rem 0.5rem; font-size:0.8rem;">Elimina</button>
+                                            <button type="submit" class="btn btn-danger btn-sm">Elimina</button>
                                         </form>
                                     </c:if>
                                 </td>

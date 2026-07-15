@@ -5,39 +5,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestione Rimborsi - FitTrend Store Admin</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/style.css">
-    <style>
-        .badge { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; background: #eee; }
-        .badge-completato { background: #d4edda; color: #155724; }
-        .badge-richiesto { background: #fff3cd; color: #856404; }
-        .badge-approvato { background: #cce5ff; color: #004085; }
-        .badge-rifiutato { background: #f8d7da; color: #721c24; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        table, th, td { border: 1px solid #ddd; }
-        th, td { padding: 10px; text-align: left; }
-        .filters { display: flex; gap: 10px; margin-bottom: 20px; align-items: flex-end; }
-        .filters .form-group { margin-bottom: 0; }
-        .admin-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
 </head>
 <body>
     <jsp:include page="header.jsp" />
 
-    <main class="admin-container">
+    <main class="container">
         <h1>Gestione Rimborsi</h1>
 
         <c:if test="${not empty errore}">
-            <div class="error-message" style="color: red; margin-bottom: 15px;"><c:out value="${errore}" /></div>
+            <div class="error-msg"><c:out value="${errore}" /></div>
         </c:if>
         
         <c:if test="${not empty messaggio}">
-            <div class="success-message" style="color: green; margin-bottom: 15px;"><c:out value="${messaggio}" /></div>
+            <div class="success-msg"><c:out value="${messaggio}" /></div>
         </c:if>
 
         <form action="${pageContext.request.contextPath}/admin/rimborsi" method="get" class="filters">
             <div class="form-group">
                 <label for="stato">Stato:</label>
-                <select id="stato" name="stato" style="padding: 5px;">
+                <select id="stato" name="stato">
                     <option value="">Tutti</option>
                     <option value="richiesto" <c:if test="${param.stato == 'richiesto'}">selected</c:if>>Richiesto</option>
                     <option value="approvato" <c:if test="${param.stato == 'approvato'}">selected</c:if>>Approvato</option>
@@ -45,11 +32,12 @@
                     <option value="completato" <c:if test="${param.stato == 'completato'}">selected</c:if>>Completato</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary" style="padding: 5px 15px;">Filtra</button>
-            <a href="${pageContext.request.contextPath}/admin/rimborsi" class="btn btn-secondary" style="padding: 5px 15px; text-decoration: none;">Reset</a>
+            <button type="submit" class="btn">Filtra</button>
+            <a href="${pageContext.request.contextPath}/admin/rimborsi" class="btn btn-secondary">Reset</a>
         </form>
 
-        <table>
+        <div class="table-responsive">
+            <table>
             <thead>
                 <tr>
                     <th>ID</th>
@@ -79,16 +67,16 @@
                                 <td><c:out value="${rimborso.dataRichiesta}" /></td>
                                 <td><c:out value="${empty rimborso.dataElaborazione ? '-' : rimborso.dataElaborazione}" /></td>
                                 <td>
-                                    <span class="badge badge-${rimborso.stato}">
+                                    <span class="status-badge status-badge-${rimborso.stato}">
                                         <c:out value="${rimborso.statoLabel}" />
                                     </span>
                                 </td>
                                 <td>
                                     <c:if test="${rimborso.stato == 'richiesto' || rimborso.stato == 'approvato'}">
-                                        <form action="${pageContext.request.contextPath}/admin/rimborsi" method="post" style="display: flex; gap: 5px; align-items: center; margin: 0;">
+                                        <form action="${pageContext.request.contextPath}/admin/rimborsi" method="post" class="inline-form">
                                             <input type="hidden" name="action" value="aggiornaStato">
                                             <input type="hidden" name="idRimborso" value="${rimborso.id}">
-                                            <select name="nuovoStato" required style="padding: 5px;">
+                                            <select name="nuovoStato" required>
                                                 <option value="">Cambia in...</option>
                                                 <c:if test="${rimborso.stato == 'richiesto'}">
                                                     <option value="approvato">Approvato</option>
@@ -98,7 +86,7 @@
                                                     <option value="completato">Completato</option>
                                                 </c:if>
                                             </select>
-                                            <button type="submit" class="btn btn-secondary" style="padding: 5px 10px;">Applica</button>
+                                            <button type="submit" class="btn btn-sm btn-secondary">Applica</button>
                                         </form>
                                     </c:if>
                                 </td>
@@ -108,6 +96,7 @@
                 </c:choose>
             </tbody>
         </table>
+        </div>
     </main>
 
     <jsp:include page="footer.jsp" />
