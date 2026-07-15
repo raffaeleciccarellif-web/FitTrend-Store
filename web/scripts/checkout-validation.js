@@ -8,9 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
         metodoPagamento.addEventListener("change", function() {
             if (metodoPagamento.value === "carta") {
                 cartaContainer.style.display = "block";
-                // Optionally make it required, but we also validate it on submit
-                // numeroCarta.required = true;
-            } else {
+                } else {
                 cartaContainer.style.display = "none";
                 numeroCarta.value = "";
                 document.getElementById("numeroCartaError").textContent = "";
@@ -22,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
         checkoutForm.addEventListener("submit", function(event) {
             let valid = true;
 
-            // Clear all previous errors
+
             document.querySelectorAll(".error-msg").forEach(el => el.textContent = "");
 
             const indirizzoSpedizione = document.getElementById("indirizzoSpedizione").value.trim();
