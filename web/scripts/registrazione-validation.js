@@ -71,14 +71,22 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    form.addEventListener("submit", function (event) {
-        const isNomeValid = validateNome();
-        const isCognomeValid = validateCognome();
-        const isEmailValid = validateEmail();
-        const isPasswordValid = validatePassword();
+    // Aggiungo eventi input/change per validazione on-the-fly
+    if(nomeInput) nomeInput.addEventListener("input", validateNome);
+    if(cognomeInput) cognomeInput.addEventListener("input", validateCognome);
+    if(emailInput) emailInput.addEventListener("input", validateEmail);
+    if(passwordInput) passwordInput.addEventListener("input", validatePassword);
 
-        if (!isNomeValid || !isCognomeValid || !isEmailValid || !isPasswordValid) {
-            event.preventDefault(); // Blocca l'invio del modulo
-        }
-    });
+    if(form) {
+        form.addEventListener("submit", function (event) {
+            const isNomeValid = validateNome();
+            const isCognomeValid = validateCognome();
+            const isEmailValid = validateEmail();
+            const isPasswordValid = validatePassword();
+
+            if (!isNomeValid || !isCognomeValid || !isEmailValid || !isPasswordValid) {
+                event.preventDefault(); // Blocca l'invio del modulo
+            }
+        });
+    }
 });

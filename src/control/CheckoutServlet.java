@@ -26,11 +26,7 @@ public class CheckoutServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
 
-        // Controllo autenticazione
-        if (session == null || session.getAttribute("utenteLoggato") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
+
 
         // Controllo carrello non vuoto
         Carrello carrello = (Carrello) session.getAttribute("carrello");
@@ -50,11 +46,7 @@ public class CheckoutServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession(false);
 
-        // Controllo autenticazione
-        if (session == null || session.getAttribute("utenteLoggato") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
+
 
         // Controllo carrello non vuoto
         Carrello carrello = (Carrello) session.getAttribute("carrello");

@@ -1,14 +1,18 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<%--@elvariable id="carrello" type="model.Carrello"--%>
+<%--@elvariable id="errore" type="java.lang.String"--%>
+<%--@elvariable id="messaggio" type="java.lang.String"--%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrello - FitTrend Store</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/carrello.css">
-    <script src="${pageContext.request.contextPath}/scripts/cart.js" defer></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}../styles/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}../styles/carrello.css">
+    <script src="${pageContext.request.contextPath}../scripts/cart.js" defer></script>
 </head>
 <body>
     <header>
@@ -76,7 +80,7 @@
                                 <c:forEach var="item" items="${carrello.items}">
                                     <tr>
                                         <td>
-                                            <img src="${pageContext.request.contextPath}/${item.immagine}" alt="<c:out value="${item.nome}" />" class="cart-img" />
+                                            <img src="${pageContext.request.contextPath}/${item.immagine}" alt="<c:out value='${item.nome}' />" class="cart-img" />
                                         </td>
                                         <td>
                                             <span class="cart-product-name"><c:out value="${item.nome}" /></span>
@@ -86,9 +90,11 @@
                                             <form action="${pageContext.request.contextPath}/carrello" method="POST" class="form-quantita">
                                                 <input type="hidden" name="action" value="modifica">
                                                 <input type="hidden" name="idProdotto" value="${item.id}">
-                                                <input type="number" name="quantita" value="${item.quantita}"
-                                                       min="1" max="${item.quantitaDisponibile}"
-                                                       required>
+                                                <label>
+                                                    <input type="number" name="quantita" value="${item.quantita}"
+                                                           min="1" max="${item.quantitaDisponibile}"
+                                                           required>
+                                                </label>
                                                 <button type="submit" class="btn btn-aggiorna btn-sm">Aggiorna</button>
                                             </form>
                                         </td>

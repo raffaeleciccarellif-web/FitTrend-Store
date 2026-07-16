@@ -1,11 +1,15 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<%--@elvariable id="rimborsi" type="java.util.Collection<model.Rimborso>"--%>
+<%--@elvariable id="errore" type="java.lang.String"--%>
+<%--@elvariable id="messaggio" type="java.lang.String"--%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>Gestione Rimborsi - FitTrend Store Admin</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}../styles/main.css">
 </head>
 <body>
     <jsp:include page="header.jsp" />
@@ -76,16 +80,18 @@
                                         <form action="${pageContext.request.contextPath}/admin/rimborsi" method="post" class="inline-form">
                                             <input type="hidden" name="action" value="aggiornaStato">
                                             <input type="hidden" name="idRimborso" value="${rimborso.id}">
-                                            <select name="nuovoStato" required>
-                                                <option value="">Cambia in...</option>
-                                                <c:if test="${rimborso.stato == 'richiesto'}">
-                                                    <option value="approvato">Approvato</option>
-                                                    <option value="rifiutato">Rifiutato</option>
-                                                </c:if>
-                                                <c:if test="${rimborso.stato == 'approvato'}">
-                                                    <option value="completato">Completato</option>
-                                                </c:if>
-                                            </select>
+                                            <label>
+                                                <select name="nuovoStato" required>
+                                                    <option value="">Cambia in...</option>
+                                                    <c:if test="${rimborso.stato == 'richiesto'}">
+                                                        <option value="approvato">Approvato</option>
+                                                        <option value="rifiutato">Rifiutato</option>
+                                                    </c:if>
+                                                    <c:if test="${rimborso.stato == 'approvato'}">
+                                                        <option value="completato">Completato</option>
+                                                    </c:if>
+                                                </select>
+                                            </label>
                                             <button type="submit" class="btn btn-sm btn-secondary">Applica</button>
                                         </form>
                                     </c:if>

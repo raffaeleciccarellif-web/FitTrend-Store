@@ -1,5 +1,13 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<%--@elvariable id="prodotti" type="java.util.Collection<model.Prodotto>"--%>
+<%--@elvariable id="categorie" type="java.util.Collection<model.Categoria>"--%>
+<%--@elvariable id="filtroNome" type="java.lang.String"--%>
+<%--@elvariable id="filtroCategoriaId" type="java.lang.String"--%>
+<%--@elvariable id="filtroPrezzoMin" type="java.lang.String"--%>
+<%--@elvariable id="filtroPrezzoMax" type="java.lang.String"--%>
+<%--@elvariable id="filtroOrder" type="java.lang.String"--%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -7,8 +15,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Esplora il catalogo di FitTrend Store: accessori, abbigliamento e attrezzi per palestra e fitness.">
     <title>Catalogo — FitTrend Store</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/catalogo.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}../styles/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}../styles/catalogo.css">
 </head>
 <body>
 
@@ -97,7 +105,7 @@
                 <div class="grid-prodotti" id="gridProdotti">
                     <c:forEach var="prodotto" items="${prodotti}">
                         <article class="card">
-                            <a href="${pageContext.request.contextPath}/prodotto?id=${prodotto.id}" aria-label="Vedi dettaglio ${prodotto.nome}">
+                            <a href="<c:url value='/prodotto?id=${prodotto.id}'/>" aria-label="Vedi dettaglio ${prodotto.nome}">
                                 <img class="card-img"
                                      src="${pageContext.request.contextPath}/<c:out value='${prodotto.immagine}'/>"
                                      alt="<c:out value='${prodotto.nome}'/>">
@@ -107,7 +115,7 @@
                                 <h2 class="card-title card-title-clamp" title="${prodotto.nome}"><c:out value="${prodotto.nome}"/></h2>
                                 <p class="card-text card-text-clamp"><c:out value="${prodotto.descrizione}"/></p>
                                 <div class="card-footer">
-                                    <a href="${pageContext.request.contextPath}/prodotto?id=${prodotto.id}"
+                                    <a href="<c:url value='/prodotto?id=${prodotto.id}'/>"
                                        class="btn" id="btnDettaglio-${prodotto.id}">
                                         Vedi dettaglio
                                     </a>

@@ -1,7 +1,6 @@
 package control;
 
 import dao.RimborsoDAO;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,11 +14,8 @@ import java.io.IOException;
 public class RimborsoServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (!AuthHelper.isLogged(request)) {
-            AuthHelper.redirectToLogin(request, response);
-            return;
-        }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
 
         Utente utente = (Utente) request.getSession().getAttribute("utenteLoggato");
         HttpSession session = request.getSession();
@@ -52,7 +48,7 @@ public class RimborsoServlet extends HttpServlet {
                 session.setAttribute("errore", "Impossibile richiedere il rimborso: " + e.getMessage());
                 response.sendRedirect(request.getContextPath() + "/ordini");
             } catch (Exception e) {
-                e.printStackTrace();
+                log("Errore:", e);
                 session.setAttribute("errore", "Si è verificato un errore durante la richiesta di rimborso.");
                 response.sendRedirect(request.getContextPath() + "/ordini");
             }

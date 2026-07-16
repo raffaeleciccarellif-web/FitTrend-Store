@@ -1,11 +1,14 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<%--@elvariable id="errore" type="java.lang.String"--%>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>Checkout - FitTrend Store</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}../styles/main.css">
 </head>
 <body>
     <jsp:include page="header.jsp" />
@@ -61,6 +64,6 @@
 
     <jsp:include page="footer.jsp" />
 
-    <script src="${pageContext.request.contextPath}/scripts/checkout-validation.js"></script>
+    <script src="${pageContext.request.contextPath}../scripts/checkout-validation.js"></script>
 </body>
 </html>

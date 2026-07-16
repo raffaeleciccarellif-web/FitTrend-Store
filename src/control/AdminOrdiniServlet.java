@@ -18,11 +18,7 @@ public class AdminOrdiniServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (!AuthHelper.isAdmin(request)) {
-            AuthHelper.sendForbidden(response);
-            return;
-        }
-        
+
         HttpSession session = request.getSession();
         String msg = (String) session.getAttribute("messaggio");
         if (msg != null) {
@@ -53,18 +49,15 @@ public class AdminOrdiniServlet extends HttpServlet {
             request.setAttribute("ordini", ordini);
             request.getRequestDispatcher("/WEB-INF/view/admin_ordini.jsp").forward(request, response);
         } catch (SQLException e) {
-            e.printStackTrace();
+            log("Errore:", e);
             request.setAttribute("errore", "Errore nel caricamento degli ordini");
             request.getRequestDispatcher("/WEB-INF/view/admin_ordini.jsp").forward(request, response);
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (!AuthHelper.isAdmin(request)) {
-            AuthHelper.sendForbidden(response);
-            return;
-        }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
 
         String action = request.getParameter("action");
         if ("aggiornaStato".equals(action)) {
@@ -81,7 +74,7 @@ public class AdminOrdiniServlet extends HttpServlet {
             } catch (IllegalStateException e) {
                 request.getSession().setAttribute("errore", "Impossibile aggiornare lo stato: " + e.getMessage());
             } catch (Exception e) {
-                e.printStackTrace();
+                log("Errore:", e);
                 request.getSession().setAttribute("errore", "Errore di sistema durante l'aggiornamento dello stato");
             }
         }

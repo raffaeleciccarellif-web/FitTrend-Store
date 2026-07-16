@@ -1,7 +1,6 @@
 package dao;
 
 import model.Carrello;
-import model.DettaglioOrdine;
 import model.ItemCarrello;
 import model.Ordine;
 
@@ -189,21 +188,6 @@ public class OrdineDAO {
         return ordini;
     }
 
-    // Recupera un singolo ordine per id con i dettagli popolati; null se non trovato
-    public Ordine doRetrieveByKey(int ordineId) throws SQLException {
-        try (Connection con = DbManager.getConnection();
-             PreparedStatement ps = con.prepareStatement("SELECT * FROM `Ordine` WHERE id = ?")) {
-            ps.setInt(1, ordineId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    Ordine ordine = mapRow(rs);
-                    ordine.setDettagli(new ArrayList<>(new DettaglioOrdineDAO().doRetrieveByOrdine(ordineId)));
-                    return ordine;
-                }
-            }
-        }
-        return null;
-    }
 
     // Aggiorna lo stato di un ordine con whitelist e verifica delle transizioni ammesse.
     // Se il nuovo stato è ANNULLATO, ripristina lo stock nella stessa transazione.

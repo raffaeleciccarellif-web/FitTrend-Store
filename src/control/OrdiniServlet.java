@@ -22,10 +22,7 @@ import java.util.Map;
 public class OrdiniServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (!AuthHelper.isLogged(request)) {
-            AuthHelper.redirectToLogin(request, response);
-            return;
-        }
+
 
         Utente utente = (Utente) request.getSession().getAttribute("utenteLoggato");
         
@@ -67,7 +64,7 @@ public class OrdiniServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/view/ordini.jsp").forward(request, response);
             
         } catch (SQLException e) {
-            e.printStackTrace();
+            log("Errore:", e);
             request.setAttribute("errore", "Errore nel caricamento dello storico ordini.");
             request.getRequestDispatcher("/WEB-INF/view/ordini.jsp").forward(request, response);
         }

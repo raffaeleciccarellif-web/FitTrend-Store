@@ -25,11 +25,7 @@ public class AdminProdottiServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Protezione admin delegata ad AuthHelper, ma facciamo un doppio check di sicurezza
-        if (!AuthHelper.isAdmin(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Accesso negato.");
-            return;
-        }
+
 
         String action = request.getParameter("action");
         if (action == null) {
@@ -46,7 +42,6 @@ public class AdminProdottiServlet extends HttpServlet {
                 request.setAttribute("prodotti", prodotti);
                 
                 request.getRequestDispatcher("/WEB-INF/view/admin_catalogo.jsp").forward(request, response);
-                return;
             } else if ("modifica".equals(action)) {
                 // Pre-popola il form
                 int id = Integer.parseInt(request.getParameter("id"));
@@ -62,7 +57,6 @@ public class AdminProdottiServlet extends HttpServlet {
                 request.setAttribute("prodotti", prodotti);
                 
                 request.getRequestDispatcher("/WEB-INF/view/admin_catalogo.jsp").forward(request, response);
-                return;
             }
         } catch (SQLException e) {
             throw new ServletException(e);
@@ -75,10 +69,7 @@ public class AdminProdottiServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        if (!AuthHelper.isAdmin(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Accesso negato.");
-            return;
-        }
+
 
         String action = request.getParameter("action");
         

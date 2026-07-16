@@ -24,11 +24,11 @@ public class CarrelloServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         processRequest(request, response);
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         Carrello carrello = (Carrello) session.getAttribute("carrello");
         if (carrello == null) {
@@ -149,7 +149,7 @@ public class CarrelloServlet extends HttpServlet {
         } catch (Exception e) {
             success = false;
             message = "Errore interno del server.";
-            e.printStackTrace();
+            log("Errore:", e);
         }
 
         // Risposta AJAX
@@ -169,9 +169,9 @@ public class CarrelloServlet extends HttpServlet {
             response.getWriter().write(jsonResponse);
         } else {
             // Risposta per chiamate standard (non-AJAX)
-            if (!success && !message.isEmpty()) {
+            if (!success) {
                 request.getSession().setAttribute("errore", message);
-            } else if (success && !message.isEmpty()) {
+            } else if (!message.isEmpty()) {
                 request.getSession().setAttribute("messaggio", message);
             }
             response.sendRedirect(request.getContextPath() + "/carrello?action=visualizza");

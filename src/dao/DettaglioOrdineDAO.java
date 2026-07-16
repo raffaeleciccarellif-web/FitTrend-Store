@@ -26,19 +26,6 @@ public class DettaglioOrdineDAO {
         return dettagli;
     }
 
-    // Recupera una singola riga di dettaglio per chiave primaria; null se non trovata
-    public DettaglioOrdine doRetrieveByKey(int dettaglioId) throws SQLException {
-        String sql = "SELECT id, ordine_id, prodotto_id, nome_prodotto_acquisto, quantita, prezzo_acquisto " +
-                     "FROM Dettaglio_Ordine WHERE id = ?";
-        try (Connection con = DbManager.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, dettaglioId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return mapRow(rs);
-            }
-        }
-        return null;
-    }
 
     // Mappa una riga del ResultSet su un oggetto DettaglioOrdine
     private DettaglioOrdine mapRow(ResultSet rs) throws SQLException {

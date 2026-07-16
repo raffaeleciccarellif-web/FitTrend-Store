@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 
 public class Carrello {
     // Usiamo LinkedHashMap per mantenere l'ordine di inserimento dei prodotti nel carrello
-    private LinkedHashMap<Integer, ItemCarrello> items;
+    private final LinkedHashMap<Integer, ItemCarrello> items;
 
     public Carrello() {
         this.items = new LinkedHashMap<>();

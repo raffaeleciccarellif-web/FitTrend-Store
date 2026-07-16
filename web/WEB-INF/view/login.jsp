@@ -1,13 +1,17 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<%--@elvariable id="errore" type="java.lang.String"--%>
+<%--@elvariable id="messaggio" type="java.lang.String"--%>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - FitTrend Store</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
-    <script src="${pageContext.request.contextPath}/scripts/login-validation.js" defer></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}../styles/main.css">
+    <script src="${pageContext.request.contextPath}../scripts/login-validation.js" defer></script>
 </head>
 <body>
 

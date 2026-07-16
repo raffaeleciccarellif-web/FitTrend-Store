@@ -47,23 +47,6 @@ public class CategoriaDAO {
         return null;
     }
 
-    /**
-     * Controlla se esiste una categoria con l'id specificato.
-     *
-     * @param id identificativo da verificare
-     * @return true se esiste, false altrimenti
-     */
-    public boolean existsById(int id) throws SQLException {
-        String sql = "SELECT 1 FROM categoria WHERE id = ?";
-        try (Connection con = DbManager.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                return rs.next();
-            }
-        }
-    }
-
     // ─── Helper ──────────────────────────────────────────────────────────────
 
     private Categoria mapRow(ResultSet rs) throws SQLException {

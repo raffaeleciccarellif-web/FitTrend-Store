@@ -4,6 +4,7 @@ import dao.ProdottoDAO;
 import model.Prodotto;
 
 import java.io.IOException;
+import java.io.Serial;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/prodotto")
 public class DettaglioProdottoServlet extends HttpServlet {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -44,7 +46,7 @@ public class DettaglioProdottoServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/view/dettaglio.jsp").forward(request, response);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log("Errore:", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore interno durante il recupero del prodotto");
         }
     }

@@ -40,24 +40,6 @@ public class ProdottoDAO {
     // ─── Metodi pubblici ──────────────────────────────────────────────────────
 
     /**
-     * Recupera tutti i prodotti NON eliminati (visibili ai clienti).
-     *
-     * @param order "nome" | "prezzo" | "categoria" | null (default: nome)
-     */
-    public Collection<Prodotto> doRetrieveAll(String order) throws SQLException {
-        String sql = SELECT_BASE + "WHERE p.is_deleted = 0 ORDER BY " + safeOrder(order);
-        Collection<Prodotto> prodotti = new ArrayList<>();
-        try (Connection con = DbManager.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                prodotti.add(mapRow(rs));
-            }
-        }
-        return prodotti;
-    }
-
-    /**
      * Recupera prodotti visibili ai clienti con filtri facoltativi.
      *
      * @param nome        sottostringa nel nome (null → ignorato)

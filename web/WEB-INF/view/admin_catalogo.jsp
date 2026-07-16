@@ -1,16 +1,22 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<%--@elvariable id="prodottoInModifica" type="model.Prodotto"--%>
+<%--@elvariable id="categorie" type="java.util.Collection<model.Categoria>"--%>
+<%--@elvariable id="prodotti" type="java.util.Collection<model.Prodotto>"--%>
+<%--@elvariable id="errore" type="java.lang.String"--%>
+<%--@elvariable id="messaggio" type="java.lang.String"--%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>Gestione Prodotti - FitTrend Admin</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}../styles/main.css">
 
 </head>
 <body>
 
-    <jsp:include page="/WEB-INF/view/header.jsp" />
+    <jsp:include page="header.jsp" />
 
     <main class="container">
         <h1>Gestione Prodotti</h1>
@@ -34,7 +40,7 @@
                     
                     <div class="form-group">
                         <label for="nome">Nome Prodotto</label>
-                        <input type="text" id="nome" name="nome" value="<c:out value="${prodottoInModifica.nome}"/>" required>
+                        <input type="text" id="nome" name="nome" value="<c:out value='${prodottoInModifica.nome}'/>" required>
                     </div>
 
                     <div class="form-group">
@@ -51,7 +57,7 @@
                     
                     <div class="form-group">
                         <label for="prezzo">Prezzo (€)</label>
-                        <input type="number" step="0.01" min="0.01" id="prezzo" name="prezzo" value="<c:out value="${prodottoInModifica.prezzo}"/>" required>
+                        <input type="number" step="0.01" min="0.01" id="prezzo" name="prezzo" value="<c:out value='${prodottoInModifica.prezzo}'/>" required>
                     </div>
                     
                     <div class="form-group">
@@ -61,7 +67,7 @@
 
                     <div class="form-group">
                         <label for="immagine">Percorso Immagine</label>
-                        <input type="text" id="immagine" name="immagine" placeholder="es. images/products/file.jpg" value="<c:out value="${prodottoInModifica.immagine}"/>" required>
+                        <input type="text" id="immagine" name="immagine" placeholder="es. images/products/file.jpg" value="<c:out value='${prodottoInModifica.immagine}'/>" required>
                     </div>
 
                     <div class="form-group">
@@ -96,7 +102,7 @@
                         <c:forEach var="p" items="${prodotti}">
                             <tr>
                                 <td>
-                                    <img src="${pageContext.request.contextPath}/${p.immagine}" alt="<c:out value="${p.nome}"/>" class="img-preview">
+                                    <img src="${pageContext.request.contextPath}/${p.immagine}" alt="<c:out value='${p.nome}'/>" class="img-preview">
                                 </td>
                                 <td><c:out value="${p.id}"/></td>
                                 <td><strong><c:out value="${p.nome}"/></strong></td>
@@ -136,6 +142,6 @@
         </div>
     </main>
 
-    <script src="${pageContext.request.contextPath}/scripts/admin-products-validation.js"></script>
+    <script src="<c:url value='/scripts/admin-products-validation.js'/>" defer></script>
 </body>
 </html>

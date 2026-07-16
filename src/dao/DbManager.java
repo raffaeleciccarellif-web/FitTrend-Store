@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 public final class DbManager {
 
-    private static DataSource dataSource;
+    private static final DataSource dataSource;
 
     static {
         try {

@@ -19,22 +19,6 @@ public class RimborsoDAO {
             Rimborso.STATO_COMPLETATO
     );
 
-    // Recupera il rimborso associato a un ordine; null se non esiste
-    public Rimborso doRetrieveByOrdine(int ordineId) throws SQLException {
-        String sql = "SELECT r.*, o.utente_id, u.email AS utente_email " +
-                     "FROM Rimborso r " +
-                     "JOIN `Ordine` o ON o.id = r.ordine_id " +
-                     "JOIN Utente u ON u.id = o.utente_id " +
-                     "WHERE r.ordine_id = ?";
-        try (Connection con = DbManager.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, ordineId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return mapRow(rs);
-            }
-        }
-        return null;
-    }
 
     // Recupera tutti i rimborsi di un utente, ordinati per data richiesta decrescente
     public Collection<Rimborso> doRetrieveByUtente(int utenteId) throws SQLException {
@@ -85,7 +69,7 @@ public class RimborsoDAO {
     // 4. Usa come importo il totale dell'ordine da DB (non un valore client)
     // 5. Inserisce il rimborso con stato "richiesto"
     // Ritorna l'id del rimborso creato
-    public int richiediRimborso(int ordineId, int utenteId, String motivo) throws SQLException {
+    public void richiediRimborso(int ordineId, int utenteId, String motivo) throws SQLException {
         Connection con = null;
         try {
             con = DbManager.getConnection();
@@ -128,7 +112,6 @@ public class RimborsoDAO {
 
             // Passo 4 & 5: INSERT rimborso con importo da DB e stato "richiesto"
             String sqlInsert = "INSERT INTO Rimborso (ordine_id, importo, motivo, stato) VALUES (?, ?, ?, ?)";
-            int idRimborso;
             try (PreparedStatement ps = con.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setInt(1, ordineId);
                 ps.setBigDecimal(2, totaleOrdine);
@@ -140,12 +123,10 @@ public class RimborsoDAO {
                         con.rollback();
                         throw new SQLException("Impossibile ottenere l'id del nuovo rimborso.");
                     }
-                    idRimborso = rs.getInt(1);
                 }
             }
 
             con.commit();
-            return idRimborso;
 
         } catch (SQLException e) {
             if (con != null) { try { con.rollback(); } catch (SQLException ignored) {} }

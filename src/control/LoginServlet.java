@@ -4,6 +4,7 @@ import dao.UtenteDAO;
 import model.Utente;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.UUID;
 
 import jakarta.servlet.ServletException;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -58,7 +60,7 @@ public class LoginServlet extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log("Errore:", e);
             request.setAttribute("errore", "Errore interno durante il login");
             request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
         }

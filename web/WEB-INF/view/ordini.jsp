@@ -1,11 +1,16 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<%--@elvariable id="rimborsi" type="java.util.Collection<model.Rimborso>"--%>
+<%--@elvariable id="ordini" type="java.util.Collection<model.Ordine>"--%>
+<%--@elvariable id="errore" type="java.lang.String"--%>
+<%--@elvariable id="messaggio" type="java.lang.String"--%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>I Miei Ordini - FitTrend Store</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}../styles/main.css">
 </head>
 <body>
     <jsp:include page="header.jsp" />
@@ -76,7 +81,9 @@
                                             <form action="${pageContext.request.contextPath}/rimborsi" method="post" class="inline-form">
                                                 <input type="hidden" name="action" value="richiedi">
                                                 <input type="hidden" name="ordineId" value="${ordine.id}">
-                                                <input type="text" name="motivo" placeholder="Motivo del rimborso" required class="flex-1">
+                                                <label>
+                                                    <input type="text" name="motivo" placeholder="Motivo del rimborso" required class="flex-1">
+                                                </label>
                                                 <button type="submit" class="btn btn-sm btn-secondary">Richiedi Rimborso</button>
                                             </form>
                                         </c:if>

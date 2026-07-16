@@ -1,13 +1,15 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<%--@elvariable id="prodotto" type="model.Prodotto"--%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><c:out value="${prodotto.nome}" /> - FitTrend Store</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
-    <script src="${pageContext.request.contextPath}/scripts/cart.js" defer></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}../styles/main.css">
+    <script src="${pageContext.request.contextPath}../scripts/cart.js" defer></script>
 </head>
 <body>
     <header>
@@ -44,7 +46,7 @@
         <div class="container">
             <div class="card">
                 <div class="card-body">
-                    <img src="${pageContext.request.contextPath}/${prodotto.immagine}" alt="<c:out value="${prodotto.nome}" />" class="card-img" />
+                    <img src="${pageContext.request.contextPath}/${prodotto.immagine}" alt="<c:out value='${prodotto.nome}' />" class="card-img" />
                     
                     <h1 class="page-title mt-md"><c:out value="${prodotto.nome}" /></h1>
                     

@@ -7,8 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class UtenteDAO {
 
@@ -60,18 +58,6 @@ public class UtenteDAO {
         return null;
     }
 
-    public synchronized Collection<Utente> doRetrieveAllClienti() throws SQLException {
-        Collection<Utente> clienti = new ArrayList<>();
-        String query = "SELECT id, nome, cognome, email, password_hash, is_admin FROM Utente WHERE is_admin = 0";
-        try (Connection conn = DbManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                clienti.add(extractUtenteFromResultSet(rs));
-            }
-        }
-        return clienti;
-    }
 
     private Utente extractUtenteFromResultSet(ResultSet rs) throws SQLException {
         Utente u = new Utente();
