@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrazione - FitTrend Store</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}../styles/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
 </head>
 <body>
 

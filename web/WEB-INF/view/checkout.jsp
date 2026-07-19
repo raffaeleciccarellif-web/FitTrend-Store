@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Checkout - FitTrend Store</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}../styles/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
 </head>
 <body>
     <jsp:include page="header.jsp" />

@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestione Prodotti - FitTrend Admin</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}../styles/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
 
 </head>
 <body>

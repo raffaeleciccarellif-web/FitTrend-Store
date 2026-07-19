@@ -5,7 +5,7 @@
               auth="Container"
               type="javax.sql.DataSource"
               driverClassName="com.mysql.cj.jdbc.Driver"
-              url="jdbc:mysql://localhost:3306/fittrend_store?useSSL=false&amp;serverTimezone=UTC"
+              url="jdbc:mysql://localhost:3306/fittrend_store?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true"
               username="root"
               password="Fittrend2026"
               maxTotal="20"

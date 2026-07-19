@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestione Rimborsi - FitTrend Store Admin</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}../styles/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
 </head>
 <body>
     <jsp:include page="header.jsp" />

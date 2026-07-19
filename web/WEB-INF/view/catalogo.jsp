@@ -15,8 +15,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Esplora il catalogo di FitTrend Store: accessori, abbigliamento e attrezzi per palestra e fitness.">
     <title>Catalogo — FitTrend Store</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}../styles/main.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}../styles/catalogo.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/catalogo.css">
 </head>
 <body>
 
