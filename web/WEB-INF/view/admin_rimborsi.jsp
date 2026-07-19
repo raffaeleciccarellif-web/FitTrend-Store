@@ -67,7 +67,7 @@
                                 <td><c:out value="${rimborso.ordineId}" /></td>
                                 <td><c:out value="${rimborso.utenteEmail}" /></td>
                                 <td>&euro; <c:out value="${rimborso.importo}" /></td>
-                                <td><c:out value="${rimborso.motivo}" /></td>
+                                <td class="td-motivo" title="<c:out value='${rimborso.motivo}'/>"><c:out value="${rimborso.motivo}" /></td>
                                 <td><c:out value="${rimborso.dataRichiesta}" /></td>
                                 <td><c:out value="${empty rimborso.dataElaborazione ? '-' : rimborso.dataElaborazione}" /></td>
                                 <td>

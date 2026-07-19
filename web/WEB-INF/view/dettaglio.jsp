@@ -44,6 +44,14 @@
 
     <main>
         <div class="container">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <a href="${pageContext.request.contextPath}/catalogo">Catalogo</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="${pageContext.request.contextPath}/catalogo?categoriaId=${prodotto.categoriaId}"><c:out value="${prodotto.categoriaNome}"/></a>
+                <span class="breadcrumb-sep">›</span>
+                <span class="breadcrumb-current"><c:out value="${prodotto.nome}"/></span>
+            </nav>
+
             <div class="card">
                 <div class="card-body">
                     <img src="${pageContext.request.contextPath}/${prodotto.immagine}" alt="<c:out value='${prodotto.nome}' />" class="card-img" />
@@ -65,6 +73,7 @@
                                     <div class="mb-md">
                                         <label for="quantita">Quantità:</label>
                                         <input type="number" id="quantita" name="quantita" value="1" min="1" max="${prodotto.quantitaDisponibile}">
+                                        <span class="field-hint">Max disponibili: <c:out value="${prodotto.quantitaDisponibile}"/> pezzi</span>
                                     </div>
                                     
                                     <button type="submit" class="btn">Aggiungi al Carrello</button>

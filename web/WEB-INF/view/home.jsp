@@ -50,6 +50,23 @@
             <a href="${pageContext.request.contextPath}/registrazione" class="btn btn-secondary">Registrati</a>
         </div>
     </div>
+
+    <div class="home-categorie">
+        <div class="container">
+            <h2 class="home-categorie-titolo">Esplora per categoria</h2>
+            <div class="categorie-grid">
+                <a href="${pageContext.request.contextPath}/catalogo?categoriaId=2" class="categoria-card">
+                    Abbigliamento
+                </a>
+                <a href="${pageContext.request.contextPath}/catalogo?categoriaId=1" class="categoria-card">
+                    Accessori
+                </a>
+                <a href="${pageContext.request.contextPath}/catalogo?categoriaId=3" class="categoria-card">
+                    Home Workout
+                </a>
+            </div>
+        </div>
+    </div>
 </main>
 
 <footer>

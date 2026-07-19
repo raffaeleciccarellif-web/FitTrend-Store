@@ -17,7 +17,7 @@
 
 <header>
     <div class="container">
-        <a href="${pageContext.request.contextPath}/home" class="logo">Fit<span>Trend</span></a>
+            <a href="${pageContext.request.contextPath}/home" class="btn btn-secondary btn-sm">&larr; Home</a>
     </div>
 </header>
 

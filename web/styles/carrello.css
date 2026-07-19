@@ -160,14 +160,14 @@ button.btn-secondary:hover {
     color: white !important;
 }
 
-/* Pulsante Aggiorna (teal) */
+/* Pulsante Aggiorna: stesso teal primario del sito */
 .btn-aggiorna {
-    background: var(--color-secondary, #38b2ac) !important;
+    background: var(--color-primary) !important;
     color: white !important;
 }
 
 .btn-aggiorna:hover {
-    background: #2c9e98 !important;
+    background: var(--color-primary-dark) !important;
     color: white !important;
 }
 
