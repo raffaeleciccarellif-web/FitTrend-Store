@@ -81,6 +81,75 @@ public class ProdottoDAO {
     }
 
     /**
+     * Recupera prodotti visibili ai clienti con filtri facoltativi e paginazione.
+     */
+    public Collection<Prodotto> doRetrieveByFilters(String nome, Integer categoriaId,
+                                                    BigDecimal prezzoMin, BigDecimal prezzoMax,
+                                                    String order, int offset, int limit) throws SQLException {
+        StringBuilder sql = new StringBuilder(SELECT_BASE);
+        sql.append("WHERE p.is_deleted = 0 ");
+
+        if (nome != null && !nome.isBlank())  sql.append("AND p.nome LIKE ? ");
+        if (categoriaId != null)              sql.append("AND p.categoria_id = ? ");
+        if (prezzoMin != null)                sql.append("AND p.prezzo >= ? ");
+        if (prezzoMax != null)                sql.append("AND p.prezzo <= ? ");
+
+        sql.append("ORDER BY ").append(safeOrder(order));
+        sql.append(" LIMIT ? OFFSET ?");
+
+        Collection<Prodotto> prodotti = new ArrayList<>();
+        try (Connection con = DbManager.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql.toString())) {
+
+            int idx = 1;
+            if (nome != null && !nome.isBlank())  ps.setString(idx++, "%" + nome + "%");
+            if (categoriaId != null)              ps.setInt(idx++, categoriaId);
+            if (prezzoMin != null)                ps.setBigDecimal(idx++, prezzoMin);
+            if (prezzoMax != null)                ps.setBigDecimal(idx++, prezzoMax);
+            ps.setInt(idx++, limit);
+            ps.setInt(idx, offset);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    prodotti.add(mapRow(rs));
+                }
+            }
+        }
+        return prodotti;
+    }
+
+    /**
+     * Conta il numero totale di prodotti filtrati.
+     */
+    public int countByFilters(String nome, Integer categoriaId,
+                              BigDecimal prezzoMin, BigDecimal prezzoMax) throws SQLException {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM prodotto p ");
+        sql.append("WHERE p.is_deleted = 0 ");
+
+        if (nome != null && !nome.isBlank())  sql.append("AND p.nome LIKE ? ");
+        if (categoriaId != null)              sql.append("AND p.categoria_id = ? ");
+        if (prezzoMin != null)                sql.append("AND p.prezzo >= ? ");
+        if (prezzoMax != null)                sql.append("AND p.prezzo <= ? ");
+
+        try (Connection con = DbManager.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql.toString())) {
+
+            int idx = 1;
+            if (nome != null && !nome.isBlank())  ps.setString(idx++, "%" + nome + "%");
+            if (categoriaId != null)              ps.setInt(idx++, categoriaId);
+            if (prezzoMin != null)                ps.setBigDecimal(idx++, prezzoMin);
+            if (prezzoMax != null)                ps.setBigDecimal(idx++, prezzoMax);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        }
+        return 0;
+    }
+
+    /**
      * Recupera un prodotto per chiave primaria (include is_deleted per uso admin).
      *
      * @param id identificativo del prodotto
@@ -114,6 +183,40 @@ public class ProdottoDAO {
             }
         }
         return prodotti;
+    }
+
+    /**
+     * Recupera TUTTI i prodotti inclusi quelli soft-deleted (solo per admin) con paginazione.
+     */
+    public Collection<Prodotto> doRetrieveAllForAdmin(int offset, int limit) throws SQLException {
+        String sql = SELECT_BASE + "ORDER BY p.id DESC LIMIT ? OFFSET ?";
+        Collection<Prodotto> prodotti = new ArrayList<>();
+        try (Connection con = DbManager.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, limit);
+            ps.setInt(2, offset);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    prodotti.add(mapRow(rs));
+                }
+            }
+        }
+        return prodotti;
+    }
+
+    /**
+     * Conta TUTTI i prodotti inclusi quelli soft-deleted (solo per admin).
+     */
+    public int countAllForAdmin() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM prodotto p";
+        try (Connection con = DbManager.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
     }
 
     /**

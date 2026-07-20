@@ -117,6 +117,9 @@
                 </tbody>
                 </table>
             </div>
+            
+            <%-- Componente di Paginazione --%>
+            <jsp:include page="paginazione.jsp" />
         </div>
     </main>
 

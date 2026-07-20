@@ -45,8 +45,43 @@ public class AdminOrdiniServlet extends HttpServlet {
 
         try {
             OrdineDAO dao = new OrdineDAO();
-            Collection<Ordine> ordini = dao.doRetrieveByFilters(dataInizio, dataFine, utenteId, stato);
+            
+            // Paginazione
+            int page = 1;
+            String pageParam = request.getParameter("page");
+            if (pageParam != null && !pageParam.isBlank()) {
+                try {
+                    page = Integer.parseInt(pageParam.trim());
+                    if (page < 1) page = 1;
+                } catch (NumberFormatException e) {
+                    // ignora e usa 1
+                }
+            }
+            int limit = 15; // ordini per pagina in admin
+            int offset = (page - 1) * limit;
+
+            int totaleOrdini = dao.countByFilters(dataInizio, dataFine, utenteId, stato);
+            int totalePagine = (int) Math.ceil((double) totaleOrdini / limit);
+
+            Collection<Ordine> ordini = dao.doRetrieveByFilters(dataInizio, dataFine, utenteId, stato, offset, limit);
             request.setAttribute("ordini", ordini);
+            
+            // Attributi per la paginazione
+            request.setAttribute("paginaCorrente", page);
+            request.setAttribute("totalePagine", totalePagine);
+            
+            // Costruzione URL base per mantenere i filtri nella paginazione
+            StringBuilder baseUrl = new StringBuilder(request.getContextPath()).append("/admin/ordini?");
+            if (dataInizio != null) baseUrl.append("dataInizio=").append(dataInizio).append("&");
+            if (dataFine != null) baseUrl.append("dataFine=").append(dataFine).append("&");
+            if (utenteId != null) baseUrl.append("utenteId=").append(utenteId).append("&");
+            if (stato != null) baseUrl.append("stato=").append(stato).append("&");
+            
+            String urlString = baseUrl.toString();
+            if (urlString.endsWith("&") || urlString.endsWith("?")) {
+                urlString = urlString.substring(0, urlString.length() - 1);
+            }
+            request.setAttribute("baseUrl", urlString);
             request.getRequestDispatcher("/WEB-INF/view/admin_ordini.jsp").forward(request, response);
         } catch (SQLException e) {
             log("Errore:", e);

@@ -73,12 +73,48 @@ public class CatalogoServlet extends HttpServlet {
             ProdottoDAO  prodottoDAO  = new ProdottoDAO();
 
             Collection<Categoria> categorie = categoriaDAO.doRetrieveAll();
-            Collection<Prodotto>  prodotti  = prodottoDAO.doRetrieveByFilters(
-                    nome, categoriaId, prezzoMin, prezzoMax, order);
+
+            // Paginazione
+            int page = 1;
+            String pageParam = request.getParameter("page");
+            if (pageParam != null && !pageParam.isBlank()) {
+                try {
+                    page = Integer.parseInt(pageParam.trim());
+                    if (page < 1) page = 1;
+                } catch (NumberFormatException e) {
+                    // ignora e usa 1
+                }
+            }
+            int limit = 12; // prodotti per pagina nel catalogo
+            int offset = (page - 1) * limit;
+
+            int totaleProdotti = prodottoDAO.countByFilters(nome, categoriaId, prezzoMin, prezzoMax);
+            int totalePagine = (int) Math.ceil((double) totaleProdotti / limit);
+
+            Collection<Prodotto> prodotti = prodottoDAO.doRetrieveByFilters(
+                    nome, categoriaId, prezzoMin, prezzoMax, order, offset, limit);
 
             // ── Popolamento attributi request ──────────────────────────────────
             request.setAttribute("categorie",   categorie);
             request.setAttribute("prodotti",     prodotti);
+
+            // Attributi per la paginazione
+            request.setAttribute("paginaCorrente", page);
+            request.setAttribute("totalePagine", totalePagine);
+            
+            // Costruzione URL base per mantenere i filtri nella paginazione
+            StringBuilder baseUrl = new StringBuilder(request.getContextPath()).append("/catalogo?");
+            if (nome != null) baseUrl.append("nome=").append(nome).append("&");
+            if (categoriaId != null) baseUrl.append("categoriaId=").append(categoriaId).append("&");
+            if (prezzoMin != null) baseUrl.append("prezzoMin=").append(prezzoMin).append("&");
+            if (prezzoMax != null) baseUrl.append("prezzoMax=").append(prezzoMax).append("&");
+            if (order != null) baseUrl.append("order=").append(order).append("&");
+            // Rimuovi ultimo & se presente, e se la query string è vuota rimuovi anche il ?
+            String urlString = baseUrl.toString();
+            if (urlString.endsWith("&") || urlString.endsWith("?")) {
+                urlString = urlString.substring(0, urlString.length() - 1);
+            }
+            request.setAttribute("baseUrl", urlString);
 
             // Ripopola i filtri per mantenere i valori nel form
             request.setAttribute("filtroNome",        nome        != null ? nome       : "");

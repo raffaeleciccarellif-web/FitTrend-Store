@@ -43,15 +43,32 @@ public class OrdiniServlet extends HttpServlet {
             DettaglioOrdineDAO dettaglioDAO = new DettaglioOrdineDAO();
             RimborsoDAO rimborsoDAO = new RimborsoDAO();
             
+            // Paginazione
+            int page = 1;
+            String pageParam = request.getParameter("page");
+            if (pageParam != null && !pageParam.isBlank()) {
+                try {
+                    page = Integer.parseInt(pageParam.trim());
+                    if (page < 1) page = 1;
+                } catch (NumberFormatException e) {
+                    // ignora e usa 1
+                }
+            }
+            int limit = 5; // ordini per pagina
+            int offset = (page - 1) * limit;
+
+            int totaleOrdini = ordineDAO.countByUtente(utente.getId());
+            int totalePagine = (int) Math.ceil((double) totaleOrdini / limit);
+
             // Recupera ordini dell'utente
-            Collection<Ordine> ordini = ordineDAO.doRetrieveByUtente(utente.getId());
+            Collection<Ordine> ordini = ordineDAO.doRetrieveByUtente(utente.getId(), offset, limit);
             
             // Recupera i dettagli storici per ciascun ordine
             for (Ordine o : ordini) {
                 o.setDettagli(new java.util.ArrayList<>(dettaglioDAO.doRetrieveByOrdine(o.getId())));
             }
 
-            // Recupera i rimborsi dell'utente e li mappa per ordine_id
+            // Recupera i rimborsi dell'utente e li mappa per ordine_id (carica tutti per la mappa)
             Collection<Rimborso> rimborsiList = rimborsoDAO.doRetrieveByUtente(utente.getId());
             Map<Integer, Rimborso> rimborsiMap = new HashMap<>();
             for (Rimborso r : rimborsiList) {
@@ -60,6 +77,11 @@ public class OrdiniServlet extends HttpServlet {
 
             request.setAttribute("ordini", ordini);
             request.setAttribute("rimborsi", rimborsiMap);
+            
+            // Attributi per la paginazione
+            request.setAttribute("paginaCorrente", page);
+            request.setAttribute("totalePagine", totalePagine);
+            request.setAttribute("baseUrl", request.getContextPath() + "/ordini");
             
             request.getRequestDispatcher("/WEB-INF/view/ordini.jsp").forward(request, response);
             
