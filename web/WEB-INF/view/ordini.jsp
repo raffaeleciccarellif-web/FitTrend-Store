@@ -16,14 +16,24 @@
     <jsp:include page="header.jsp" />
 
     <main class="container">
-        <h1>I Miei Ordini</h1>
 
+        <%-- Page header --%>
+        <div class="ordini-page-header">
+            <div class="ordini-page-icon"></div>
+            <div>
+                <h1 class="ordini-page-title">I Miei Ordini</h1>
+                <p class="ordini-page-subtitle">Consulta lo storico dei tuoi acquisti e gestisci i rimborsi</p>
+            </div>
+        </div>
+
+        <%-- Error message --%>
         <c:if test="${not empty errore}">
             <div class="error-msg">
                 <c:out value="${errore}" />
             </div>
         </c:if>
-        
+
+        <%-- Success message --%>
         <c:if test="${not empty messaggio}">
             <div class="success-msg">
                 <c:out value="${messaggio}" />
@@ -32,59 +42,109 @@
 
         <c:choose>
             <c:when test="${empty ordini}">
-                <p>Non hai ancora effettuato nessun ordine.</p>
+                <div class="ordini-empty">
+
+                    <h2>Nessun ordine trovato</h2>
+                    <p>Non hai ancora effettuato nessun ordine. Inizia a fare shopping!</p>
+                    <a href="${pageContext.request.contextPath}/catalogo" class="btn">Vai al Catalogo</a>
+                </div>
             </c:when>
             <c:otherwise>
                 <div class="ordini-list">
                     <c:forEach var="ordine" items="${ordini}">
                         <div class="ordine-card">
-                            <div class="ordine-header">
-                                <h3>Ordine #<c:out value="${ordine.id}" /></h3>
-                                <p><strong>Data:</strong> <c:out value="${ordine.dataOrdine}" /></p>
-                                <p>
-                                    <strong>Stato:</strong>
-                                    <span class="status-badge ${ordine.stato}">
-                                        <c:out value="${ordine.statoLabel}" />
+
+                            <%-- Card top bar with order number and status --%>
+                            <div class="ordine-topbar">
+                                <div class="ordine-topbar-left">
+                                    <span class="ordine-numero">Ordine #<c:out value="${ordine.id}" /></span>
+                                    <span class="ordine-data">
+                                        <c:out value="${ordine.dataOrdine}" />
                                     </span>
-                                </p>
-                                <p><strong>Totale:</strong> &euro; <c:out value="${ordine.totale}" /></p>
-                                <p><strong>Indirizzo:</strong> <c:out value="${ordine.indirizzoSpedizione}, ${ordine.capSpedizione} ${ordine.cittaSpedizione}" /></p>
-                                <p><strong>Metodo di pagamento:</strong> <c:out value="${ordine.metodoPagamento}" /></p>
+                                </div>
+                                <span class="status-badge ${ordine.stato}">
+                                    <c:out value="${ordine.statoLabel}" />
+                                </span>
                             </div>
-                            
+
+                            <%-- Order info grid --%>
+                            <div class="ordine-info-grid">
+                                <div class="ordine-info-item">
+                                    <span class="ordine-info-label">Totale</span>
+                                    <span class="ordine-info-value ordine-totale">&euro; <c:out value="${ordine.totale}" /></span>
+                                </div>
+                                <div class="ordine-info-item">
+                                    <span class="ordine-info-label">Indirizzo di spedizione</span>
+                                    <span class="ordine-info-value">
+                                        <c:out value="${ordine.indirizzoSpedizione}" />,
+                                        <c:out value="${ordine.capSpedizione}" />
+                                        <c:out value="${ordine.cittaSpedizione}" />
+                                    </span>
+                                </div>
+                                <div class="ordine-info-item">
+                                    <span class="ordine-info-label">Metodo di pagamento</span>
+                                    <span class="ordine-info-value"><c:out value="${ordine.metodoPagamento}" /></span>
+                                </div>
+                            </div>
+
+                            <%-- Product details table --%>
                             <div class="ordine-dettagli">
-                                <h4>Dettagli Prodotti</h4>
-                                <ul>
-                                    <c:forEach var="dettaglio" items="${ordine.dettagli}">
-                                        <li>
-                                            <c:out value="${dettaglio.quantita}x ${dettaglio.nomeProdottoAcquisto}" /> - 
-                                            &euro; <c:out value="${dettaglio.prezzoAcquisto}" /> cad.
-                                            (Subtotale: &euro; <c:out value="${dettaglio.subtotale}" />)
-                                        </li>
-                                    </c:forEach>
-                                </ul>
+                                <h4 class="ordine-dettagli-title">Prodotti ordinati</h4>
+                                <div class="table-responsive">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Prodotto</th>
+                                                <th>Quantit&agrave;</th>
+                                                <th>Prezzo unitario</th>
+                                                <th>Subtotale</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="dettaglio" items="${ordine.dettagli}">
+                                                <tr>
+                                                    <td><c:out value="${dettaglio.nomeProdottoAcquisto}" /></td>
+                                                    <td><c:out value="${dettaglio.quantita}" /></td>
+                                                    <td>&euro; <c:out value="${dettaglio.prezzoAcquisto}" /></td>
+                                                    <td><strong>&euro; <c:out value="${dettaglio.subtotale}" /></strong></td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                            
+
+                            <%-- Refund section --%>
                             <div class="ordine-rimborso">
                                 <c:set var="rimborso" value="${rimborsi[ordine.id]}" />
-                                
+
                                 <c:choose>
                                     <c:when test="${not empty rimborso}">
                                         <div class="rimborso-info">
-                                            <h4>Stato Rimborso</h4>
-                                            <p><strong>Stato:</strong> <c:out value="${rimborso.statoLabel}" /></p>
-                                            <p><strong>Importo:</strong> &euro; <c:out value="${rimborso.importo}" /></p>
+                                            <h4 class="rimborso-info-title">Stato Rimborso</h4>
+                                            <div class="rimborso-info-grid">
+                                                <div>
+                                                    <span class="ordine-info-label">Stato</span>
+                                                    <span class="status-badge ${rimborso.stato}">
+                                                        <c:out value="${rimborso.statoLabel}" />
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span class="ordine-info-label">Importo</span>
+                                                    <span class="ordine-info-value ordine-totale">&euro; <c:out value="${rimborso.importo}" /></span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </c:when>
                                     <c:otherwise>
                                         <c:if test="${ordine.stato == 'consegnato' || ordine.stato == 'annullato'}">
-                                            <form action="${pageContext.request.contextPath}/rimborsi" method="post" class="inline-form">
+                                            <form action="${pageContext.request.contextPath}/rimborsi" method="post" class="rimborso-form">
                                                 <input type="hidden" name="action" value="richiedi">
                                                 <input type="hidden" name="ordineId" value="${ordine.id}">
                                                 <label>
-                                                    <input type="text" name="motivo" placeholder="Motivo del rimborso" required class="flex-1">
+                                                    <input type="text" name="motivo" placeholder="Descrivi il motivo del rimborso..." required>
                                                 </label>
-                                                <button type="submit" class="btn btn-sm btn-secondary">Richiedi Rimborso</button>
+                                                <button type="submit" class="btn btn-secondary btn-sm">Richiedi Rimborso</button>
                                             </form>
                                         </c:if>
                                     </c:otherwise>
