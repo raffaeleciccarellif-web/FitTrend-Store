@@ -19,7 +19,6 @@
 
         <%-- Page header --%>
         <div class="ordini-page-header">
-            <div class="ordini-page-icon"></div>
             <div>
                 <h1 class="ordini-page-title">I Miei Ordini</h1>
                 <p class="ordini-page-subtitle">Consulta lo storico dei tuoi acquisti e gestisci i rimborsi</p>
@@ -153,6 +152,9 @@
                         </div>
                     </c:forEach>
                 </div>
+                
+                <%-- Componente di Paginazione --%>
+                <jsp:include page="paginazione.jsp" />
             </c:otherwise>
         </c:choose>
     </main>

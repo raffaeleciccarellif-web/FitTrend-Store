@@ -38,6 +38,39 @@ public class RimborsoDAO {
         return lista;
     }
 
+    // Recupera i rimborsi di un utente con paginazione
+    public Collection<Rimborso> doRetrieveByUtente(int utenteId, int offset, int limit) throws SQLException {
+        String sql = "SELECT r.*, o.utente_id, u.email AS utente_email " +
+                     "FROM Rimborso r " +
+                     "JOIN `Ordine` o ON o.id = r.ordine_id " +
+                     "JOIN Utente u ON u.id = o.utente_id " +
+                     "WHERE o.utente_id = ? ORDER BY r.data_richiesta DESC LIMIT ? OFFSET ?";
+        List<Rimborso> lista = new ArrayList<>();
+        try (Connection con = DbManager.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, utenteId);
+            ps.setInt(2, limit);
+            ps.setInt(3, offset);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) lista.add(mapRow(rs));
+            }
+        }
+        return lista;
+    }
+
+    // Conta i rimborsi di un utente
+    public int countByUtente(int utenteId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Rimborso r JOIN `Ordine` o ON o.id = r.ordine_id WHERE o.utente_id = ?";
+        try (Connection con = DbManager.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, utenteId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
     // Recupera tutti i rimborsi (admin), filtrati per stato se non null, ordinati per data decrescente
     public Collection<Rimborso> doRetrieveAll(String stato) throws SQLException {
         StringBuilder sql = new StringBuilder(
@@ -60,6 +93,50 @@ public class RimborsoDAO {
             }
         }
         return lista;
+    }
+
+    // Recupera tutti i rimborsi (admin) con paginazione
+    public Collection<Rimborso> doRetrieveAll(String stato, int offset, int limit) throws SQLException {
+        StringBuilder sql = new StringBuilder(
+                "SELECT r.*, o.utente_id, u.email AS utente_email " +
+                "FROM Rimborso r " +
+                "JOIN `Ordine` o ON o.id = r.ordine_id " +
+                "JOIN Utente u ON u.id = o.utente_id");
+
+        boolean filtraStato = stato != null && !stato.isBlank() && STATI_VALIDI.contains(stato);
+        if (filtraStato) sql.append(" WHERE r.stato = ?");
+        sql.append(" ORDER BY r.data_richiesta DESC LIMIT ? OFFSET ?");
+
+        List<Rimborso> lista = new ArrayList<>();
+        try (Connection con = DbManager.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql.toString())) {
+            int paramIndex = 1;
+            if (filtraStato) {
+                ps.setString(paramIndex++, stato);
+            }
+            ps.setInt(paramIndex++, limit);
+            ps.setInt(paramIndex, offset);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) lista.add(mapRow(rs));
+            }
+        }
+        return lista;
+    }
+
+    // Conta tutti i rimborsi (admin)
+    public int countAll(String stato) throws SQLException {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM Rimborso r");
+        boolean filtraStato = stato != null && !stato.isBlank() && STATI_VALIDI.contains(stato);
+        if (filtraStato) sql.append(" WHERE r.stato = ?");
+
+        try (Connection con = DbManager.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql.toString())) {
+            if (filtraStato) ps.setString(1, stato);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt(1);
+            }
+        }
+        return 0;
     }
 
     // Crea una nuova richiesta di rimborso in transazione.

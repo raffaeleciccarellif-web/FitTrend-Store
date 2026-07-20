@@ -33,14 +33,34 @@ public class AdminProdottiServlet extends HttpServlet {
         }
 
         try {
+            // Paginazione
+            int page = 1;
+            String pageParam = request.getParameter("page");
+            if (pageParam != null && !pageParam.isBlank()) {
+                try {
+                    page = Integer.parseInt(pageParam.trim());
+                    if (page < 1) page = 1;
+                } catch (NumberFormatException e) {}
+            }
+            int limit = 10;
+            int offset = (page - 1) * limit;
+
+            int totaleProdotti = prodottoDAO.countAllForAdmin();
+            int totalePagine = (int) Math.ceil((double) totaleProdotti / limit);
+
             if ("visualizza".equals(action)) {
                 // Carica categorie e prodotti per la vista
                 Collection<Categoria> categorie = categoriaDAO.doRetrieveAll();
-                Collection<Prodotto> prodotti = prodottoDAO.doRetrieveAllForAdmin();
+                Collection<Prodotto> prodotti = prodottoDAO.doRetrieveAllForAdmin(offset, limit);
                 
                 request.setAttribute("categorie", categorie);
                 request.setAttribute("prodotti", prodotti);
                 
+                // Attributi per la paginazione
+                request.setAttribute("paginaCorrente", page);
+                request.setAttribute("totalePagine", totalePagine);
+                request.setAttribute("baseUrl", request.getContextPath() + "/admin/prodotti?action=visualizza");
+
                 request.getRequestDispatcher("/WEB-INF/view/admin_catalogo.jsp").forward(request, response);
             } else if ("modifica".equals(action)) {
                 // Pre-popola il form
@@ -52,10 +72,15 @@ public class AdminProdottiServlet extends HttpServlet {
                 
                 // Ricarica la vista
                 Collection<Categoria> categorie = categoriaDAO.doRetrieveAll();
-                Collection<Prodotto> prodotti = prodottoDAO.doRetrieveAllForAdmin();
+                Collection<Prodotto> prodotti = prodottoDAO.doRetrieveAllForAdmin(offset, limit);
                 request.setAttribute("categorie", categorie);
                 request.setAttribute("prodotti", prodotti);
                 
+                // Attributi per la paginazione
+                request.setAttribute("paginaCorrente", page);
+                request.setAttribute("totalePagine", totalePagine);
+                request.setAttribute("baseUrl", request.getContextPath() + "/admin/prodotti?action=modifica&id=" + id);
+
                 request.getRequestDispatcher("/WEB-INF/view/admin_catalogo.jsp").forward(request, response);
             }
         } catch (SQLException e) {

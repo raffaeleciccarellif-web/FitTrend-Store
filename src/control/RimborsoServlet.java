@@ -24,8 +24,31 @@ public class RimborsoServlet extends HttpServlet {
 
         try {
             RimborsoDAO rimborsoDAO = new RimborsoDAO();
-            Collection<Rimborso> rimborsi = rimborsoDAO.doRetrieveByUtente(utente.getId());
+            
+            // Paginazione
+            int page = 1;
+            String pageParam = request.getParameter("page");
+            if (pageParam != null && !pageParam.isBlank()) {
+                try {
+                    page = Integer.parseInt(pageParam.trim());
+                    if (page < 1) page = 1;
+                } catch (NumberFormatException e) {
+                    // ignora e usa 1
+                }
+            }
+            int limit = 10; // rimborsi per pagina
+            int offset = (page - 1) * limit;
+
+            int totaleRimborsi = rimborsoDAO.countByUtente(utente.getId());
+            int totalePagine = (int) Math.ceil((double) totaleRimborsi / limit);
+
+            Collection<Rimborso> rimborsi = rimborsoDAO.doRetrieveByUtente(utente.getId(), offset, limit);
             request.setAttribute("rimborsi", rimborsi);
+            
+            // Attributi per la paginazione
+            request.setAttribute("paginaCorrente", page);
+            request.setAttribute("totalePagine", totalePagine);
+            request.setAttribute("baseUrl", request.getContextPath() + "/rimborsi");
         } catch (Exception e) {
             log("Errore nel caricamento dei rimborsi utente:", e);
             request.setAttribute("errore", "Si è verificato un errore nel caricamento dei rimborsi.");

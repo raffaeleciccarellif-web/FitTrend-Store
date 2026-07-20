@@ -152,6 +152,35 @@ public class OrdineDAO {
         return ordini;
     }
 
+    // Recupera tutti gli ordini di un utente con paginazione
+    public Collection<Ordine> doRetrieveByUtente(int utenteId, int offset, int limit) throws SQLException {
+        String sql = "SELECT * FROM `Ordine` WHERE utente_id = ? ORDER BY data_ordine DESC LIMIT ? OFFSET ?";
+        List<Ordine> ordini = new ArrayList<>();
+        try (Connection con = DbManager.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, utenteId);
+            ps.setInt(2, limit);
+            ps.setInt(3, offset);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) ordini.add(mapRow(rs));
+            }
+        }
+        return ordini;
+    }
+
+    // Conta tutti gli ordini di un utente
+    public int countByUtente(int utenteId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM `Ordine` WHERE utente_id = ?";
+        try (Connection con = DbManager.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, utenteId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
     // Recupera ordini con filtri opzionali (admin). I parametri null vengono ignorati.
     public Collection<Ordine> doRetrieveByFilters(String dataInizio, String dataFine,
                                                    Integer utenteId, String stato) throws SQLException {
@@ -186,6 +215,78 @@ public class OrdineDAO {
             }
         }
         return ordini;
+    }
+
+    // Recupera ordini con filtri opzionali (admin) con paginazione.
+    public Collection<Ordine> doRetrieveByFilters(String dataInizio, String dataFine,
+                                                   Integer utenteId, String stato, int offset, int limit) throws SQLException {
+        List<Ordine> ordini = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM `Ordine` WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        if (dataInizio != null && !dataInizio.isBlank()) {
+            sql.append(" AND data_ordine >= ?");
+            params.add(dataInizio + " 00:00:00");
+        }
+        if (dataFine != null && !dataFine.isBlank()) {
+            sql.append(" AND data_ordine <= ?");
+            params.add(dataFine + " 23:59:59");
+        }
+        if (utenteId != null) {
+            sql.append(" AND utente_id = ?");
+            params.add(utenteId);
+        }
+        // Filtro stato solo se il valore è nella whitelist
+        if (stato != null && !stato.isBlank() && STATI_VALIDI.contains(stato)) {
+            sql.append(" AND stato = ?");
+            params.add(stato);
+        }
+        sql.append(" ORDER BY data_ordine DESC LIMIT ? OFFSET ?");
+
+        try (Connection con = DbManager.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) ps.setObject(i + 1, params.get(i));
+            ps.setInt(params.size() + 1, limit);
+            ps.setInt(params.size() + 2, offset);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) ordini.add(mapRow(rs));
+            }
+        }
+        return ordini;
+    }
+
+    // Conta ordini con filtri opzionali (admin).
+    public int countByFilters(String dataInizio, String dataFine,
+                               Integer utenteId, String stato) throws SQLException {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM `Ordine` WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        if (dataInizio != null && !dataInizio.isBlank()) {
+            sql.append(" AND data_ordine >= ?");
+            params.add(dataInizio + " 00:00:00");
+        }
+        if (dataFine != null && !dataFine.isBlank()) {
+            sql.append(" AND data_ordine <= ?");
+            params.add(dataFine + " 23:59:59");
+        }
+        if (utenteId != null) {
+            sql.append(" AND utente_id = ?");
+            params.add(utenteId);
+        }
+        // Filtro stato solo se il valore è nella whitelist
+        if (stato != null && !stato.isBlank() && STATI_VALIDI.contains(stato)) {
+            sql.append(" AND stato = ?");
+            params.add(stato);
+        }
+
+        try (Connection con = DbManager.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) ps.setObject(i + 1, params.get(i));
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt(1);
+            }
+        }
+        return 0;
     }
 
 

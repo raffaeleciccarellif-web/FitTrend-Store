@@ -36,8 +36,40 @@ public class AdminRimborsiServlet extends HttpServlet {
 
         try {
             RimborsoDAO dao = new RimborsoDAO();
-            Collection<Rimborso> rimborsi = dao.doRetrieveAll(stato);
+            
+            // Paginazione
+            int page = 1;
+            String pageParam = request.getParameter("page");
+            if (pageParam != null && !pageParam.isBlank()) {
+                try {
+                    page = Integer.parseInt(pageParam.trim());
+                    if (page < 1) page = 1;
+                } catch (NumberFormatException e) {
+                    // ignora e usa 1
+                }
+            }
+            int limit = 15; // rimborsi per pagina in admin
+            int offset = (page - 1) * limit;
+
+            int totaleRimborsi = dao.countAll(stato);
+            int totalePagine = (int) Math.ceil((double) totaleRimborsi / limit);
+
+            Collection<Rimborso> rimborsi = dao.doRetrieveAll(stato, offset, limit);
             request.setAttribute("rimborsi", rimborsi);
+            
+            // Attributi per la paginazione
+            request.setAttribute("paginaCorrente", page);
+            request.setAttribute("totalePagine", totalePagine);
+            
+            // Costruzione URL base per mantenere i filtri nella paginazione
+            StringBuilder baseUrl = new StringBuilder(request.getContextPath()).append("/admin/rimborsi?");
+            if (stato != null) baseUrl.append("stato=").append(stato).append("&");
+            
+            String urlString = baseUrl.toString();
+            if (urlString.endsWith("&") || urlString.endsWith("?")) {
+                urlString = urlString.substring(0, urlString.length() - 1);
+            }
+            request.setAttribute("baseUrl", urlString);
             request.getRequestDispatcher("/WEB-INF/view/admin_rimborsi.jsp").forward(request, response);
         } catch (SQLException e) {
             log("Errore:", e);

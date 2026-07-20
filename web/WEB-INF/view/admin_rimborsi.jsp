@@ -103,6 +103,9 @@
             </tbody>
         </table>
         </div>
+        
+        <%-- Componente di Paginazione --%>
+        <jsp:include page="paginazione.jsp" />
     </main>
 
     <jsp:include page="footer.jsp" />

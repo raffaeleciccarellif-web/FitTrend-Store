@@ -115,6 +115,9 @@
                         </article>
                     </c:forEach>
                 </div>
+                
+                <%-- Componente di Paginazione --%>
+                <jsp:include page="paginazione.jsp" />
             </c:otherwise>
         </c:choose>
 
