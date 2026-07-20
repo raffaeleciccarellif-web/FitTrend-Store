@@ -1,17 +1,48 @@
 package control;
 
 import dao.RimborsoDAO;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Rimborso;
 import model.Utente;
 
 import java.io.IOException;
+import java.util.Collection;
 
 @WebServlet("/rimborsi")
 public class RimborsoServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        Utente utente = (Utente) request.getSession().getAttribute("utenteLoggato");
+
+        try {
+            RimborsoDAO rimborsoDAO = new RimborsoDAO();
+            Collection<Rimborso> rimborsi = rimborsoDAO.doRetrieveByUtente(utente.getId());
+            request.setAttribute("rimborsi", rimborsi);
+        } catch (Exception e) {
+            log("Errore nel caricamento dei rimborsi utente:", e);
+            request.setAttribute("errore", "Si è verificato un errore nel caricamento dei rimborsi.");
+        }
+
+        HttpSession session = request.getSession();
+        if (session.getAttribute("messaggio") != null) {
+            request.setAttribute("messaggio", session.getAttribute("messaggio"));
+            session.removeAttribute("messaggio");
+        }
+        if (session.getAttribute("errore") != null) {
+            request.setAttribute("errore", session.getAttribute("errore"));
+            session.removeAttribute("errore");
+        }
+
+        request.getRequestDispatcher("/WEB-INF/view/rimborsi.jsp").forward(request, response);
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
