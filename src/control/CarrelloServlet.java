@@ -15,6 +15,7 @@ import java.io.IOException;
 
 @WebServlet("/carrello")
 public class CarrelloServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
     private final ProdottoDAO prodottoDAO = new ProdottoDAO();
 

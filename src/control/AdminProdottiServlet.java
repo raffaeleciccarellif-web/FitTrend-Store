@@ -17,6 +17,7 @@ import java.util.Collection;
 
 @WebServlet("/admin/prodotti")
 public class AdminProdottiServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
     private final ProdottoDAO prodottoDAO = new ProdottoDAO();
     private final CategoriaDAO categoriaDAO = new CategoriaDAO();

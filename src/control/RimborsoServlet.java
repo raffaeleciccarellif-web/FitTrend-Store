@@ -15,6 +15,7 @@ import java.util.Collection;
 
 @WebServlet("/rimborsi")
 public class RimborsoServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

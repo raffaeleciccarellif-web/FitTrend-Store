@@ -16,6 +16,7 @@ import java.sql.SQLException;
 
 @WebServlet("/checkout")
 public class CheckoutServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
     private final OrdineDAO ordineDAO = new OrdineDAO();
 
@@ -58,9 +59,9 @@ public class CheckoutServlet extends HttpServlet {
         Utente utente = (Utente) session.getAttribute("utenteLoggato");
 
         // Lettura parametri dal form
-        String indirizzo       = trim(request.getParameter("indirizzo"));
-        String citta           = trim(request.getParameter("citta"));
-        String cap             = trim(request.getParameter("cap"));
+        String indirizzo       = trim(request.getParameter("indirizzoSpedizione"));
+        String citta           = trim(request.getParameter("cittaSpedizione"));
+        String cap             = trim(request.getParameter("capSpedizione"));
         String metodoPagamento = trim(request.getParameter("metodoPagamento"));
         String numeroCarta     = trim(request.getParameter("numeroCarta")); // solo per validazione locale, non salvato
 
