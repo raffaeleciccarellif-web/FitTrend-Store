@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - FitTrend Store</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
-    <script src="${pageContext.request.contextPath}../scripts/login-validation.js" defer></script>
+    <script src="${pageContext.request.contextPath}/scripts/login-validation.js" defer></script>
 </head>
 <body>
 

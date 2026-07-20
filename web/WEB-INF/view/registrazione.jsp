@@ -66,7 +66,7 @@
 
 <jsp:include page="footer.jsp" />
 
-<script src="${pageContext.request.contextPath}../scripts/registrazione-validation.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/registrazione-validation.js"></script>
 <script>
 function togglePassword(inputId, btn) {
     var input = document.getElementById(inputId);

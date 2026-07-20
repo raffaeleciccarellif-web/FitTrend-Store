@@ -12,7 +12,7 @@
     <title>Carrello - FitTrend Store</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/carrello.css">
-    <script src="${pageContext.request.contextPath}../scripts/cart.js" defer></script>
+    <script src="${pageContext.request.contextPath}/scripts/cart.js" defer></script>
 </head>
 <body>
     <header>
