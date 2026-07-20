@@ -177,6 +177,6 @@
 
     <jsp:include page="footer.jsp" />
 
-    <script src="${pageContext.request.contextPath}scripts/checkout-validation.js"></script>
+    <script src="${pageContext.request.contextPath}/scripts/checkout-validation.js"></script>
 </body>
 </html>
