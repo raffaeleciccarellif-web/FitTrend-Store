@@ -20,17 +20,7 @@
 </head>
 <body>
 
-<header>
-    <div class="container">
-        <a href="${pageContext.request.contextPath}/home" class="logo">Fit<span>Trend</span></a>
-        <nav>
-            <a href="${pageContext.request.contextPath}/catalogo" class="active">Catalogo</a>
-            <a href="${pageContext.request.contextPath}/login">Accedi</a>
-            <a href="${pageContext.request.contextPath}/registrazione">Registrati</a>
-            <a href="${pageContext.request.contextPath}/carrello?action=visualizza">Carrello</a>
-        </nav>
-    </div>
-</header>
+<jsp:include page="header.jsp" />
 
 <main>
     <div class="container">
@@ -131,11 +121,7 @@
     </div>
 </main>
 
-<footer>
-    <div class="container">
-        <p>&copy; 2026 FitTrend Store &mdash; Progetto TSW</p>
-    </div>
-</footer>
+<jsp:include page="footer.jsp" />
 
 </body>
 </html>

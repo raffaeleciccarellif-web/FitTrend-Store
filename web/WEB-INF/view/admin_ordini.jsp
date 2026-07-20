@@ -25,90 +25,98 @@
             <div class="success-msg"><c:out value="${messaggio}" /></div>
         </c:if>
 
-        <form action="${pageContext.request.contextPath}/admin/ordini" method="get" class="filters">
-            <div class="form-group">
-                <label for="dataInizio">Data Inizio:</label>
-                <input type="date" id="dataInizio" name="dataInizio" value="<c:out value='${param.dataInizio}'/>">
-            </div>
-            <div class="form-group">
-                <label for="dataFine">Data Fine:</label>
-                <input type="date" id="dataFine" name="dataFine" value="<c:out value='${param.dataFine}'/>">
-            </div>
-            <div class="form-group">
-                <label for="utenteId">ID Utente:</label>
-                <input type="number" id="utenteId" name="utenteId" value="<c:out value='${param.utenteId}'/>">
-            </div>
-            <div class="form-group">
-                <label for="stato">Stato:</label>
-                <select id="stato" name="stato">
-                    <option value="">Tutti</option>
-                    <option value="in_elaborazione" <c:if test="${param.stato == 'in_elaborazione'}">selected</c:if>>In Elaborazione</option>
-                    <option value="in_consegna" <c:if test="${param.stato == 'in_consegna'}">selected</c:if>>In Consegna</option>
-                    <option value="consegnato" <c:if test="${param.stato == 'consegnato'}">selected</c:if>>Consegnato</option>
-                    <option value="annullato" <c:if test="${param.stato == 'annullato'}">selected</c:if>>Annullato</option>
-                </select>
-            </div>
-            <button type="submit" class="btn">Filtra</button>
-            <a href="${pageContext.request.contextPath}/admin/ordini" class="btn btn-secondary">Reset</a>
-        </form>
+        <div class="admin-filters">
+            <form action="${pageContext.request.contextPath}/admin/ordini" method="get">
+                <div class="admin-filters-grid">
+                    <div class="form-group">
+                        <label for="dataInizio">Data Inizio:</label>
+                        <input type="date" id="dataInizio" name="dataInizio" value="<c:out value='${param.dataInizio}'/>">
+                    </div>
+                    <div class="form-group">
+                        <label for="dataFine">Data Fine:</label>
+                        <input type="date" id="dataFine" name="dataFine" value="<c:out value='${param.dataFine}'/>">
+                    </div>
+                    <div class="form-group">
+                        <label for="utenteId">ID Utente:</label>
+                        <input type="number" id="utenteId" name="utenteId" value="<c:out value='${param.utenteId}'/>">
+                    </div>
+                    <div class="form-group">
+                        <label for="stato">Stato:</label>
+                        <select id="stato" name="stato">
+                            <option value="">Tutti</option>
+                            <option value="in_elaborazione" <c:if test="${param.stato == 'in_elaborazione'}">selected</c:if>>In Elaborazione</option>
+                            <option value="in_consegna" <c:if test="${param.stato == 'in_consegna'}">selected</c:if>>In Consegna</option>
+                            <option value="consegnato" <c:if test="${param.stato == 'consegnato'}">selected</c:if>>Consegnato</option>
+                            <option value="annullato" <c:if test="${param.stato == 'annullato'}">selected</c:if>>Annullato</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="admin-filters-actions">
+                    <button type="submit" class="btn">Filtra</button>
+                    <a href="${pageContext.request.contextPath}/admin/ordini" class="btn btn-secondary">Reset</a>
+                </div>
+            </form>
+        </div>
 
-        <div class="table-responsive">
-            <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Data</th>
-                    <th>ID Utente</th>
-                    <th>Totale</th>
-                    <th>Stato</th>
-                    <th>Azioni</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:choose>
-                    <c:when test="${empty ordini}">
-                        <tr><td colspan="6">Nessun ordine trovato con i filtri selezionati.</td></tr>
-                    </c:when>
-                    <c:otherwise>
-                        <c:forEach var="ordine" items="${ordini}">
-                            <tr>
-                                <td><c:out value="${ordine.id}" /></td>
-                                <td><c:out value="${ordine.dataOrdine}" /></td>
-                                <td><c:out value="${ordine.utenteId}" /></td>
-                                <td>&euro; <c:out value="${ordine.totale}" /></td>
-                                <td>
-                                    <span class="status-badge status-badge-${ordine.stato}">
-                                        <c:out value="${ordine.statoLabel}" />
-                                    </span>
-                                </td>
-                                <td>
-                                    <c:if test="${ordine.stato == 'in_elaborazione' || ordine.stato == 'in_consegna'}">
-                                        <form action="${pageContext.request.contextPath}/admin/ordini" method="post" class="inline-form">
-                                            <input type="hidden" name="action" value="aggiornaStato">
-                                            <input type="hidden" name="ordineId" value="${ordine.id}">
-                                            <label>
-                                                <select name="nuovoStato" required>
-                                                    <option value="">Cambia in...</option>
-                                                    <c:if test="${ordine.stato == 'in_elaborazione'}">
-                                                        <option value="in_consegna">In Consegna</option>
-                                                        <option value="annullato">Annullato</option>
-                                                    </c:if>
-                                                    <c:if test="${ordine.stato == 'in_consegna'}">
-                                                        <option value="consegnato">Consegnato</option>
-                                                        <option value="annullato">Annullato</option>
-                                                    </c:if>
-                                                </select>
-                                            </label>
-                                            <button type="submit" class="btn btn-sm btn-secondary">Applica</button>
-                                        </form>
-                                    </c:if>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </c:otherwise>
-                </c:choose>
-            </tbody>
-        </table>
+        <div class="card">
+            <div class="table-responsive">
+                <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Data</th>
+                        <th>ID Utente</th>
+                        <th>Totale</th>
+                        <th>Stato</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:choose>
+                        <c:when test="${empty ordini}">
+                            <tr><td colspan="6">Nessun ordine trovato con i filtri selezionati.</td></tr>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="ordine" items="${ordini}">
+                                <tr>
+                                    <td><c:out value="${ordine.id}" /></td>
+                                    <td><c:out value="${ordine.dataOrdine}" /></td>
+                                    <td><c:out value="${ordine.utenteId}" /></td>
+                                    <td>&euro; <c:out value="${ordine.totale}" /></td>
+                                    <td>
+                                        <span class="status-badge ${ordine.stato}">
+                                            <c:out value="${ordine.statoLabel}" />
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <c:if test="${ordine.stato == 'in_elaborazione' || ordine.stato == 'in_consegna'}">
+                                            <form action="${pageContext.request.contextPath}/admin/ordini" method="post" class="inline-form">
+                                                <input type="hidden" name="action" value="aggiornaStato">
+                                                <input type="hidden" name="ordineId" value="${ordine.id}">
+                                                <label>
+                                                    <select name="nuovoStato" required>
+                                                        <option value="">Cambia in...</option>
+                                                        <c:if test="${ordine.stato == 'in_elaborazione'}">
+                                                            <option value="in_consegna">In Consegna</option>
+                                                            <option value="annullato">Annullato</option>
+                                                        </c:if>
+                                                        <c:if test="${ordine.stato == 'in_consegna'}">
+                                                            <option value="consegnato">Consegnato</option>
+                                                            <option value="annullato">Annullato</option>
+                                                        </c:if>
+                                                    </select>
+                                                </label>
+                                                <button type="submit" class="btn btn-sm btn-secondary">Applica</button>
+                                            </form>
+                                        </c:if>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+                </tbody>
+                </table>
+            </div>
         </div>
     </main>
 

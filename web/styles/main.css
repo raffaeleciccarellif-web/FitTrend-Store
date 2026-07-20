@@ -629,6 +629,38 @@ label {
 }
 
 /* ============================================================
+   Admin Filters
+   ============================================================ */
+.admin-filters {
+    background-color: var(--color-surface);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--spacing-xl);
+    border: 1px solid var(--color-border);
+}
+
+.admin-filters-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--spacing-md);
+}
+
+.admin-filters-grid .form-group {
+    margin-bottom: 0;
+    flex: 1;
+    min-width: 150px;
+}
+
+.admin-filters-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+    justify-content: flex-end;
+}
+
+/* ============================================================
    Ordini Layout
    ============================================================ */
 .ordine-card {
@@ -672,6 +704,20 @@ label {
     max-width: 400px;
     margin: 40px auto;
     padding: 20px;
+}
+
+/* ---------- Back link (← Home / ← Torna al carrello) ---------- */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-lg);
+    transition: color var(--transition-fast);
+}
+.back-link:hover {
+    color: var(--color-primary);
 }
 
 /* ---------- Input password con toggle ---------- */

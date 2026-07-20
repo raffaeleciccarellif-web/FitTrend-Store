@@ -15,13 +15,10 @@
 </head>
 <body>
 
-<header>
-    <div class="container">
-            <a href="${pageContext.request.contextPath}/home" class="btn btn-secondary btn-sm">&larr; Home</a>
-    </div>
-</header>
+<jsp:include page="header.jsp" />
 
 <main class="container">
+    <a href="${pageContext.request.contextPath}/home" class="back-link">&larr; Home</a>
     <div class="card auth-card">
         <h2>Accedi a FitTrend Store</h2>
         
@@ -59,11 +56,7 @@
     </div>
 </main>
 
-<footer>
-    <div class="container text-center">
-        <p>&copy; 2026 FitTrend Store &mdash; Progetto TSW</p>
-    </div>
-</footer>
+<jsp:include page="footer.jsp" />
 
 </body>
 </html>
