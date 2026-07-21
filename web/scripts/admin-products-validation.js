@@ -56,8 +56,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         function validatePrezzo() {
             const val = parseFloat(prezzo.value);
-            if (isNaN(val) || val <= 0) {
-                showError("prezzo", "Il prezzo deve essere maggiore di 0.");
+            if (isNaN(val) || val <= 0 || val > 10000) {
+                showError("prezzo", "Il prezzo deve essere compreso tra 0 e 10000.");
                 return false;
             }
             clearError("prezzo");

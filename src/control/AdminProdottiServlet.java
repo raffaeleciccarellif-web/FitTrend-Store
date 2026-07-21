@@ -120,7 +120,7 @@ public class AdminProdottiServlet extends HttpServlet {
                 BigDecimal prezzo = new BigDecimal(prezzoStr);
                 int quantita = Integer.parseInt(quantitaStr);
 
-                if (prezzo.compareTo(BigDecimal.ZERO) <= 0 || quantita < 0) {
+                if (prezzo.compareTo(BigDecimal.ZERO) <= 0 || prezzo.compareTo(new BigDecimal("10000")) > 0 || quantita < 0) {
                     response.sendRedirect(request.getContextPath() + "/admin/prodotti?error=ValoriNumericiNonValidi");
                     return;
                 }

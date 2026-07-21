@@ -17,7 +17,9 @@
             <a href="${pageContext.request.contextPath}/home" class="logo">Fit<span>Trend</span></a>
             <nav>
                 <a href="${pageContext.request.contextPath}/catalogo">Catalogo</a>
-                <a href="${pageContext.request.contextPath}/carrello?action=visualizza">Carrello</a>
+                <c:if test="${not empty sessionScope.utenteLoggato and not sessionScope.utenteLoggato.admin}">
+                    <a href="${pageContext.request.contextPath}/carrello?action=visualizza">Carrello</a>
+                </c:if>
                 <c:choose>
                     <c:when test="${not empty sessionScope.utenteLoggato}">
                         <c:choose>
@@ -63,27 +65,29 @@
                     <p class="card-text"><strong>Disponibilità:</strong> <c:out value="${prodotto.quantitaDisponibile}" /> pezzi in stock</p>
                     <p class="card-text mt-md"><c:out value="${prodotto.descrizione}" /></p>
 
-                    <div class="mt-md">
-                        <c:choose>
-                            <c:when test="${prodotto.quantitaDisponibile > 0}">
-                                <form action="${pageContext.request.contextPath}/carrello" method="POST" id="addToCartForm" class="add-to-cart-form">
-                                    <input type="hidden" name="action" value="aggiungi">
-                                    <input type="hidden" name="idProdotto" value="${prodotto.id}">
-                                    
-                                    <div class="mb-md">
-                                        <label for="quantita">Quantità:</label>
-                                        <input type="number" id="quantita" name="quantita" value="1" min="1" max="${prodotto.quantitaDisponibile}">
-                                        <span class="field-hint">Max disponibili: <c:out value="${prodotto.quantitaDisponibile}"/> pezzi</span>
-                                    </div>
-                                    
-                                    <button type="submit" class="btn">Aggiungi al Carrello</button>
-                                </form>
-                            </c:when>
-                            <c:otherwise>
-                                <button class="btn btn-secondary" disabled>Esaurito</button>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
+                    <c:if test="${not empty sessionScope.utenteLoggato and not sessionScope.utenteLoggato.admin}">
+                        <div class="mt-md">
+                            <c:choose>
+                                <c:when test="${prodotto.quantitaDisponibile > 0}">
+                                    <form action="${pageContext.request.contextPath}/carrello" method="POST" id="addToCartForm" class="add-to-cart-form">
+                                        <input type="hidden" name="action" value="aggiungi">
+                                        <input type="hidden" name="idProdotto" value="${prodotto.id}">
+                                        
+                                        <div class="mb-md">
+                                            <label for="quantita">Quantità:</label>
+                                            <input type="number" id="quantita" name="quantita" value="1" min="1" max="${prodotto.quantitaDisponibile}">
+                                            <span class="field-hint">Max disponibili: <c:out value="${prodotto.quantitaDisponibile}"/> pezzi</span>
+                                        </div>
+                                        
+                                        <button type="submit" class="btn">Aggiungi al Carrello</button>
+                                    </form>
+                                </c:when>
+                                <c:otherwise>
+                                    <button class="btn btn-secondary" disabled>Esaurito</button>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </c:if>
                 </div>
             </div>
         </div>

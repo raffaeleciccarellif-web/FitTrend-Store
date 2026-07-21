@@ -20,7 +20,9 @@
             <a href="${pageContext.request.contextPath}/home" class="logo">Fit<span>Trend</span></a>
             <nav>
                 <a href="${pageContext.request.contextPath}/catalogo">Catalogo</a>
-                <a href="${pageContext.request.contextPath}/carrello?action=visualizza" class="active">Carrello</a>
+                <c:if test="${not empty sessionScope.utenteLoggato and not sessionScope.utenteLoggato.admin}">
+                    <a href="${pageContext.request.contextPath}/carrello?action=visualizza" class="active">Carrello</a>
+                </c:if>
                 <c:choose>
                     <c:when test="${not empty sessionScope.utenteLoggato}">
                         <c:choose>

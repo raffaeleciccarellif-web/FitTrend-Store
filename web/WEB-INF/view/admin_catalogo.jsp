@@ -62,7 +62,7 @@
                     <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-md);">
                         <div class="form-group" style="flex: 1; min-width: 250px;">
                             <label for="prezzo">Prezzo (€)</label>
-                            <input type="number" step="0.01" min="0.01" id="prezzo" name="prezzo" value="<c:out value='${prodottoInModifica.prezzo}'/>" required>
+                            <input type="number" step="0.01" min="0.01" max="10000" id="prezzo" name="prezzo" value="<c:out value='${prodottoInModifica.prezzo}'/>" required>
                         </div>
                         
                         <div class="form-group" style="flex: 1; min-width: 250px;">

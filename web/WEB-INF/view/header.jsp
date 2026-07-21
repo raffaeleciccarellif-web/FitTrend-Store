@@ -7,8 +7,10 @@
             <%-- CATALOGO — sempre visibile --%>
             <a href="${pageContext.request.contextPath}/catalogo">Catalogo</a>
 
-            <%-- CARRELLO — sempre visibile --%>
-            <a href="${pageContext.request.contextPath}/carrello?action=visualizza">Carrello</a>
+            <%-- CARRELLO — visibile solo a utenti normali loggati --%>
+            <c:if test="${not empty sessionScope.utenteLoggato and not sessionScope.utenteLoggato.admin}">
+                <a href="${pageContext.request.contextPath}/carrello?action=visualizza">Carrello</a>
+            </c:if>
 
             <c:choose>
                 <c:when test="${not empty sessionScope.utenteLoggato}">
