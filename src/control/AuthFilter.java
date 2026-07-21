@@ -12,7 +12,7 @@ public class AuthFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {
-        // Initialization if needed
+
     }
 
     @Override
@@ -47,6 +47,6 @@ public class AuthFilter implements Filter {
 
     @Override
     public void destroy() {
-        // Cleanup if needed
+
     }
 }

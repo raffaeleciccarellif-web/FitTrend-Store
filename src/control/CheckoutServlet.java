@@ -131,7 +131,7 @@ public class CheckoutServlet extends HttpServlet {
             return "Il CAP deve essere composto da 5 cifre numeriche.";
 
         // Whitelist metodi di pagamento accettati
-        if (metodoPagamento == null || (!metodoPagamento.equals("carta") && !metodoPagamento.equals("paypal") && !metodoPagamento.equals("contrassegno")))
+        if (metodoPagamento == null || (!metodoPagamento.equals("carta") && !metodoPagamento.equals("paypal") && !metodoPagamento.equals("bonifico")))
             return "Metodo di pagamento non valido.";
 
         // Validazione carta solo se metodo = carta
