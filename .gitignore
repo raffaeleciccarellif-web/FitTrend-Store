@@ -1,7 +1,5 @@
 # === IDE e editor ===
-.idea/
 *.iml
-.smarttomcat/
 .metadata/
 .classpath
 .project
