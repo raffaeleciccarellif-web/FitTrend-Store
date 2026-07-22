@@ -3,10 +3,8 @@ package model;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-// Bean Rimborso: rappresenta una richiesta di rimborso associata a un ordine
 public class Rimborso {
 
-    // Costanti di stato: corrispondono ai valori stringa del DB (minuscoli)
     public static final String STATO_RICHIESTO  = "richiesto";
     public static final String STATO_APPROVATO  = "approvato";
     public static final String STATO_RIFIUTATO  = "rifiutato";
@@ -15,12 +13,11 @@ public class Rimborso {
     private int id;
     private int ordineId;
     private Timestamp dataRichiesta;
-    private Timestamp dataElaborazione; // null finché lo stato è "richiesto"
-    private BigDecimal importo;          // corrisponde al totale dell'ordine
+    private Timestamp dataElaborazione;
+    private BigDecimal importo;
     private String motivo;
     private String stato;
 
-    // Campi read-only di supporto alla vista, popolati con JOIN in doRetrieveAll/doRetrieveByUtente
     private int utenteId;
     private String utenteEmail;
 

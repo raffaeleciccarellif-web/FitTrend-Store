@@ -11,9 +11,6 @@ import java.util.Collection;
 
 public class CategoriaDAO {
 
-    /**
-     * Recupera tutte le categorie ordinate per nome.
-     */
     public Collection<Categoria> doRetrieveAll() throws SQLException {
         String sql = "SELECT id, nome, descrizione FROM categoria ORDER BY nome ASC";
         Collection<Categoria> categorie = new ArrayList<>();
@@ -27,12 +24,6 @@ public class CategoriaDAO {
         return categorie;
     }
 
-    /**
-     * Recupera una categoria per chiave primaria.
-     *
-     * @param id identificativo della categoria
-     * @return la Categoria trovata, o null se non esiste
-     */
     public Categoria doRetrieveByKey(int id) throws SQLException {
         String sql = "SELECT id, nome, descrizione FROM categoria WHERE id = ?";
         try (Connection con = DbManager.getConnection();
@@ -47,7 +38,7 @@ public class CategoriaDAO {
         return null;
     }
 
-    // ─── Helper ──────────────────────────────────────────────────────────────
+    //Helper
 
     private Categoria mapRow(ResultSet rs) throws SQLException {
         Categoria c = new Categoria();

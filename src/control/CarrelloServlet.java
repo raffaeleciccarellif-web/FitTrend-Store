@@ -129,7 +129,6 @@ public class CarrelloServlet extends HttpServlet {
                     break;
 
                 case "visualizza":
-                    // Flash attributes per errore e messaggio
                     String sessionErr = (String) request.getSession().getAttribute("errore");
                     if (sessionErr != null) {
                         request.setAttribute("errore", sessionErr);

@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/admin/*", "/checkout", "/ordini", "/rimborsi"})
+@WebFilter(urlPatterns = {"/admin/*", "/carrello", "/checkout", "/ordini", "/rimborsi"})
 public class AuthFilter implements Filter {
 
     @Override
@@ -31,13 +31,19 @@ public class AuthFilter implements Filter {
                 if (!AuthHelper.isLogged(req)) {
                     AuthHelper.redirectToLogin(req, res);
                 } else {
-                    AuthHelper.sendForbidden(res);
+                    AuthHelper.redirectToHome(req, res);
                 }
                 return;
             }
-        } else if (path.equals("/checkout") || path.equals("/ordini") || path.equals("/rimborsi")) {
+        } else if (path.equals("/carrello") || path.equals("/checkout")
+                || path.equals("/ordini") || path.equals("/rimborsi")) {
             if (!AuthHelper.isLogged(req)) {
                 AuthHelper.redirectToLogin(req, res);
+                return;
+            }
+
+            if (AuthHelper.isAdmin(req)) {
+                AuthHelper.redirectToHome(req, res);
                 return;
             }
         }

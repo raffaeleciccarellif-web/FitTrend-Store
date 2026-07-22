@@ -44,7 +44,6 @@ public class OrdineDAO {
             BigDecimal totaleRicalcolato = BigDecimal.ZERO;
             Collection<ItemCarrello> items = carrello.getItems();
 
-            // Lock righe prodotto e ricalcolo totale: ignora il prezzo in sessione
             for (ItemCarrello item : items) {
                 String sqlLock = "SELECT prezzo, quantita_disponibile FROM Prodotto WHERE id = ? AND is_deleted = 0 FOR UPDATE";
                 try (PreparedStatement ps = con.prepareStatement(sqlLock)) {
@@ -78,7 +77,7 @@ public class OrdineDAO {
                 ps.setString(4, ordine.getCittaSpedizione());
                 ps.setString(5, ordine.getCapSpedizione());
                 ps.setString(6, ordine.getMetodoPagamento());
-                ps.setString(7, ordine.getUltimeCifreCarta()); // null se non carta
+                ps.setString(7, ordine.getUltimeCifreCarta());
                 ps.setString(8, Ordine.STATO_IN_ELABORAZIONE);
                 ps.executeUpdate();
                 try (ResultSet rs = ps.getGeneratedKeys()) {

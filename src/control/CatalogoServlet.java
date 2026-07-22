@@ -24,14 +24,14 @@ public class CatalogoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // ── Lettura parametri ──────────────────────────────────────────────────
+        // Lettura parametri
         String nome        = request.getParameter("nome");
         String catIdParam  = request.getParameter("categoriaId");
         String prezzoMinP  = request.getParameter("prezzoMin");
         String prezzoMaxP  = request.getParameter("prezzoMax");
         String order       = request.getParameter("order");
 
-        // ── Validazione categoriaId ────────────────────────────────────────────
+        //Validazione categoriaId
         Integer categoriaId = null;
         if (catIdParam != null && !catIdParam.isBlank()) {
             try {
@@ -44,7 +44,7 @@ public class CatalogoServlet extends HttpServlet {
             }
         }
 
-        // ── Validazione prezzoMin / prezzoMax ──────────────────────────────────
+        // Validazione prezzoMin / prezzoMax
         BigDecimal prezzoMin = null;
         if (prezzoMinP != null && !prezzoMinP.isBlank()) {
             try {
@@ -65,10 +65,10 @@ public class CatalogoServlet extends HttpServlet {
             }
         }
 
-        // ── Normalizza nome vuoto ──────────────────────────────────────────────
+        //  Normalizza nome vuoto
         if (nome != null && nome.isBlank()) nome = null;
 
-        // ── Caricamento dati da DAO ────────────────────────────────────────────
+        //  Caricamento dati da DAO
         try {
             CategoriaDAO categoriaDAO = new CategoriaDAO();
             ProdottoDAO  prodottoDAO  = new ProdottoDAO();
@@ -95,7 +95,7 @@ public class CatalogoServlet extends HttpServlet {
             Collection<Prodotto> prodotti = prodottoDAO.doRetrieveByFilters(
                     nome, categoriaId, prezzoMin, prezzoMax, order, offset, limit);
 
-            // ── Popolamento attributi request ──────────────────────────────────
+            //  Popolamento attributi request
             request.setAttribute("categorie",   categorie);
             request.setAttribute("prodotti",     prodotti);
 

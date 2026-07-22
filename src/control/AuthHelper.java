@@ -31,7 +31,7 @@ public class AuthHelper {
         response.sendRedirect(request.getContextPath() + "/login");
     }
 
-    public static void sendForbidden(HttpServletResponse response) throws IOException {
-        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Accesso negato");
+    public static void redirectToHome(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.sendRedirect(request.getContextPath() + "/home");
     }
 }

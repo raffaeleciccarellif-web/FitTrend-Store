@@ -10,16 +10,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-// Bean Ordine: rappresenta un ordine effettuato da un utente
 public class Ordine {
 
-    // Costanti di stato: corrispondono ai valori stringa del DB (minuscoli)
     public static final String STATO_IN_ELABORAZIONE = "in_elaborazione";
     public static final String STATO_IN_CONSEGNA     = "in_consegna";
     public static final String STATO_CONSEGNATO      = "consegnato";
     public static final String STATO_ANNULLATO       = "annullato";
 
-    // Mappa delle transizioni ammesse: usata in OrdineDAO.doUpdateStato() per whitelist
     public static final Map<String, Set<String>> TRANSIZIONI_AMMESSE;
     static {
         Map<String, Set<String>> map = new HashMap<>();
@@ -38,9 +35,9 @@ public class Ordine {
     private String cittaSpedizione;
     private String capSpedizione;
     private String metodoPagamento;
-    private String ultimeCifreCarta; // null se metodo != carta
+    private String ultimeCifreCarta;
     private String stato;
-    private List<DettaglioOrdine> dettagli; // caricato on-demand dal DAO
+    private List<DettaglioOrdine> dettagli;
 
     public Ordine() {}
 
@@ -77,7 +74,6 @@ public class Ordine {
     public List<DettaglioOrdine> getDettagli() { return dettagli; }
     public void setDettagli(List<DettaglioOrdine> dettagli) { this.dettagli = dettagli; }
 
-    // Restituisce l'etichetta leggibile dello stato per la JSP (${ordine.statoLabel})
     public String getStatoLabel() {
         if (stato == null) return "";
         return switch (stato) {

@@ -63,7 +63,7 @@ public class CheckoutServlet extends HttpServlet {
         String citta           = trim(request.getParameter("cittaSpedizione"));
         String cap             = trim(request.getParameter("capSpedizione"));
         String metodoPagamento = trim(request.getParameter("metodoPagamento"));
-        String numeroCarta     = trim(request.getParameter("numeroCarta")); // solo per validazione locale, non salvato
+        String numeroCarta     = trim(request.getParameter("numeroCarta"));
 
         // Validazione server-side
         String errore = valida(indirizzo, citta, cap, metodoPagamento, numeroCarta);
@@ -95,7 +95,6 @@ public class CheckoutServlet extends HttpServlet {
             // Svuota il carrello SOLO dopo il commit riuscito
             carrello.svuota();
 
-            // Flash attribute per la conferma
             session.setAttribute("messaggioOrdine", "Ordine #" + idOrdine + " effettuato con successo!");
             response.sendRedirect(request.getContextPath() + "/ordini");
 
