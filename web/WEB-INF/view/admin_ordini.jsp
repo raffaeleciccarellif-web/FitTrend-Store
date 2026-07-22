@@ -59,8 +59,8 @@
         </div>
 
         <div class="card">
-            <div class="table-responsive">
-                <table>
+            <div class="table-responsive" style="min-width: 0; overflow-x: auto;">
+                <table style="min-width: 800px;">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -90,22 +90,22 @@
                                     </td>
                                     <td>
                                         <c:if test="${ordine.stato == 'in_elaborazione' || ordine.stato == 'in_consegna'}">
-                                            <form action="${pageContext.request.contextPath}/admin/ordini" method="post" class="inline-form">
+                                            <form action="${pageContext.request.contextPath}/admin/ordini" method="post"
+                                                  style="display:flex;align-items:center;gap:6px;">
                                                 <input type="hidden" name="action" value="aggiornaStato">
                                                 <input type="hidden" name="ordineId" value="${ordine.id}">
-                                                <label>
-                                                    <select name="nuovoStato" required>
-                                                        <option value="">Cambia in...</option>
-                                                        <c:if test="${ordine.stato == 'in_elaborazione'}">
-                                                            <option value="in_consegna">In Consegna</option>
-                                                            <option value="annullato">Annullato</option>
-                                                        </c:if>
-                                                        <c:if test="${ordine.stato == 'in_consegna'}">
-                                                            <option value="consegnato">Consegnato</option>
-                                                            <option value="annullato">Annullato</option>
-                                                        </c:if>
-                                                    </select>
-                                                </label>
+                                                <select name="nuovoStato" required
+                                                        style="min-width:155px;width:155px;padding:4px 6px;font-size:0.85rem;">
+                                                    <option value="">Cambia in...</option>
+                                                    <c:if test="${ordine.stato == 'in_elaborazione'}">
+                                                        <option value="in_consegna">In Consegna</option>
+                                                        <option value="annullato">Annullato</option>
+                                                    </c:if>
+                                                    <c:if test="${ordine.stato == 'in_consegna'}">
+                                                        <option value="consegnato">Consegnato</option>
+                                                        <option value="annullato">Annullato</option>
+                                                    </c:if>
+                                                </select>
                                                 <button type="submit" class="btn btn-sm btn-secondary">Applica</button>
                                             </form>
                                         </c:if>

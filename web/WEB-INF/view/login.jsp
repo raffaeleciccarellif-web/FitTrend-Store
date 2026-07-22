@@ -14,11 +14,11 @@
     <script src="${pageContext.request.contextPath}/scripts/login-validation.js" defer></script>
 </head>
 <body>
+<% request.setAttribute("showHomeOnly", true); %>
 
 <jsp:include page="header.jsp" />
 
 <main class="container">
-    <a href="${pageContext.request.contextPath}/home" class="back-link">&larr; Home</a>
     <div class="card auth-card">
         <h2>Accedi a FitTrend Store</h2>
         

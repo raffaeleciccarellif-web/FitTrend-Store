@@ -5,7 +5,7 @@
 
 /* Fix già gestito in main.css (.btn:hover ha color esplicito) */
 
-/* ── Select: freccia più distante dal bordo ───────────────────────────────── */
+/* Select: freccia personalizzata più distante dal bordo */
 .filtri-bar select {
     padding-right: 3rem;
     appearance: none;
@@ -15,7 +15,7 @@
     background-position: right 1.25rem center;
 }
 
-/* ── Barra filtri ─────────────────────────────────────────────────────────── */
+/* Barra filtri */
 .filtri-bar {
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -29,16 +29,16 @@
 }
 
 .filtri-bar form {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    /* Su schermo largo: 6 colonne, tutti i filtri in una riga */
+    grid-template-columns: repeat(6, 1fr);
     gap: var(--spacing-md);
-    align-items: flex-end;
+    align-items: end;
 }
 
 .filtro-group {
     display: flex;
     flex-direction: column;
-    flex: 1 1 160px;
 }
 
 .filtro-group label {
@@ -48,9 +48,9 @@
     color: var(--color-text);
 }
 
-/* ── Pulsanti Filtra e Reset: stessa altezza e stessa larghezza ──────────── */
+/* Pulsanti Filtra e Reset: stessa altezza e larghezza */
 .filtro-btn {
-    flex: 0 0 auto;
+    display: flex;
     flex-direction: row;
     gap: var(--spacing-sm);
     align-items: flex-end;
@@ -72,7 +72,7 @@
     line-height: 1;
 }
 
-/* ── Immagine card: altezza ridotta per dare più spazio al testo ─────────── */
+/* Immagine card: altezza ridotta per dare più spazio al testo */
 .grid-prodotti .card-img {
     height: 170px;
 }
@@ -90,10 +90,11 @@
     padding: var(--spacing-md);
 }
 
-/* ── Descrizione: max 3 righe con "..." ──────────────────────────────────── */
+/* Descrizione: max 3 righe con "..." */
 .card-text-clamp {
     display: -webkit-box !important;
     -webkit-line-clamp: 3 !important;
+    line-clamp: 3 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
     text-overflow: ellipsis;
@@ -102,7 +103,7 @@
     margin-bottom: var(--spacing-md);
 }
 
-/* ── Card footer: pulsante sx — prezzo dx, sulla stessa riga ─────────────── */
+/* Card footer: pulsante sx — prezzo dx, sulla stessa riga */
 .grid-prodotti .card-footer {
     display: flex !important;
     flex-direction: row !important;
@@ -132,10 +133,11 @@
     flex-shrink: 0;
 }
 
-/* ── Titolo prodotto: max 2 righe, poi "…" — tooltip via HTML title attr ─── */
+/* Titolo prodotto: max 2 righe, poi "…" — tooltip via HTML title attr */
 .card-title-clamp {
     display: -webkit-box !important;
     -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
     text-overflow: ellipsis;
@@ -147,7 +149,7 @@
     cursor: default;
 }
 
-/* ── Card categoria badge ─────────────────────────────────────────────────── */
+/* Card categoria badge */
 .card-categoria {
     font-size: 0.75rem;
     font-weight: 600;
@@ -157,23 +159,38 @@
     margin-bottom: var(--spacing-xs);
 }
 
-/* ── Responsive filtri ────────────────────────────────────────────────────── */
-@media (max-width: 768px) {
-    .filtri-bar form {
-        flex-direction: column;
-    }
+/* Responsive filtri */
 
-    .filtro-group {
-        flex: 1 1 100%;
+/* Schermo medio (tipo metà di un laptop): 3 colonne, 2 righe */
+@media (max-width: 950px) {
+    .filtri-bar form {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Schermo stretto (tipo metà schermo piccolo): 2 colonne, 3 righe */
+@media (max-width: 600px) {
+    .filtri-bar form {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .filtro-btn {
-        flex-direction: row;
-        width: 100%;
+        grid-column: span 2;
     }
 
     .filtro-btn .btn,
-    .filtro-btn .btn-secondary {
+    .filtro-btn a.btn-secondary {
         flex: 1;
+    }
+}
+
+/* Schermo molto stretto: 1 colonna */
+@media (max-width: 380px) {
+    .filtri-bar form {
+        grid-template-columns: 1fr;
+    }
+
+    .filtro-btn {
+        grid-column: span 1;
     }
 }

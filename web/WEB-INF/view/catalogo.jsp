@@ -26,7 +26,7 @@
     <div class="container">
         <h1 class="page-title">Catalogo Prodotti</h1>
 
-        <%-- ── Barra filtri ───────────────────────────────────────────────────── --%>
+        <%-- Barra filtri --%>
         <section class="filtri-bar" aria-label="Filtri di ricerca">
             <form id="filtriForm" method="get" action="${pageContext.request.contextPath}/catalogo">
 
@@ -86,7 +86,7 @@
             </form>
         </section>
 
-        <%-- ── Griglia prodotti ───────────────────────────────────────────────── --%>
+        <%-- Griglia prodotti --%>
         <c:choose>
             <c:when test="${empty prodotti}">
                 <p class="info-msg">Nessun prodotto trovato con i filtri selezionati.</p>
@@ -107,7 +107,7 @@
                                 <div class="card-footer">
                                     <a href="<c:url value='/prodotto?id=${prodotto.id}'/>"
                                        class="btn" id="btnDettaglio-${prodotto.id}">
-                                        Vedi dettaglio
+                                        Dettaglio
                                     </a>
                                     <p class="card-price">€ <c:out value="${prodotto.prezzo}"/></p>
                                 </div>

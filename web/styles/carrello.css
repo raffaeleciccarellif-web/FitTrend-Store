@@ -1,8 +1,6 @@
-/* =========================================================
-   carrello.css — Stili per la pagina Carrello
-   ========================================================= */
+/* carrello.css - Stili per la pagina Carrello */
 
-/* ── Titolo pagina ─────────────────────────────────────── */
+/* Titolo pagina */
 .page-title {
     font-size: 1.8rem;
     font-weight: 700;
@@ -12,7 +10,7 @@
     padding-left: var(--spacing-sm);
 }
 
-/* ── Tabella carrello ──────────────────────────────────── */
+/* Tabella carrello */
 .cart-table {
     width: 100%;
     border-collapse: collapse;
@@ -55,7 +53,7 @@
     color: var(--color-text);
 }
 
-/* ── Colonna immagine ──────────────────────────────────── */
+/* Colonna immagine */
 .cart-img {
     width: 90px;
     height: 90px;
@@ -65,14 +63,14 @@
     display: block;
 }
 
-/* ── Colonna prodotto ──────────────────────────────────── */
+/* Colonna prodotto */
 .cart-product-name {
     font-weight: 600;
     font-size: 1rem;
     color: var(--color-text);
 }
 
-/* ── Colonna prezzo e subtotale ────────────────────────── */
+/* Colonna prezzo e subtotale */
 .cart-price,
 .cart-subtotale {
     font-size: 1rem;
@@ -84,7 +82,7 @@
     color: var(--color-primary);
 }
 
-/* ── Colonna quantità: form inline ────────────────────── */
+/* Colonna quantità: form inline */
 .form-quantita {
     display: flex;
     align-items: center;
@@ -101,12 +99,12 @@
     font-size: 0.9rem;
 }
 
-/* ── Colonna azioni ────────────────────────────────────── */
+/* Colonna azioni */
 .cart-actions {
     white-space: nowrap;
 }
 
-/* ── Fix pulsanti: tutti rounded (pill) + hover non blu ── */
+/* Fix pulsanti: tutti rounded (pill) + hover non blu */
 .btn,
 a.btn,
 button.btn {
@@ -187,7 +185,7 @@ button.btn-danger:hover {
     color: white !important;
 }
 
-/* ── Box totale ────────────────────────────────────────── */
+/* Box totale */
 .cart-totale-box {
     background: white;
     border-radius: var(--border-radius);
@@ -214,7 +212,7 @@ button.btn-danger:hover {
     flex-wrap: wrap;
 }
 
-/* ── Carrello vuoto ────────────────────────────────────── */
+/* Carrello vuoto */
 .cart-vuoto {
     text-align: center;
     padding: var(--spacing-xxl, 3rem) var(--spacing-lg);
@@ -229,7 +227,7 @@ button.btn-danger:hover {
     margin-bottom: var(--spacing-md);
 }
 
-/* ── Messaggi errore/successo ──────────────────────────── */
+/* Messaggi errore/successo */
 .error-msg {
     background: #fff5f5;
     border: 1px solid #fc8181;
@@ -248,7 +246,7 @@ button.btn-danger:hover {
     margin-bottom: var(--spacing-md);
 }
 
-/* ── Responsivo ────────────────────────────────────────── */
+/* Responsivo */
 .table-responsive {
     overflow-x: auto;
     border-radius: var(--border-radius);

@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
 </head>
 <body>
+<% request.setAttribute("showHomeOnly", true); %>
 
 <jsp:include page="header.jsp" />
 
 <main class="container">
-    <a href="${pageContext.request.contextPath}/home" class="back-link">&larr; Home</a>
     <div class="card auth-card">
         <h2>Registrazione</h2>
         

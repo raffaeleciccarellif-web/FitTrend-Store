@@ -1,10 +1,6 @@
-/* ============================================================
-   FitTrend Store — main.css
-   Foglio di stile principale.
-   Nessun framework CSS esterno (Bootstrap vietato).
-   ============================================================ */
+/* FitTrend Store - main.css - Foglio di stile principale. Nessun framework CSS esterno (Bootstrap vietato). */
 
-/* ---------- Reset & Box-Sizing ---------- */
+/* Reset & Box-Sizing */
 *,
 *::before,
 *::after {
@@ -13,7 +9,7 @@
     box-sizing: border-box;
 }
 
-/* ---------- Variabili (Custom Properties) ---------- */
+/* Variabili (Custom Properties) */
 :root {
     /* Colori primari */
     --color-primary:       #1B9AAA;   /* teal / azzurro fitness */
@@ -68,10 +64,10 @@
     --max-width:           1200px;
 }
 
-/* ---------- Google Fonts (Inter) ---------- */
+/* Google Fonts (Inter) */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* ---------- Body ---------- */
+/* Body */
 html {
     font-size: var(--font-size-base);
     scroll-behavior: smooth;
@@ -107,7 +103,7 @@ ul, ol {
     list-style: none;
 }
 
-/* ---------- Container ---------- */
+/* Container */
 .container {
     width: 100%;
     max-width: var(--max-width);
@@ -115,7 +111,7 @@ ul, ol {
     padding-inline: var(--spacing-lg);
 }
 
-/* ---------- Header ---------- */
+/* Header */
 header {
     background-color: var(--color-surface);
     height: var(--header-height);
@@ -133,6 +129,7 @@ header .container {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    position: relative;
 }
 
 header .logo {
@@ -146,7 +143,7 @@ header .logo span {
     color: var(--color-accent);
 }
 
-/* ---------- Nav ---------- */
+/* Nav */
 nav {
     display: flex;
     align-items: center;
@@ -168,13 +165,13 @@ nav a.active {
     background-color: rgba(27, 154, 170, 0.08);
 }
 
-/* ---------- Main ---------- */
+/* Main */
 main {
     flex: 1;
     padding: var(--spacing-2xl) 0;
 }
 
-/* ---------- Footer ---------- */
+/* Footer */
 footer {
     background-color: var(--color-text);
     color: var(--color-bg);
@@ -192,11 +189,9 @@ footer a:hover {
     color: var(--color-surface);
 }
 
-/* ============================================================
-   Componenti riutilizzabili
-   ============================================================ */
+/* Componenti riutilizzabili */
 
-/* ---------- Bottoni ---------- */
+/* Bottoni */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -259,7 +254,7 @@ footer a:hover {
     font-size: 0.8125rem;
 }
 
-/* ---------- Card ---------- */
+/* Card */
 .card {
     background-color: var(--color-surface);
     border-radius: var(--radius-lg);
@@ -305,14 +300,14 @@ footer a:hover {
     margin-bottom: var(--spacing-md);
 }
 
-/* ---------- Griglia prodotti ---------- */
+/* Griglia prodotti */
 .grid-prodotti {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: var(--spacing-lg);
 }
 
-/* ---------- Tabelle responsive ---------- */
+/* Tabelle responsive */
 .table-responsive {
     width: 100%;
     overflow-x: auto;
@@ -349,7 +344,7 @@ footer a:hover {
     background-color: rgba(27, 154, 170, 0.04);
 }
 
-/* ---------- Messaggi errore / info ---------- */
+/* Messaggi errore / info */
 .error-msg {
     background-color: #FEF2F2;
     color: var(--color-error);
@@ -383,7 +378,7 @@ footer a:hover {
     margin-bottom: var(--spacing-md);
 }
 
-/* ---------- Input con errore ---------- */
+/* Input con errore */
 .error-input {
     border-color: var(--color-error) !important;
     box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
@@ -414,7 +409,7 @@ span.error-msg:empty {
     margin-bottom: var(--spacing-sm);
 }
 
-/* ---------- Form base ---------- */
+/* Form base */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -450,7 +445,7 @@ label {
     color: var(--color-text);
 }
 
-/* ---------- Utility ---------- */
+/* Utility */
 .text-center {
     text-align: center;
 }
@@ -475,7 +470,7 @@ label {
     margin-bottom: var(--spacing-lg);
 }
 
-/* ---------- Titoli di pagina ---------- */
+/* Titoli di pagina */
 .page-title {
     font-size: var(--font-size-2xl);
     font-weight: 700;
@@ -483,7 +478,7 @@ label {
     margin-bottom: var(--spacing-xl);
 }
 
-/* ---------- Breadcrumb ---------- */
+/* Breadcrumb */
 .breadcrumb {
     display: flex;
     align-items: center;
@@ -513,7 +508,7 @@ label {
     font-weight: 400;
 }
 
-/* ---------- Status Badges ---------- */
+/* Status Badges */
 .status-badge {
     display: inline-block;
     padding: 0.25rem 0.6rem;
@@ -551,9 +546,7 @@ label {
     color: #991B1B;
 }
 
-/* ============================================================
-   Responsive
-   ============================================================ */
+/* Responsive */
 @media (max-width: 768px) {
     :root {
         --font-size-base: 15px;
@@ -584,9 +577,7 @@ label {
     }
 }
 
-/* ============================================================
-   Admin Layout
-   ============================================================ */
+/* Admin Layout */
 .admin-layout {
     display: grid;
     grid-template-columns: 1fr 3fr;
@@ -628,9 +619,7 @@ label {
     padding: 0.25rem 0.5rem;
 }
 
-/* ============================================================
-   Admin Filters
-   ============================================================ */
+/* Admin Filters */
 .admin-filters {
     background-color: var(--color-surface);
     padding: var(--spacing-md) var(--spacing-lg);
@@ -660,9 +649,7 @@ label {
     justify-content: flex-end;
 }
 
-/* ============================================================
-   Ordini — Page Header
-   ============================================================ */
+/* Ordini - Page Header */
 .ordini-page-header {
     display: flex;
     align-items: center;
@@ -697,9 +684,7 @@ label {
     margin: 0;
 }
 
-/* ============================================================
-   Ordini — Empty State
-   ============================================================ */
+/* Ordini - Empty State */
 .ordini-empty {
     text-align: center;
     padding: var(--spacing-2xl) var(--spacing-lg);
@@ -726,9 +711,7 @@ label {
     margin-bottom: var(--spacing-lg);
 }
 
-/* ============================================================
-   Ordini — Card Layout
-   ============================================================ */
+/* Ordini - Card Layout */
 .ordine-card {
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -886,9 +869,7 @@ label {
     margin-bottom: 0;
 }
 
-/* ============================================================
-   Ordini — Responsive
-   ============================================================ */
+/* Ordini - Responsive */
 @media (max-width: 768px) {
     .ordini-page-header {
         flex-direction: column;
@@ -927,16 +908,14 @@ label {
     flex: 1;
 }
 
-/* ============================================================
-   Auth Layout
-   ============================================================ */
+/* Auth Layout */
 .auth-card {
     max-width: 400px;
     margin: 40px auto;
     padding: 20px;
 }
 
-/* ---------- Back link (← Home / ← Torna al carrello) ---------- */
+/* Back link (<- Home / <- Torna al carrello) */
 .back-link {
     display: inline-flex;
     align-items: center;
@@ -950,7 +929,7 @@ label {
     color: var(--color-primary);
 }
 
-/* ---------- Input password con toggle ---------- */
+/* Input password con toggle */
 .input-password-wrap {
     position: relative;
     display: flex;
@@ -978,14 +957,14 @@ label {
     color: var(--color-primary);
 }
 
-/* ---------- Label con asterisco obbligatorio ---------- */
+/* Label con asterisco obbligatorio */
 label.label-required::after {
     content: ' *';
     color: var(--color-error);
     font-weight: 700;
 }
 
-/* ---------- Testo helper sotto i campi ---------- */
+/* Testo helper sotto i campi */
 .field-hint {
     display: block;
     font-size: 0.75rem;
@@ -1006,9 +985,7 @@ label.label-required::after {
     display: none;
 }
 
-/* ============================================================
-   Home — Sezione categorie
-   ============================================================ */
+/* Home - Sezione categorie */
 .home-categorie {
     background-color: var(--color-bg);
     padding: var(--spacing-2xl) 0;
@@ -1063,9 +1040,7 @@ label.label-required::after {
     }
 }
 
-/* ============================================================
-   Paginazione
-   ============================================================ */
+/* Paginazione */
 .pagination {
     display: flex;
     align-items: center;
